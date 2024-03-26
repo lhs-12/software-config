@@ -192,10 +192,10 @@ let g:WhichKeyDesc_Windows_HideAllWindows= "<leader>wc hide all windows"
 let g:WhichKeyDesc_Windows_Translation= "<leader>wt translation"
 "---------------------------------- M for Mark ----------------------------------
 let g:WhichKeyDesc_Mark= "<leader>m Mark"
-let g:WhichKeyDesc_Mark_Bookmark= "<leader>mm mark"
-let g:WhichKeyDesc_Mark_Remove= "<leader>mr remove mark"
+let g:WhichKeyDesc_Mark_Bookmark= "<leader>mm bookmark"
+let g:WhichKeyDesc_Mark_Remark= "<leader>mr remark"
 nnoremap <leader>mm :action ToggleBookmark<CR>
-nnoremap <leader>mr :action DeleteMnemonicFromBookmark<CR>
+nnoremap <leader>mr :action EditBookmark<CR>
 nnoremap <leader>m0 :action ToggleBookmark0<CR>
 nnoremap <leader>m1 :action ToggleBookmark1<CR>
 nnoremap <leader>m2 :action ToggleBookmark2<CR>
@@ -216,3 +216,5 @@ nnoremap <leader>mg :action ToggleBookmarkG<CR>
 nnoremap <leader>mh :action ToggleBookmarkH<CR>
 nnoremap <leader>mi :action ToggleBookmarkI<CR>
 nnoremap <leader>mj :action ToggleBookmarkJ<CR>
+nnoremap <leader>mk :action ToggleBookmarkK<CR>
+nnoremap <leader>ml :action ToggleBookmarkL<CR>
