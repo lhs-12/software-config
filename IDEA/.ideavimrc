@@ -47,6 +47,8 @@ set ideamarks               " map vim marks to IDEA global marks
 set which-key               " comment command
 set quickscope              " quick navigation on a line
 set argtextobj              " argument text objects: aa, ia
+set textobj-indent          " indent object: ai, ii, aI, iI
+set commentary              " use gc{motion} to comment
 set highlightedyank         " highlighted yank
 set vim-paragraph-motion    " The {curly braces} can jump to a blank line with spaces
 "set multiple-cursors       " has bug, and it conflicts with ideajoin, use mouse instead
@@ -87,6 +89,9 @@ nnoremap H ^
 vnoremap H ^
 nnoremap L $
 vnoremap L $
+"--rewrite jump-list
+map <C-o> <Action>(Back)
+map <C-i> <Action>(Forward)
 
 "--Goto action
 let g:WhichKeyDesc_G= "g Goto"
@@ -100,21 +105,15 @@ let g:WhichKeyDesc_GF= "gf file structure"
 let g:WhichKeyDesc_GI= "gi implementations"
 let g:WhichKeyDesc_GS= "gs super"
 
-nnoremap gh :action Back <CR>
-nnoremap gl :action Forward <CR>
 nnoremap gj :action MethodDown <CR>
 nnoremap gk :action MethodUp <CR>
-let g:WhichKeyDesc_GH= "gh back"
-let g:WhichKeyDesc_GL= "gl forward"
 let g:WhichKeyDesc_GJ= "gj method down"
 let g:WhichKeyDesc_GK= "gk method up"
 
-nnoremap gq :action QuickJavaDoc<CR>
 nnoremap gw :action QuickImplementations <CR>
 nnoremap gr :action RecentFiles <CR>
 nnoremap gp :action SelectInProjectView <CR>
 nnoremap ge :action RevealIn <CR>
-let g:WhichKeyDesc_GQ= "gq quick document"
 let g:WhichKeyDesc_GW= "gw quick glance windows"
 let g:WhichKeyDesc_GR= "gr recent files"
 let g:WhichKeyDesc_GP= "gp select in project view"
@@ -167,8 +166,6 @@ let g:WhichKeyDesc_Jump_Char= "<leader>js jump char"
 let g:WhichKeyDesc_Jump_Word= "<leader>jw jump word"
 let g:WhichKeyDesc_Jump_Line= "<leader>jl jump line"
 "-------------------------------- W for Windows ---------------------------------
-nnoremap <leader>wh gT
-nnoremap <leader>wl gt
 nnoremap <leader>wp :NERDTreeToggle <CR>
 nnoremap <leader>wd :action ToggleRenderedDocPresentationForAll <CR>
 nnoremap <leader>wo :action CloseAllEditorsButActive <CR>
@@ -179,8 +176,6 @@ nnoremap <leader>wn :action ToggleDistractionFreeMode <CR>
 nnoremap <leader>wc :action HideAllWindows <CR>
 vnoremap <leader>wt :action $EditorTranslateAction <CR>
 let g:WhichKeyDesc_Windows= "<leader>w Windows"
-let g:WhichKeyDesc_Windows_LeftTab= "<leader>wh left tab"
-let g:WhichKeyDesc_Windows_RightTab= "<leader>wl right tab"
 let g:WhichKeyDesc_Windows_ProjectView= "<leader>wp project view"
 let g:WhichKeyDesc_Windows_RenderDoc= "<leader>wd render document"
 let g:WhichKeyDesc_Windows_CloseOtherTab= "<leader>wo close other editors"

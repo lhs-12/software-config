@@ -9,6 +9,7 @@
 | .ignore                                   |
 | Alibaba Java Coding GuideLines            |
 | Atom Material Icons                       |
+| String Manipulation                       |
 | GenerateAllSetter                         |
 | GenerateSerialVersionUID                  |
 | Git Flow Integration  Plus                |

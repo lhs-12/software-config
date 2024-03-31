@@ -48,7 +48,7 @@ key_binder:
 weasel.yml
 ```yml
 # VSCode和IDEA默认英文, 支持vim切换
-# 注意: 在15.0版本的win版本的vim_mode配置暂时不生效, 等日后官方更新安装包. 可自己暂时用lua脚本实现
+# 注: 15.0版本的win版本的vim_mode暂不生效. 更新软件版本, 或自己写lua脚本实现
 app_options:
   firefox.exe:
     inline_preedit: true # 行内显示预编辑区：规避 <https://github.com/rime/weasel/issues/946>
@@ -59,6 +59,9 @@ app_options:
     ascii_mode: true
     vim_mode: true
   neovide.exe:
+    ascii_mode: true
+    vim_mode: true
+  windowsterminal.exe:
     ascii_mode: true
     vim_mode: true
 
