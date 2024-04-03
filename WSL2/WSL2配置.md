@@ -23,6 +23,14 @@ autoMemoryReclaim=dropcache
 sparseVhd=true
 ```
 
+# 安装软件
+
+```
+nvim
+mise
+tldr
+```
+
 # 常用命令
 ```
 查看运行状态

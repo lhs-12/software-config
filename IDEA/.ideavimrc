@@ -105,17 +105,10 @@ let g:WhichKeyDesc_GF= "gf file structure"
 let g:WhichKeyDesc_GI= "gi implementations"
 let g:WhichKeyDesc_GS= "gs super"
 
-nnoremap gj :action MethodDown <CR>
-nnoremap gk :action MethodUp <CR>
-let g:WhichKeyDesc_GJ= "gj method down"
-let g:WhichKeyDesc_GK= "gk method up"
-
-nnoremap gw :action QuickImplementations <CR>
-nnoremap gr :action RecentFiles <CR>
+nnoremap qq :action QuickImplementations <CR>
 nnoremap gp :action SelectInProjectView <CR>
 nnoremap ge :action RevealIn <CR>
-let g:WhichKeyDesc_GW= "gw quick glance windows"
-let g:WhichKeyDesc_GR= "gr recent files"
+let g:WhichKeyDesc_GQ= "gq quick definition"
 let g:WhichKeyDesc_GP= "gp select in project view"
 let g:WhichKeyDesc_GE= "ge open in explorer"
 
@@ -151,7 +144,7 @@ let g:WhichKeyDesc_Act_Refactor= "<leader>ar refactor"
 let g:WhichKeyDesc_Act_Surround= "<leader>as surround"
 let g:WhichKeyDesc_Act_Template= "<leader>at template"
 "--------------------------------- D for Debug ----------------------------------
-nnoremap <leader>db :action ToggleLineBreakpoint<CR>
+nnoremap <leader>db :action ToggleLineBreakpoint <CR>
 let g:WhichKeyDesc_Debug= "<leader>d Debug"
 let g:WhichKeyDesc_Debug_Breakpoint= "<leader>db breakpoint"
 "---------------------------------- J for Jump ----------------------------------
@@ -165,8 +158,24 @@ let g:WhichKeyDesc_Jump= "<leader>j Jump"
 let g:WhichKeyDesc_Jump_Char= "<leader>js jump char"
 let g:WhichKeyDesc_Jump_Word= "<leader>jw jump word"
 let g:WhichKeyDesc_Jump_Line= "<leader>jl jump line"
+"---------------------------------- M for Mark ----------------------------------
+nnoremap <leader>mm :action ToggleBookmark <CR>
+nnoremap <leader>me :action EditBookmark <CR>
+nnoremap <leader>ms :marks <CR>
+nnoremap <leader>mdb :delmarks! <CR>
+nnoremap <leader>mdg :delmarks A-Z0-9 <CR>
+nnoremap <leader>mda :delmarks! \| delmarks A-Z0-9 <CR>
+let g:WhichKeyDesc_Mark= "<leader>m Marks"
+let g:WhichKeyDesc_Mark_Bookmark= "<leader>mm mark"
+let g:WhichKeyDesc_Mark_EditMark= "<leader>me edit"
+let g:WhichKeyDesc_Mark_Show= "<leader>ms show"
+let g:WhichKeyDesc_Mark_DeleteMarks= "<leader>md delete"
+let g:WhichKeyDesc_Mark_DeleteBufferMarks= "<leader>mdb delete buffer marks"
+let g:WhichKeyDesc_Mark_DeleteGlobalMarks= "<leader>mdg delete global marks"
+let g:WhichKeyDesc_Mark_DeleteAllMarks= "<leader>mda delete all marks"
 "-------------------------------- W for Windows ---------------------------------
 nnoremap <leader>wp :NERDTreeToggle <CR>
+nnoremap <leader>wr :action RecentFiles <CR>
 nnoremap <leader>wd :action ToggleRenderedDocPresentationForAll <CR>
 nnoremap <leader>wo :action CloseAllEditorsButActive <CR>
 nnoremap <leader>ww :action CloseEditor <CR>
@@ -177,6 +186,7 @@ nnoremap <leader>wc :action HideAllWindows <CR>
 vnoremap <leader>wt :action $EditorTranslateAction <CR>
 let g:WhichKeyDesc_Windows= "<leader>w Windows"
 let g:WhichKeyDesc_Windows_ProjectView= "<leader>wp project view"
+let g:WhichKeyDesc_Windows_RecentFiles= "<leader>wr recent files"
 let g:WhichKeyDesc_Windows_RenderDoc= "<leader>wd render document"
 let g:WhichKeyDesc_Windows_CloseOtherTab= "<leader>wo close other editors"
 let g:WhichKeyDesc_Windows_CloseActiveTab= "<leader>ww close active editor"
@@ -185,31 +195,3 @@ let g:WhichKeyDesc_Windows_Full= "<leader>wf full screen"
 let g:WhichKeyDesc_Windows_NoDistract= "<leader>wn no distract mode"
 let g:WhichKeyDesc_Windows_HideAllWindows= "<leader>wc hide all windows"
 let g:WhichKeyDesc_Windows_Translation= "<leader>wt translation"
-"---------------------------------- M for Mark ----------------------------------
-let g:WhichKeyDesc_Mark= "<leader>m Mark"
-let g:WhichKeyDesc_Mark_Bookmark= "<leader>mm bookmark"
-let g:WhichKeyDesc_Mark_Remark= "<leader>mr remark"
-nnoremap <leader>mm :action ToggleBookmark<CR>
-nnoremap <leader>mr :action EditBookmark<CR>
-nnoremap <leader>m0 :action ToggleBookmark0<CR>
-nnoremap <leader>m1 :action ToggleBookmark1<CR>
-nnoremap <leader>m2 :action ToggleBookmark2<CR>
-nnoremap <leader>m3 :action ToggleBookmark3<CR>
-nnoremap <leader>m4 :action ToggleBookmark4<CR>
-nnoremap <leader>m5 :action ToggleBookmark5<CR>
-nnoremap <leader>m6 :action ToggleBookmark6<CR>
-nnoremap <leader>m7 :action ToggleBookmark7<CR>
-nnoremap <leader>m8 :action ToggleBookmark8<CR>
-nnoremap <leader>m9 :action ToggleBookmark9<CR>
-nnoremap <leader>ma :action ToggleBookmarkA<CR>
-nnoremap <leader>mb :action ToggleBookmarkB<CR>
-nnoremap <leader>mc :action ToggleBookmarkC<CR>
-nnoremap <leader>md :action ToggleBookmarkD<CR>
-nnoremap <leader>me :action ToggleBookmarkE<CR>
-nnoremap <leader>mf :action ToggleBookmarkF<CR>
-nnoremap <leader>mg :action ToggleBookmarkG<CR>
-nnoremap <leader>mh :action ToggleBookmarkH<CR>
-nnoremap <leader>mi :action ToggleBookmarkI<CR>
-nnoremap <leader>mj :action ToggleBookmarkJ<CR>
-nnoremap <leader>mk :action ToggleBookmarkK<CR>
-nnoremap <leader>ml :action ToggleBookmarkL<CR>
