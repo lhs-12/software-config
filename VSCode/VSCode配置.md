@@ -7,6 +7,7 @@
 |     Visual Stuido IntelliCode      | 代码提示               |
 |             Live Share             | 实时共享               |
 |                Vim                 | Vim支持                |
+|             Bookmarks              | 书签                   |
 |            Git History             | Git历史查看            |
 |        Draw.io Integration         | 图表编辑(.drawio)      |
 |       vscode-mindmap(oorzc)        | Mindmap                |
@@ -25,13 +26,18 @@
 VSCode配置: settings.json
 ```json
 {
+    // "editor.formatOnSave": true,    // files.autoSave 为 onFocusChange 时关闭该配置
+    "files.autoSave": "onFocusChange", // 前端开发时注释该配置, 并打开 editor.formatOnSave
+
+    "json.format.keepLines": true,
     "explorer.compactFolders": false,
-    "workbench.iconTheme": "vscode-icons",
+    "workbench.layoutControl.enabled": false,
+    "window.commandCenter": false,
     "editor.fontFamily": "'Sarasa Term SC Regular'", // 中文等宽字体(https://github.com/be5invis/Sarasa-Gothic)
     "editor.mouseWheelZoom": true,
     "editor.minimap.enabled": false,
-    // "editor.formatOnSave": true, // 不建议搭配files.autoSave为 onFocusChange 使用
-    "files.autoSave": "onFocusChange", // 前端开发时建议注释该配置,并打开editor.formatOnSave
+    "editor.wordSeparators": "`~!@#$%^&*()=+[{]}\\|;:'\",.<>/?。，", // 去掉-, 增加中文符号
+    // Markdown
     "markdown-preview-enhanced.enablePreviewZenMode": true, // 去除多余预览功能
     "markdown-preview-enhanced.hideDefaultVSCodeMarkdownPreviewButtons": false, // 取消劫持默认markdown预览
     "markdown-preview-enhanced.breakOnSingleNewLine": false, // 要求Markdown行末两空格表示换行
@@ -39,82 +45,69 @@ VSCode配置: settings.json
     "markdown-preview-enhanced.previewTheme": "github-dark.css",
     "markdown-preview-enhanced.mermaidTheme": "dark",
     "markdown-preview-enhanced.revealjsTheme": "blood.css",
+    "markdown-preview-enhanced.plantumlJarPath": "D:/Program Files/tools/plantuml-1.2024.3.jar",
     "pasteImage.path": "${currentFileDir}/pictures/${currentFileNameWithoutExt}/",
-    "pasteImage.defaultName":"x",
+    "pasteImage.defaultName": "x",
 }
 ```
 快捷键配置: keybindings.json
 ```json
 [
-    // 解决Markdown图片快速复制快捷键冲突
-    {
-        "key": "ctrl+alt+v",
-        "command": "-editor.action.codeAction",
-        "when": "editorTextFocus"
-    },
-    // 切换Vim
-    {
-        "key": "ctrl+k",
-        "command": "toggleVim"
-    },
     // 注释后换行
-    {
-        "key": "ctrl+/",
-        "command": "runCommands",
-        "args": {"commands": ["editor.action.commentLine", "cursorDown"]},
-        "when": "editorTextFocus"
-    },
-    // 使用Vim时, 仿IDEA
-    // --打开命令
-    {
-        "key": "ctrl+shift+a",
-        "command": "workbench.action.showCommands"
-    },
-    // --插入换行
-    {
-        "key": "shift+Enter",
-        "command": "editor.action.insertLineAfter",
-        "when": "editorTextFocus && !editorReadonly"
-    },
+    { "key": "ctrl+/", "command": "runCommands", "args": { "commands": [ "editor.action.commentLine", "cursorDown" ] }, "when": "editorTextFocus" },
+    // 解决Markdown图片快速复制快捷键冲突
+    { "key": "ctrl+alt+v", "command": "-editor.action.codeAction", "when": "editorTextFocus" },
+    // 切换Vim
+    { "key": "ctrl+alt+k", "command": "toggleVim" },
 ]
 ```
 Vim插件配置
 ```json
 {
-    "vim.easymotion": true,
+    // Vim
+    "vim.smartRelativeLine": true,
     "vim.incsearch": true,
     "vim.hlsearch": true,
     "vim.visualstar": true,
+    "vim.easymotion": true,
+    "vim.replaceWithRegister": true,
     "vim.highlightedyank.enable": true,
-    "extensions.experimental.affinity": {"vscodevim.vim": 1},
-    "vim.handleKeys": {"<C-x>": false, "<C-c>": false},
+    "vim.highlightedyank.color": "#32593d",
+    "vim.highlightedyank.duration": 400,
+    "extensions.experimental.affinity": { "vscodevim.vim": 1 },
+    "vim.handleKeys": { "<C-x>": false, "<C-c>": false },
     "vim.leader": "<space>",
     "vim.normalModeKeyBindings": [
-        {"before": ["H"], "after": ["^"]},
-        {"before": ["L"], "after": ["$"]},
-        {"before": ["g", "r"], "commands": ["workbench.action.quickOpen"]},
-        {"before": ["<leader>", "f"], "commands": ["revealInExplorer"]},
-        {"before": ["<leader>", "t"], "commands": ["translation.translate"]},
-        {"before": ["<leader>", "p"], "commands": ["editor.action.showContextMenu"]},
-        {"before": ["<leader>", "c","f"], "commands": ["editor.action.formatDocument"]},
-        {"before": ["<leader>", "e"], "commands": ["workbench.action.toggleSidebarVisibility"]},
-        {"before": ["<leader>", "v","w"], "commands": ["workbench.action.closeActiveEditor"]},
-        {"before": ["<leader>", "v","o"], "commands": ["workbench.action.closeOtherEditors"]},
+        { "before": [ "<C-q>" ], "after": [ "<C-x>" ] },
+        { "before": [ "H" ], "after": [ "^" ] },
+        { "before": [ "L" ], "after": [ "$" ] },
+        { "before": [ "<leader>", "a", "f" ], "commands": [ "editor.action.formatDocument" ] },
+        { "before": [ "<leader>", "a", "p" ], "commands": [ "editor.action.showContextMenu" ] },
+        { "before": [ "<leader>", "d", "b" ], "commands": [ "editor.debug.action.toggleBreakpoint" ] },
+        { "before": [ "<leader>", "m", "m" ], "commands": [ "bookmarks.toggle" ] },
+        { "before": [ "<leader>", "m", "e" ], "commands": [ "bookmarks.toggleLabeled" ] },
+        { "before": [ "<leader>", "m", "s" ], "commands": [ "bookmarks.list" ] },
+        { "before": [ "<leader>", "w", "p" ], "commands": [ "workbench.action.toggleSidebarVisibility" ] },
+        { "before": [ "<leader>", "w", "r" ], "commands": [ "workbench.action.quickOpen" ] },
+        { "before": [ "<leader>", "w", "w" ], "commands": [ "workbench.action.closeActiveEditor" ] },
+        { "before": [ "<leader>", "w", "o" ], "commands": [ "workbench.action.closeOtherEditors" ] },
+        { "before": [ "<leader>", "w", "c" ], "commands": [ "workbench.action.toggleCenteredLayout" ] },
+        { "before": [ "<leader>", "w", "t" ], "commands": [ "translation.translate" ] },
     ],
     "vim.visualModeKeyBindings": [
-        {"before": ["H"], "after": ["^"]},
-        {"before": ["L"], "after": ["$"]},
-        {"before": [">"], "commands": ["editor.action.indentLines"]},
-        {"before": ["<"], "commands": ["editor.action.outdentLines"]},
+        { "before": [ "H" ], "after": [ "^" ] },
+        { "before": [ "L" ], "after": [ "$" ] },
+        { "before": [ ">" ], "commands": [ "editor.action.indentLines" ] },
+        { "before": [ "<" ], "commands": [ "editor.action.outdentLines" ] },
     ],
     "vim.insertModeKeyBindingsNonRecursive": [
-        {"before": ["j", "k"], "after": ["<Esc>"]},
-        {"before": ["<Esc>"], "after": ["<Esc>", "a"]}
+        { "before": [ "j", "k" ], "after": [ "<Esc>" ] },
+        { "before": [ "<Esc>" ], "after": [ "<Esc>", "a" ] },
     ],
     "vim.operatorPendingModeKeyBindings": [
-        {"before": ["H"], "after": ["^"]},
-        {"before": ["L"], "after": ["$"]},
-    ]
+        { "before": [ "H" ], "after": [ "^" ] },
+        { "before": [ "L" ], "after": [ "$" ] },
+    ],
 }
 ```
 修改主题：执行 Markdown Preview Enhanced: Customize CSS(Global)
@@ -140,68 +133,36 @@ LaTeX Workshop 的配置, 按需添加
 {
     // LaTeX Workshop 的配置
     // 打开标签页进行pdf预览
-    "latex-workshop.view.pdf.viewer": "tab", 
+    "latex-workshop.view.pdf.viewer": "tab",
     // 关闭自动编译
     "latex-workshop.latex.autoBuild.run": "never",
     // 编译工具配置(这里是为了加入xelatex配置, 其他与默认值保持一致)
     "latex-workshop.latex.tools": [
         {
-            "name": "latexmk",
-            "command": "latexmk",
-            "args": [
-                "-synctex=1",
-                "-interaction=nonstopmode",
-                "-file-line-error",
-                "-pdf",
-                "-outdir=%OUTDIR%",
-                "%DOC%"
-            ],
-            "env": {}
+            "name": "latexmk", "command": "latexmk",
+            "args": [ "-synctex=1", "-interaction=nonstopmode", "-file-line-error", "-pdf", "-outdir=%OUTDIR%", "%DOC%" ],
+            "env": { }
         },
         {
-            "name": "xelatex",
-            "command": "xelatex",
-            "args": [
-                "-synctex=1",
-                "-interaction=nonstopmode",
-                "-file-line-error",
-                "%DOC%"
-            ]
+            "name": "xelatex", "command": "xelatex",
+            "args": [ "-synctex=1", "-interaction=nonstopmode", "-file-line-error", "%DOC%" ]
         },
         {
-            "name": "pdflatex",
-            "command": "pdflatex",
-            "args": [
-                "-synctex=1",
-                "-interaction=nonstopmode",
-                "-file-line-error",
-                "%DOC%"
-            ],
-            "env": {}
+            "name": "pdflatex", "command": "pdflatex",
+            "args": [ "-synctex=1", "-interaction=nonstopmode", "-file-line-error", "%DOC%" ],
+            "env": { }
         },
         {
-            "name": "bibtex",
-            "command": "bibtex",
-            "args": [
-                "%DOCFILE%"
-            ],
-            "env": {}
+            "name": "bibtex", "command": "bibtex",
+            "args": [ "%DOCFILE%" ],
+            "env": { }
         }
     ],
     // 编译组合配置(这里是为了加入xelatex配置, 其他配置与默认值保持一致)
     "latex-workshop.latex.recipes": [
-        {
-            "name": "xelatex",
-            "tools": ["xelatex"]
-        },
-        {
-            "name": "latexmk",
-            "tools": ["latexmk"]
-        },
-        {
-            "name": "pdflatex -> bibtex -> pdflatex*2",
-            "tools": ["pdflatex","bibtex","pdflatex","pdflatex"]
-        }
+        { "name": "xelatex", "tools": [ "xelatex" ] },
+        { "name": "latexmk", "tools": [ "latexmk" ] },
+        { "name": "pdflatex -> bibtex -> pdflatex*2", "tools": [ "pdflatex", "bibtex", "pdflatex", "pdflatex" ] }
     ],
 }
 ```

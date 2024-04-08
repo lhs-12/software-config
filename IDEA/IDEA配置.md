@@ -95,7 +95,17 @@ public void test$NAME$() {
 # IdeaVim配置
 配置文件(~/.ideavimrc)
 
-使用RIME输入法方便模式切换输入法
+使用RIME输入法, 模式切换时变更输入法
+
+从IDEA调用NeoVim打开当前文件, 配合neovide使用  
+配置: Tools -> External Tools, 增加NeoVim选项配置
+```
+Program:            nvim
+Arguments:          --wsl --frame none --maximized ./$FileName$
+Working directory:  $FileDir$
+
+取消勾选Open console for tool output
+```
 
 Vim快捷键冲突参考
 | 冲突键 | idea               | vim                     |
@@ -118,7 +128,7 @@ Vim快捷键冲突参考
 | Ctrl-l | 查找时跳到下一个   | 清屏                    |
 | Ctrl-m | 滚动到文件中间     | 行首下滚                |
 | Ctrl-o | 重写方法           | 跳到旧位置;临时执行命令 |
-| Ctrl-r | 替换文本           | 粘贴(选择寄存器)        |
+| Ctrl-r | 替换文本           | 粘贴(选择寄存器);重做   |
 | Ctrl-t | 项目升级           | 跳tag;增加缩进          |
 | Ctrl-u | 跳父类方法         | 上滚半页;删除到行首     |
 | Ctrl-v | 粘贴               | 块状v模式               |

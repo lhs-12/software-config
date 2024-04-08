@@ -58,7 +58,7 @@ app_options:
   idea64.exe:
     ascii_mode: true
     vim_mode: true
-  neovide.exe:
+  nvim.exe:
     ascii_mode: true
     vim_mode: true
   windowsterminal.exe:
