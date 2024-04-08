@@ -1,28 +1,75 @@
 # <center>VSCode配置</center>
 
 # 插件
-|               插件名               | 功能                   |
-| :--------------------------------: | ---------------------- |
-|        Open in Application         | 默认程序打开文件       |
-|     Visual Stuido IntelliCode      | 代码提示               |
-|             Live Share             | 实时共享               |
-|                Vim                 | Vim支持                |
-|             Bookmarks              | 书签                   |
-|            Git History             | Git历史查看            |
-|        Draw.io Integration         | 图表编辑(.drawio)      |
-|       vscode-mindmap(oorzc)        | Mindmap                |
-|     Markdown Preview Enhanced      | Markdown集成功能       |
-|           Markdown Table           | Markdown表格输入增强   |
-|            Paste Image             | Markdown图片复制增强   |
-|               Docker               | Docker支持             |
-|             Kubernetes             | Kubernetes支持         |
-|         Remote Development         | WSL/容器/SSH的远程支持 |
-| Python + Pylance + isort + Jupyter | Python支持             |
-|           Volar + ESLint           | 前端支持               |
-|             vscode-pdf             | PDF支持                |
-|           LaTeX Workshop           | LaTeX与PDF支持         |
+
+通用
+| 插件名              | 功能                   |
+| ------------------- | ---------------------- |
+| Vim                 | Vim支持                |
+| Bookmarks           | 书签                   |
+| Translation         | 翻译                   |
+| IntelliCode         | 代码提示               |
+| Git History         | Git历史                |
+| LaTeX Workshop      | LaTeX与PDF支持         |
+| Open in Application | 默认程序打开文件       |
+| Live Share          | 实时共享               |
+| Remote Development  | WSL/容器/SSH的远程开发 |
+
+Markdown及笔记
+| 插件名                    | 功能                 |
+| ------------------------- | -------------------- |
+| Markdown Preview Enhanced | Markdown集成功能     |
+| Markdown Table            | Markdown表格输入增强 |
+| Paste Image               | Markdown图片复制增强 |
+| vscode-mindmap(oorzc)     | Mindmap              |
+| Draw.io Integration       | 图表编辑(.drawio)    |
+
+Java
+| 插件名                             | 功能         |
+| ---------------------------------- | ------------ |
+| Extension Pack for Java            | Java支持     |
+| Spring Boot Extension Pack         | Spring支持   |
+| SonarLint                          | 代码检查     |
+| XML, YAML                          | 配置格式支持 |
+| Tools for MicroProfile, Quarkus... | 其他可选     |
+
+前端
+| 插件名       | 功能     |
+| ------------ | -------- |
+| Vue-Official | Vue前端  |
+| ESLint       | 代码检查 |
+
+Python
+| 插件名          | 功能       |
+| --------------- | ---------- |
+| Python          | Python支持 |
+| Pylance         | 代码提示   |
+| Python Debugger | 调试       |
+| isort           | 依赖整理   |
+| Jupyter         | 代码交互   |
+| Python Indent   | 缩进       |
+| autoDocstring   | 文档格式   |
+
+容器
+| 插件名             | 功能                   |
+| ------------------ | ---------------------- |
+| Docker             | Docker支持             |
+| Kubernetes         | Kubernetes支持         |
 
 # 配置
+
+快捷键配置: keybindings.json
+```json
+[
+    // 注释后换行
+    { "key": "ctrl+/", "command": "runCommands", "args": { "commands": [ "editor.action.commentLine", "cursorDown" ] }, "when": "editorTextFocus" },
+    // 解决Markdown图片快速复制快捷键冲突
+    { "key": "ctrl+alt+v", "command": "-editor.action.codeAction", "when": "editorTextFocus" },
+    // 切换Vim
+    { "key": "ctrl+alt+k", "command": "toggleVim" },
+]
+```
+
 VSCode配置: settings.json
 ```json
 {
@@ -36,7 +83,7 @@ VSCode配置: settings.json
     "editor.fontFamily": "'Sarasa Term SC Regular'", // 中文等宽字体(https://github.com/be5invis/Sarasa-Gothic)
     "editor.mouseWheelZoom": true,
     "editor.minimap.enabled": false,
-    "editor.wordSeparators": "`~!@#$%^&*()=+[{]}\\|;:'\",.<>/?。，", // 去掉-, 增加中文符号
+    "editor.wordSeparators": "`~!@#$%^&*()=+[{]}\\|;:'\",.<>/?。，；：“”‘’、！（）", // 去掉英文-, 增加中文符号
     // Markdown
     "markdown-preview-enhanced.enablePreviewZenMode": true, // 去除多余预览功能
     "markdown-preview-enhanced.hideDefaultVSCodeMarkdownPreviewButtons": false, // 取消劫持默认markdown预览
@@ -49,17 +96,6 @@ VSCode配置: settings.json
     "pasteImage.path": "${currentFileDir}/pictures/${currentFileNameWithoutExt}/",
     "pasteImage.defaultName": "x",
 }
-```
-快捷键配置: keybindings.json
-```json
-[
-    // 注释后换行
-    { "key": "ctrl+/", "command": "runCommands", "args": { "commands": [ "editor.action.commentLine", "cursorDown" ] }, "when": "editorTextFocus" },
-    // 解决Markdown图片快速复制快捷键冲突
-    { "key": "ctrl+alt+v", "command": "-editor.action.codeAction", "when": "editorTextFocus" },
-    // 切换Vim
-    { "key": "ctrl+alt+k", "command": "toggleVim" },
-]
 ```
 Vim插件配置
 ```json
@@ -82,6 +118,7 @@ Vim插件配置
         { "before": [ "H" ], "after": [ "^" ] },
         { "before": [ "L" ], "after": [ "$" ] },
         { "before": [ "<leader>", "a", "f" ], "commands": [ "editor.action.formatDocument" ] },
+        { "before": [ "<leader>", "a", "n" ], "commands": [ "editor.action.rename" ] },
         { "before": [ "<leader>", "a", "p" ], "commands": [ "editor.action.showContextMenu" ] },
         { "before": [ "<leader>", "d", "b" ], "commands": [ "editor.debug.action.toggleBreakpoint" ] },
         { "before": [ "<leader>", "m", "m" ], "commands": [ "bookmarks.toggle" ] },
@@ -110,25 +147,7 @@ Vim插件配置
     ],
 }
 ```
-修改主题：执行 Markdown Preview Enhanced: Customize CSS(Global)
-```css
-.markdown-preview.markdown-preview {
-  font-family: "Sarasa Term SC Regular";
-  font-size: 18px;
-  line-height: 1.4;
-  background-color: #1e1e1e;
-  pre {
-    background-color: #262626 !important;
-  }
-  code {
-    font-family: "Sarasa Term SC Regular";
-    display: inline-block;
-    font-size: 16px;
-    line-height: 1.2;
-  }
-}
-```
-LaTeX Workshop 的配置, 按需添加
+LaTeX Workshop 配置, 按需添加
 ```json
 {
     // LaTeX Workshop 的配置
@@ -164,5 +183,24 @@ LaTeX Workshop 的配置, 按需添加
         { "name": "latexmk", "tools": [ "latexmk" ] },
         { "name": "pdflatex -> bibtex -> pdflatex*2", "tools": [ "pdflatex", "bibtex", "pdflatex", "pdflatex" ] }
     ],
+}
+```
+
+修改主题：执行命令 Markdown Preview Enhanced: Customize CSS(Global)
+```css
+.markdown-preview.markdown-preview {
+  font-family: "Sarasa Term SC Regular";
+  font-size: 18px;
+  line-height: 1.4;
+  background-color: #1e1e1e;
+  pre {
+    background-color: #262626 !important;
+  }
+  code {
+    font-family: "Sarasa Term SC Regular";
+    display: inline-block;
+    font-size: 16px;
+    line-height: 1.2;
+  }
 }
 ```
