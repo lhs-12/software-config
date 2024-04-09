@@ -4,7 +4,8 @@
 ```
 VC++运行库(搜"The latest supported Visual C++ downloads")
 Office(用Office Tool Plus,搜kms.loli.beer)
-字体(sarasa-mono/term-sc-regular/semi)
+字体(sarasa-mono/term-sc-regular/semi, JetBrainsMono Nerd Font, Noto Mono)
+RIME输入法
 gsudo
 360压缩
 Snipaste
@@ -28,7 +29,6 @@ Navicat(DeltaFoX)
 RedisDesktopManager(Github找安装包)
 Node.js
 Docker
-Anaconda
 ApiFox/Postman
 ```
 

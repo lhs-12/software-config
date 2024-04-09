@@ -29,6 +29,7 @@ sparseVhd=true
 nvim
 mise
 tldr
+Anaconda
 ```
 
 # 常用命令

@@ -34,10 +34,18 @@ Java
 | Tools for MicroProfile, Quarkus... | 其他可选     |
 
 前端
-| 插件名       | 功能     |
-| ------------ | -------- |
-| Vue-Official | Vue前端  |
-| ESLint       | 代码检查 |
+| 插件名                           | 功能     |
+| -------------------------------- | -------- |
+| JavaScript (ES6) code snippets   | 代码提示 |
+| Vue-Official                     | Vue前端  |
+| Vue VSCode Snippets              | 代码提示 |
+| ESLint                           | 代码检查 |
+| Prettier                         | 代码格式 |
+| Live Server                      | 网页服务 |
+| Auto Rename Tag                  | 标签更改 |
+| Html CSS Support                 | CSS支持  |
+| IntelliSense for CSS class names | CSS提示  |
+| CSS Peek                         | CSS预览  |
 
 Python
 | 插件名          | 功能       |
@@ -61,20 +69,25 @@ Python
 快捷键配置: keybindings.json
 ```json
 [
-    // 切换Vim
-    { "key": "ctrl+alt+k", "command": "toggleVim" },
     // 打开命令
     { "key": "ctrl+shift+a", "command": "workbench.action.showCommands" },
+    // 新建文件
+    { "key": "alt+insert", "command": "workbench.action.files.newUntitledFile", "when": "!editorTextFocus || editorTextFocus && !editorHasCodeActionsProvider" },
+    // 替换
+    { "key": "ctrl+r", "command": "editor.action.startFindReplaceAction", "when": "editorFocus || editorIsOpen" },
+    { "key": "ctrl+shift+r", "command": "workbench.action.replaceInFiles" },
+    // 切换Vim
+    { "key": "ctrl+alt+k", "command": "toggleVim" },
     // 插入换行
     { "key": "shift+Enter", "command": "editor.action.insertLineAfter", "when": "editorTextFocus && !editorReadonly" },
     // 注释后换行
     { "key": "ctrl+/", "command": "runCommands", "args": { "commands": [ "editor.action.commentLine", "cursorDown" ] }, "when": "editorTextFocus" },
     // 打开类
     { "key": "ctrl+n", "command": "workbench.action.showAllSymbols" },
-    // 打开文件
-    { "key": "ctrl+shift+n", "command": "workbench.action.quickOpen" },
     // Quick Fix
     { "key": "alt+enter", "command": "editor.action.quickFix", "when": "editorHasCodeActionsProvider && editorTextFocus && !editorReadonly" },
+    // 代码生成
+    { "key": "alt+insert", "command": "editor.action.sourceAction", "when": "editorHasCodeActionsProvider && editorTextFocus && !editorReadonly" },
 ]
 ```
 
@@ -84,11 +97,12 @@ VSCode配置: settings.json
     // "editor.formatOnSave": true,    // files.autoSave 为 onFocusChange 时关闭该配置
     "files.autoSave": "onFocusChange", // 前端开发时注释该配置, 并打开 editor.formatOnSave
 
-    "json.format.keepLines": true,
     "explorer.compactFolders": false,
     "workbench.layoutControl.enabled": false,
     "window.commandCenter": false,
-    "editor.fontFamily": "'Sarasa Term SC Regular'", // 中文等宽字体(https://github.com/be5invis/Sarasa-Gothic)
+    // 等宽字体: 更纱黑体(https://github.com/be5invis/Sarasa-Gothic)
+    // Nerd字体: JetBrainsMono Nerd(https://github.com/ryanoasis/nerd-fonts/tree/master/patched-fonts/JetBrainsMono)
+    "editor.fontFamily": "'Sarasa Term SC Regular','JetBrainsMono Nerd Font'",
     "editor.mouseWheelZoom": true,
     "editor.minimap.enabled": false,
     "editor.wordSeparators": "`~!@#$%^&*()=+[{]}\\|;:'\",.<>/?。，；：“”‘’、！（）", // 去掉英文-, 增加中文符号
@@ -103,11 +117,9 @@ VSCode配置: settings.json
     "markdown-preview-enhanced.plantumlJarPath": "D:/Program Files/tools/plantuml-1.2024.3.jar",
     "pasteImage.path": "${currentFileDir}/pictures/${currentFileNameWithoutExt}/",
     "pasteImage.defaultName": "x",
-}
-```
-Vim插件配置
-```json
-{
+    // 格式化配置
+    "[jsonc]": { "editor.defaultFormatter": "vscode.json-language-features" },
+    "json.format.keepLines": true,
     // Vim
     "vim.smartRelativeLine": true,
     "vim.incsearch": true,
@@ -125,9 +137,12 @@ Vim插件配置
         { "before": [ "<C-q>" ], "after": [ "<C-x>" ] },
         { "before": [ "H" ], "after": [ "^" ] },
         { "before": [ "L" ], "after": [ "$" ] },
-        { "before": [ "<leader>", "a", "f" ], "commands": [ "editor.action.formatDocument" ] },
+        { "before": [ "g", "f" ], "commands": [ "workbench.action.gotoSymbol" ] },
+        { "before": [ "g", "i" ], "commands": [ "editor.action.goToImplementation" ] },
+        { "before": [ "<leader>", "a", "f" ], "commands": [ "editor.action.organizeImports", "editor.action.formatDocument" ] },
         { "before": [ "<leader>", "a", "n" ], "commands": [ "editor.action.rename" ] },
         { "before": [ "<leader>", "a", "p" ], "commands": [ "editor.action.showContextMenu" ] },
+        { "before": [ "<leader>", "a", "r" ], "commands": [ "editor.action.refactor" ] },
         { "before": [ "<leader>", "d", "b" ], "commands": [ "editor.debug.action.toggleBreakpoint" ] },
         { "before": [ "<leader>", "m", "m" ], "commands": [ "bookmarks.toggle" ] },
         { "before": [ "<leader>", "m", "e" ], "commands": [ "bookmarks.toggleLabeled" ] },
@@ -144,6 +159,7 @@ Vim插件配置
         { "before": [ "L" ], "after": [ "$" ] },
         { "before": [ ">" ], "commands": [ "editor.action.indentLines" ] },
         { "before": [ "<" ], "commands": [ "editor.action.outdentLines" ] },
+        { "before": [ "<leader>", "a", "r" ], "commands": [ "editor.action.refactor" ] },
     ],
     "vim.insertModeKeyBindingsNonRecursive": [
         { "before": [ "j", "k" ], "after": [ "<Esc>" ] },
