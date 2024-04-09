@@ -51,22 +51,30 @@ Python
 | autoDocstring   | 文档格式   |
 
 容器
-| 插件名             | 功能                   |
-| ------------------ | ---------------------- |
-| Docker             | Docker支持             |
-| Kubernetes         | Kubernetes支持         |
+| 插件名     | 功能         |
+| ---------- | ------------ |
+| Docker     | 容器支持     |
+| Kubernetes | 容器编排支持 |
 
 # 配置
 
 快捷键配置: keybindings.json
 ```json
 [
-    // 注释后换行
-    { "key": "ctrl+/", "command": "runCommands", "args": { "commands": [ "editor.action.commentLine", "cursorDown" ] }, "when": "editorTextFocus" },
-    // 解决Markdown图片快速复制快捷键冲突
-    { "key": "ctrl+alt+v", "command": "-editor.action.codeAction", "when": "editorTextFocus" },
     // 切换Vim
     { "key": "ctrl+alt+k", "command": "toggleVim" },
+    // 打开命令
+    { "key": "ctrl+shift+a", "command": "workbench.action.showCommands" },
+    // 插入换行
+    { "key": "shift+Enter", "command": "editor.action.insertLineAfter", "when": "editorTextFocus && !editorReadonly" },
+    // 注释后换行
+    { "key": "ctrl+/", "command": "runCommands", "args": { "commands": [ "editor.action.commentLine", "cursorDown" ] }, "when": "editorTextFocus" },
+    // 打开类
+    { "key": "ctrl+n", "command": "workbench.action.showAllSymbols" },
+    // 打开文件
+    { "key": "ctrl+shift+n", "command": "workbench.action.quickOpen" },
+    // Quick Fix
+    { "key": "alt+enter", "command": "editor.action.quickFix", "when": "editorHasCodeActionsProvider && editorTextFocus && !editorReadonly" },
 ]
 ```
 
