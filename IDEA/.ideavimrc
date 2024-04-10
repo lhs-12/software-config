@@ -89,13 +89,18 @@ let g:WhichKeyDesc_JK= "jk exit insert mode"
 "--jump to begin or end
 nnoremap H ^
 vnoremap H ^
+onoremap H ^
 nnoremap L $
 vnoremap L $
+onoremap L $
 "--insert mode select
 inoremap <S-Left> :action EditorLeftWithSelection <CR>
 inoremap <S-Right> :action EditorRightWithSelection <CR>
 inoremap <S-Up> :action EditorUpWithSelection <CR>
 inoremap <S-Down> :action EditorDownWithSelection <CR>
+"-- expand selection
+vnoremap af :action EditorSelectWord <CR>
+vnoremap AF :action EditorUnSelectWord <CR>
 "--repeatable indent/outdent
 vnoremap < :action EditorUnindentSelection <CR>
 vnoremap > :action EditorIndentLineOrSelection <CR>
