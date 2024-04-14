@@ -4,30 +4,36 @@
 
 # 插件
 
-| 插件                                      |
-| ----------------------------------------- |
-| .ignore                                   |
-| Alibaba Java Coding GuideLines            |
-| Atom Material Icons                       |
-| Private Notes                             |
-| String Manipulation                       |
-| GenerateAllSetter                         |
-| GenerateSerialVersionUID                  |
-| Git Flow Integration  Plus                |
-| Ini                                       |
-| Live Edit                                 |
-| Maven Helper                              |
-| Python                                    |
-| Translation                               |
-| CheckStyle-IDEA                           |
-| MyBatisCodeHelperPro(Marketplace Edition) |
+```shell
+idea64.exe installPlugins ^
+mobi.hsz.idea.gitignore ^                                   # .ignore
+com.jetbrains.plugins.ini4idea ^                            # Ini
+ru.adelf.idea.dotenv ^                                      # .​env files support
+com.mallowigi ^                                             # Atom Material Icons
+TheBlind.privateNotes ^                                     # Private Notes
+Gitflow-Fix ^                                               # Git Flow Integration Plus
+com.bruce.intellijplugin.generatesetter ^                   # GenerateAllSetter
+GenerateSerialVersionUID ^                                  # GenerateSerialVersionUID
+com.ccnode.codegenerator.MyBatisCodeHelperProMarketPlace ^  # MyBatisCodeHelperPro(Marketplace Edition)
+MavenRunHelper ^                                            # Maven Helper
+cn.yiiguxing.plugin.translate ^                             # Translation
+com.alibaba.p3c.xenoamess ^                                 # Alibaba Java Coding Guidelines
+CheckStyle-IDEA ^                                           # CheckStyle-IDEA
+com.intellij.plugins.html.instantEditing ^                  # Live Edit
+Pythonid ^                                                  # Python
+IdeaVIM ^                                                   # IdeaVim
+eu.theblob42.idea.whichkey ^                                # Which-Key
+com.joshestein.ideavim-quickscope ^                         # IdeaVim-Quickscope
+org.jetbrains.IdeaVim-EasyMotion ^                          # IdeaVim-EasyMotion
+AceJump ^                                                   # AceJump
 
-| Vim插件            |
-| ------------------ |
-| IdeaVim            |
-| Which-Key          |
-| IdeaVim-Quickscope |
-| IdeaVim-EasyMotion |
+# 其他
+# Big Data Tools 系列插件
+# Spring系列相关插件, 搜 /vendor:"JetBrains s.r.o." Spring
+# String Manipulation
+# Material Theme UI Lite
+# Burnt Theme
+```
 
 # 设置
 * Appearance & Behavior -> System Settings -> 取消 Reopen last project on startup
