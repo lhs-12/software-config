@@ -118,8 +118,8 @@ VSCode配置: settings.json
     "pasteImage.path": "${currentFileDir}/pictures/${currentFileNameWithoutExt}/",
     "pasteImage.defaultName": "x",
     // 格式化配置
-    "[jsonc]": { "editor.defaultFormatter": "vscode.json-language-features" },
-    "json.format.keepLines": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "prettier.configPath": "C:/Users/L/.prettierrc",
     // Vim
     "vim.smartRelativeLine": true,
     "vim.incsearch": true,
@@ -134,42 +134,43 @@ VSCode配置: settings.json
     "vim.handleKeys": { "<C-x>": false, "<C-c>": false },
     "vim.leader": "<space>",
     "vim.normalModeKeyBindings": [
-        { "before": [ "<C-q>" ], "after": [ "<C-x>" ] },
-        { "before": [ "H" ], "after": [ "^" ] },
-        { "before": [ "L" ], "after": [ "$" ] },
-        { "before": [ "g", "f" ], "commands": [ "workbench.action.gotoSymbol" ] },
-        { "before": [ "g", "i" ], "commands": [ "editor.action.goToImplementation" ] },
-        { "before": [ "<leader>", "a", "f" ], "commands": [ "editor.action.organizeImports", "editor.action.formatDocument" ] },
-        { "before": [ "<leader>", "a", "n" ], "commands": [ "editor.action.rename" ] },
-        { "before": [ "<leader>", "a", "p" ], "commands": [ "editor.action.showContextMenu" ] },
-        { "before": [ "<leader>", "a", "r" ], "commands": [ "editor.action.refactor" ] },
-        { "before": [ "<leader>", "d", "b" ], "commands": [ "editor.debug.action.toggleBreakpoint" ] },
-        { "before": [ "<leader>", "m", "m" ], "commands": [ "bookmarks.toggle" ] },
-        { "before": [ "<leader>", "m", "e" ], "commands": [ "bookmarks.toggleLabeled" ] },
-        { "before": [ "<leader>", "m", "s" ], "commands": [ "bookmarks.list" ] },
-        { "before": [ "<leader>", "w", "p" ], "commands": [ "workbench.action.toggleSidebarVisibility" ] },
-        { "before": [ "<leader>", "w", "r" ], "commands": [ "workbench.action.quickOpen" ] },
-        { "before": [ "<leader>", "w", "w" ], "commands": [ "workbench.action.closeActiveEditor" ] },
-        { "before": [ "<leader>", "w", "o" ], "commands": [ "workbench.action.closeOtherEditors" ] },
-        { "before": [ "<leader>", "w", "c" ], "commands": [ "workbench.action.toggleCenteredLayout" ] },
-        { "before": [ "<leader>", "w", "t" ], "commands": [ "translation.translate" ] },
+        { "before": ["<C-q>"], "after": ["<C-x>"] },
+        { "before": ["H"], "after": ["^"] },
+        { "before": ["L"], "after": ["$"] },
+        { "before": ["g", "f"], "commands": ["workbench.action.gotoSymbol"] },
+        { "before": ["g", "i"], "commands": ["editor.action.goToImplementation"] },
+        { "before": ["<leader>", "a", "f"], "commands": ["editor.action.organizeImports", "editor.action.formatDocument"] },
+        { "before": ["<leader>", "a", "n"], "commands": ["editor.action.rename"] },
+        { "before": ["<leader>", "a", "p"], "commands": ["editor.action.showContextMenu"] },
+        { "before": ["<leader>", "a", "r"], "commands": ["editor.action.refactor"] },
+        { "before": ["<leader>", "d", "b"], "commands": ["editor.debug.action.toggleBreakpoint"] },
+        { "before": ["<leader>", "m", "m"], "commands": ["bookmarks.toggle"] },
+        { "before": ["<leader>", "m", "e"], "commands": ["bookmarks.toggleLabeled"] },
+        { "before": ["<leader>", "m", "s"], "commands": ["bookmarks.list"] },
+        { "before": ["<leader>", "w", "p"], "commands": ["workbench.action.toggleSidebarVisibility"] },
+        { "before": ["<leader>", "w", "r"], "commands": ["workbench.action.quickOpen"] },
+        { "before": ["<leader>", "w", "w"], "commands": ["workbench.action.closeActiveEditor"] },
+        { "before": ["<leader>", "w", "o"], "commands": ["workbench.action.closeOtherEditors"] },
+        { "before": ["<leader>", "w", "c"], "commands": ["workbench.action.toggleCenteredLayout"] },
+        { "before": ["<leader>", "w", "t"], "commands": ["translation.translate"] }
     ],
     "vim.visualModeKeyBindings": [
-        { "before": [ "H" ], "after": [ "^" ] },
-        { "before": [ "L" ], "after": [ "$" ] },
-        { "before": [ ">" ], "commands": [ "editor.action.indentLines" ] },
-        { "before": [ "<" ], "commands": [ "editor.action.outdentLines" ] },
-        { "before": [ "<leader>", "a", "r" ], "commands": [ "editor.action.refactor" ] },
+        { "before": ["H"], "after": ["^"] },
+        { "before": ["L"], "after": ["$"] },
+        { "before": [">"], "commands": ["editor.action.indentLines"] },
+        { "before": ["<"], "commands": ["editor.action.outdentLines"] },
+        { "before": ["<leader>", "a", "r"], "commands": ["editor.action.refactor"] }
     ],
     "vim.insertModeKeyBindingsNonRecursive": [
-        { "before": [ "j", "k" ], "after": [ "<Esc>" ] },
-        { "before": [ "<Esc>" ], "after": [ "<Esc>", "a" ] },
+        { "before": ["j", "k"], "after": ["<Esc>"] },
+        { "before": ["<Esc>"], "after": ["<Esc>", "a"] }
     ],
     "vim.operatorPendingModeKeyBindings": [
-        { "before": [ "H" ], "after": [ "^" ] },
-        { "before": [ "L" ], "after": [ "$" ] },
-    ],
+        { "before": ["H"], "after": ["^"] },
+        { "before": ["L"], "after": ["$"] }
+    ]
 }
+
 ```
 LaTeX Workshop 配置, 按需添加
 ```json
@@ -207,6 +208,18 @@ LaTeX Workshop 配置, 按需添加
         { "name": "latexmk", "tools": [ "latexmk" ] },
         { "name": "pdflatex -> bibtex -> pdflatex*2", "tools": [ "pdflatex", "bibtex", "pdflatex", "pdflatex" ] }
     ],
+}
+```
+
+Prettier配置文件
+```json
+{
+  "useTabs": false,
+  "tabWidth": 4,
+  "printWidth": 180,
+  "singleQuote": true,
+  "semi": true,
+  "bracketSpacing": true
 }
 ```
 

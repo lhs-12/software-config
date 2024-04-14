@@ -27,6 +27,8 @@ com.joshestein.ideavim-quickscope ^                         # IdeaVim-Quickscope
 org.jetbrains.IdeaVim-EasyMotion ^                          # IdeaVim-EasyMotion
 AceJump ^                                                   # AceJump
 
+# 对以上内容使用vi命令编辑, 并执行编辑后的结果. 命令:%s/\^.*/^/
+
 # 其他
 # Big Data Tools 系列插件
 # Spring系列相关插件, 搜 /vendor:"JetBrains s.r.o." Spring
