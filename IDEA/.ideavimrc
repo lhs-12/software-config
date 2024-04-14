@@ -16,7 +16,6 @@ sethandler <C-G> a:vim
 sethandler <C-H> a:vim
 sethandler <C-I> a:vim
 sethandler <C-J> a:vim
-sethandler <C-K> a:vim
 sethandler <C-L> a:vim
 sethandler <C-M> a:vim
 sethandler <C-O> a:vim
@@ -30,6 +29,7 @@ sethandler <C-Y> a:vim
 sethandler <C-[> a:vim
 sethandler <C-\> a:vim
 sethandler <C-]> a:vim
+sethandler <C-K> a:ide
 sethandler <C-N> a:ide
 sethandler <C-P> a:ide
 sethandler <C-S> a:ide

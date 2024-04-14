@@ -9,6 +9,7 @@
 | .ignore                                   |
 | Alibaba Java Coding GuideLines            |
 | Atom Material Icons                       |
+| Private Notes                             |
 | String Manipulation                       |
 | GenerateAllSetter                         |
 | GenerateSerialVersionUID                  |
@@ -26,7 +27,7 @@
 | IdeaVim            |
 | Which-Key          |
 | IdeaVim-Quickscope |
-| KJump              |
+| IdeaVim-EasyMotion |
 
 # 设置
 * Appearance & Behavior -> System Settings -> 取消 Reopen last project on startup

@@ -23,6 +23,14 @@ autoMemoryReclaim=dropcache
 sparseVhd=true
 ```
 
+配置代理
+```bash
+# sudo vi /etc/bash.bashrc
+export ALL_PROXY="socks5://localhost:10810"
+export HTTPS_PROXY="socks5://localhost:10810"
+export HTTP_PROXY="socks5://localhost:10810"
+```
+
 # 安装软件
 
 ```
