@@ -79,6 +79,15 @@ style:
 # 可保留: 安卓, 碧水, 青天, 轻盈, 谷歌, 墨池, 孤寺, 现代蓝, 远山, 幽能, 晒经石, Steam
 ```
 
+scheme.yml
+```yml
+switches:
+  - name: ascii_mode
+    reset: 1 # 默认用英文
+  - name: ascii_punct
+    reset: 1 # 默认用英文标点
+```
+
 # vim命令模式切换英文输入法(Win11临时兼容)
 15.0的win版本暂时没上线vim切换功能, 先自己写lua脚本实现
 

@@ -30,6 +30,7 @@ RedisDesktopManager(Github找安装包)
 Node.js
 Docker
 ApiFox/Postman
+AutoHotkey
 ```
 
 # 浏览器插件
@@ -44,6 +45,13 @@ Vue.js devtools
 ```
 
 # 脚本
+
+```shell
+# 新增AutoHotkey脚本 Esc-Caps.ahk, 位置: C:\Users\L\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup
+Capslock::Esc
+Esc::Capslock
+```
+
 Windows11新旧右键菜单切换
 ```bat
 @echo off

@@ -76,16 +76,11 @@ set number relativenumber
 " Keymap
 "--set space as leader key
 let mapleader=" "
-"--use esc to cancel code hints
-inoremap <ESC> <ESC>a
 "--system clipboard map
 map <C-c> "+y
 map <C-S-v> "+p
 "-- replace ctrl x function by ctrl q
 noremap <C-q> <C-x>
-"--use jk to exit insert mode
-inoremap jk <ESC>
-let g:WhichKeyDesc_JK= "jk exit insert mode"
 "--jump to begin or end
 nnoremap H ^
 vnoremap H ^
@@ -107,6 +102,13 @@ vnoremap > :action EditorIndentLineOrSelection <CR>
 "--rewrite jump-list
 map <C-o> <Action>(Back)
 map <C-i> <Action>(Forward)
+
+"--deprecated settings, instead by using AutoHotkey to swap Esc and Caps.
+"--use jk to exit insert mode
+"inoremap jk <ESC>
+"let g:WhichKeyDesc_JK= "jk exit insert mode"
+"--use esc to cancel code hints
+"inoremap <ESC> <ESC>a
 
 "--Goto action
 let g:WhichKeyDesc_G= "g Goto"
