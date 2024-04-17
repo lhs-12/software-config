@@ -2,67 +2,58 @@
 
 # 插件
 
-通用
-| 插件名              | 功能                   |
-| ------------------- | ---------------------- |
-| Vim                 | Vim支持                |
-| Bookmarks           | 书签                   |
-| Translation         | 翻译                   |
-| IntelliCode         | 代码提示               |
-| Git History         | Git历史                |
-| LaTeX Workshop      | LaTeX与PDF支持         |
-| Open in Application | 默认程序打开文件       |
-| Live Share          | 实时共享               |
-| Remote Development  | WSL/容器/SSH的远程开发 |
+```shell
+# 对以下内容使用vi命令编辑, 并执行编辑后的结果. 命令:%s/\^.*/^/
 
-Markdown及笔记
-| 插件名                    | 功能                 |
-| ------------------------- | -------------------- |
-| Markdown Preview Enhanced | Markdown集成功能     |
-| Markdown Table            | Markdown表格输入增强 |
-| Paste Image               | Markdown图片复制增强 |
-| vscode-mindmap(oorzc)     | Mindmap              |
-| Draw.io Integration       | 图表编辑(.drawio)    |
+code ^
+# 通用
+--install-extension vscodevim.vim ^                                   # Vim                                 Vim模拟器
+--install-extension alefragnani.bookmarks ^                           # Bookmarks                           书签
+--install-extension liwenkun.translation ^                            # Translation                         翻译
+--install-extension visualstudioexptteam.vscodeintellicode ^          # IntelliCode                         代码提示
+--install-extension donjayamanne.githistory ^                         # Git History                         Git历史
+--install-extension james-yu.latex-workshop ^                         # LaTeX Workshop                      LaTeX与PDF支持
+--install-extension fabiospampinato.vscode-open-in-application ^      # Open in Application                 默认程序打开文件
+--install-extension ms-vscode-remote.vscode-remote-extensionpack ^    # Remote Development                  远程开发套件(WSL/容器/SSH...)
+--install-extension ms-vsliveshare.vsliveshare ^                      # Live Share                          实时共享
 
-Java
-| 插件名                             | 功能         |
-| ---------------------------------- | ------------ |
-| Extension Pack for Java            | Java支持     |
-| Spring Boot Extension Pack         | Spring支持   |
-| SonarLint                          | 代码检查     |
-| XML, YAML                          | 配置格式支持 |
-| Tools for MicroProfile, Quarkus... | 其他可选     |
+# Markdown及笔记
+--install-extension shd101wyy.markdown-preview-enhanced ^             # Markdown Preview Enhanced           Markdown功能集成
+--install-extension takumii.markdowntable ^                           # Markdown Table                      Markdown表格输入
+--install-extension mushan.vscode-paste-image ^                       # Paste Image                         Markdown图片复制
+--install-extension oorzc.mind-map ^                                  # vscode-mindmap(oorzc)               Mindmap支持
+--install-extension hediet.vscode-drawio ^                            # Draw.io Integration                 图表编辑(.drawio)
+--install-extension ms-toolsai.jupyter ^                              # Jupyter                             Jupyter套件
 
-前端
-| 插件名                           | 功能     |
-| -------------------------------- | -------- |
-| JavaScript (ES6) code snippets   | 代码提示 |
-| Vue-Official                     | Vue前端  |
-| Vue VSCode Snippets              | 代码提示 |
-| ESLint                           | 代码检查 |
-| Prettier                         | 代码格式 |
-| Live Server                      | 网页服务 |
-| Auto Rename Tag                  | 标签更改 |
-| Html CSS Support                 | CSS支持  |
-| IntelliSense for CSS class names | CSS提示  |
-| CSS Peek                         | CSS预览  |
+# 容器
+--install-extension ms-azuretools.vscode-docker ^                     # Docker                              容器支持
+--install-extension ms-kubernetes-tools.vscode-kubernetes-tools ^     # Kubernetes                          容器编排支持
 
-Python
-| 插件名          | 功能       |
-| --------------- | ---------- |
-| Python          | Python支持 |
-| Pylance         | 代码提示   |
-| Python Debugger | 调试       |
-| isort           | 依赖整理   |
-| Jupyter         | 代码交互   |
-| Python Indent   | 缩进       |
-| autoDocstring   | 文档格式   |
+# 前端
+--install-extension xabikos.javascriptsnippets ^                      # JavaScript (ES6) code snippets      代码提示
+--install-extension vue.volar ^                                       # Vue-Official                        Vue支持
+--install-extension sdras.vue-vscode-snippets ^                       # Vue VSCode Snippets                 代码提示
+--install-extension dbaeumer.vscode-eslint ^                          # ESLint                              代码检查
+--install-extension esbenp.prettier-vscode ^                          # Prettier                            代码格式
+--install-extension ritwickdey.liveserver ^                           # Live Server                         实时网页
+--install-extension formulahendry.auto-rename-tag ^                   # Auto Rename Tag                     标签更改
+--install-extension ecmel.vscode-html-css ^                           # Html CSS Support                    CSS支持
+--install-extension zignd.html-css-class-completion ^                 # IntelliSense for CSS class names    CSS提示
+--install-extension pranaygp.vscode-css-peek ^                        # CSS Peek                            CSS预览
 
-容器
-| 插件名     | 功能         |
-| ---------- | ------------ |
-| Docker     | 容器支持     |
-| Kubernetes | 容器编排支持 |
+# Java
+--install-extension vscjava.vscode-java-pack ^                        # Extension Pack for Java             Java支持
+--install-extension vmware.vscode-boot-dev-pack ^                     # Spring Boot Extension Pack          Spring支持
+--install-extension redhat.vscode-xml ^                               # XML                                 XML支持
+--install-extension redhat.vscode-yaml ^                              # YAML                                YAML支持
+# 其他可选: SonarLint, Tools for MicroProfile, Quarkus...
+
+# Python
+--install-extension ms-python.python ^                                # Python                              Python支持
+--install-extension ms-python.isort ^                                 # isort                               依赖整理
+--install-extension kevinrose.vsc-python-indent ^                     # Python Indent                       缩进
+--install-extension njpwerner.autodocstring ^                         # autoDocstring                       文档格式
+```
 
 # 配置
 
@@ -120,6 +111,7 @@ VSCode配置: settings.json
     // 格式化配置
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "prettier.configPath": "C:/Users/L/.prettierrc",
+    "[java]": { "editor.defaultFormatter": "redhat.java" },
     // Vim
     "vim.smartRelativeLine": true,
     "vim.incsearch": true,
@@ -161,10 +153,6 @@ VSCode配置: settings.json
         { "before": ["<"], "commands": ["editor.action.outdentLines"] },
         { "before": ["<leader>", "a", "r"], "commands": ["editor.action.refactor"] }
     ],
-    "vim.insertModeKeyBindingsNonRecursive": [
-        { "before": ["j", "k"], "after": ["<Esc>"] },
-        { "before": ["<Esc>"], "after": ["<Esc>", "a"] }
-    ],
     "vim.operatorPendingModeKeyBindings": [
         { "before": ["H"], "after": ["^"] },
         { "before": ["L"], "after": ["$"] }
@@ -172,6 +160,7 @@ VSCode配置: settings.json
 }
 
 ```
+
 LaTeX Workshop 配置, 按需添加
 ```json
 {
