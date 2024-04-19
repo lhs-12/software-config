@@ -16,6 +16,7 @@ sethandler <C-G> a:vim
 sethandler <C-H> a:vim
 sethandler <C-I> a:vim
 sethandler <C-J> a:vim
+sethandler <C-K> a:vim
 sethandler <C-L> a:vim
 sethandler <C-M> a:vim
 sethandler <C-O> a:vim
@@ -29,7 +30,6 @@ sethandler <C-Y> a:vim
 sethandler <C-[> a:vim
 sethandler <C-\> a:vim
 sethandler <C-]> a:vim
-sethandler <C-K> a:ide
 sethandler <C-N> a:ide
 sethandler <C-P> a:ide
 sethandler <C-S> a:ide
@@ -79,7 +79,7 @@ let mapleader=" "
 "--system clipboard map
 map <C-c> "+y
 map <C-S-v> "+p
-"-- replace ctrl x function by ctrl q
+"--replace ctrl x function by ctrl q
 noremap <C-q> <C-x>
 "--jump to begin or end
 nnoremap H ^
@@ -102,13 +102,6 @@ vnoremap > :action EditorIndentLineOrSelection <CR>
 "--rewrite jump-list
 map <C-o> <Action>(Back)
 map <C-i> <Action>(Forward)
-
-"--deprecated settings, instead by using AutoHotkey to swap Esc and Caps.
-"--use jk to exit insert mode
-"inoremap jk <ESC>
-"let g:WhichKeyDesc_JK= "jk exit insert mode"
-"--use esc to cancel code hints
-"inoremap <ESC> <ESC>a
 
 "--Goto action
 let g:WhichKeyDesc_G= "g Goto"

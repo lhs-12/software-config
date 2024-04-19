@@ -3,7 +3,9 @@
 # 插件
 
 ```shell
-# 对以下内容使用vi命令编辑, 并执行编辑后的结果. 命令:%s/\^.*/^/
+# 对以下内容使用vi命令, 并执行编辑后的结果. 
+# 命令1:g/^s*$\|^#.*/d
+# 命令2:%s/\^.*/^/
 
 code ^
 # 通用
@@ -46,6 +48,7 @@ code ^
 --install-extension vmware.vscode-boot-dev-pack ^                     # Spring Boot Extension Pack          Spring支持
 --install-extension redhat.vscode-xml ^                               # XML                                 XML支持
 --install-extension redhat.vscode-yaml ^                              # YAML                                YAML支持
+--install-extension redhat.fabric8-analytics                          # Red Hat Dependency Analytics        依赖分析
 # 其他可选: SonarLint, Tools for MicroProfile, Quarkus...
 
 # Python
@@ -89,6 +92,7 @@ VSCode配置: settings.json
     "files.autoSave": "onFocusChange", // 前端开发时注释该配置, 并打开 editor.formatOnSave
 
     "explorer.compactFolders": false,
+    "workbench.startupEditor": "none",
     "workbench.layoutControl.enabled": false,
     "window.commandCenter": false,
     // 等宽字体: 更纱黑体(https://github.com/be5invis/Sarasa-Gothic)

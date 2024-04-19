@@ -39,9 +39,7 @@ AceJump ^                                                   # AceJump
 
 # 快捷键
 
--   Close Others 改为 Ctrl Shift F4
--   Down 加入 Ctrl j
--   Up 加入 Ctrl k
+-   Close Others Tabs 改为 Ctrl Shift F4
 -   Vim 开关 改为 Ctrl Alt k
 
 # 设置

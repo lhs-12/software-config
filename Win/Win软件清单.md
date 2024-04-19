@@ -46,10 +46,47 @@ Vue.js devtools
 
 # 脚本
 
-```shell
-# 新增AutoHotkey脚本 Esc-Caps.ahk, 位置: C:\Users\L\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup
-Capslock::Esc
-Esc::Capslock
+新增AutoHotkey脚本   
+`C:\Users\L\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\CapsLock+.ahk`
+```autohotkey
+#Requires AutoHotkey 2.0+
+#SingleInstance Force
+
+LShift & RShift::Capslock
+RShift & LShift::Capslock
+
+hook := InputHook("B L1 T1", "{Esc}")
+
+*CapsLock::
+{
+	hook.Start()
+	reason := hook.Wait()
+	if (reason = "Stopped") {
+		Send "{Esc}"
+	} else if (reason = "Max") {
+		Send "{Blind}{Ctrl down}" hook.Input
+	}
+}
+
+*CapsLock up::
+{
+	if (hook.InProgress) {
+		hook.Stop()
+	} else {
+		Send "{Ctrl up}"
+	}
+}
+
+#HotIf GetKeyState("Capslock","P")
+y::Home
+u::PgUp
+i::pgDn
+o::End
+h::Left
+j::Down
+k::Up
+l::Right
+#HotIf
 ```
 
 Windows11新旧右键菜单切换
