@@ -48,14 +48,14 @@ Vue.js devtools
 
 新增AutoHotkey脚本   
 `C:\Users\L\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\CapsLock+.ahk`
-```autohotkey
+```
 #Requires AutoHotkey 2.0+
 #SingleInstance Force
 
 LShift & RShift::Capslock
 RShift & LShift::Capslock
 
-hook := InputHook("B L1 T1", "{Esc}")
+hook := InputHook("B L1 T0.2", "{Esc}")
 
 *CapsLock::
 {
@@ -78,14 +78,12 @@ hook := InputHook("B L1 T1", "{Esc}")
 }
 
 #HotIf GetKeyState("Capslock","P")
-y::Home
-u::PgUp
-i::pgDn
-o::End
 h::Left
 j::Down
 k::Up
 l::Right
+n::Home
+m::End
 #HotIf
 ```
 

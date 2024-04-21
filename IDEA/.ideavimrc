@@ -100,8 +100,8 @@ vnoremap AF :action EditorUnSelectWord <CR>
 vnoremap < :action EditorUnindentSelection <CR>
 vnoremap > :action EditorIndentLineOrSelection <CR>
 "--rewrite jump-list
-map <C-o> <Action>(Back)
-map <C-i> <Action>(Forward)
+nnoremap <C-o> :action Back <CR>
+nnoremap <C-i> :action Forward <CR>
 
 "--Goto action
 let g:WhichKeyDesc_G= "g Goto"
