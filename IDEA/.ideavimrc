@@ -75,7 +75,7 @@ set number relativenumber
 "=========================================================================================
 " Keymap
 "--set space as leader key
-let mapleader=" "
+let mapleader="\<space>"
 "--system clipboard map
 map <C-c> "+y
 map <C-S-v> "+p
@@ -102,6 +102,16 @@ vnoremap > :action EditorIndentLineOrSelection <CR>
 "--rewrite jump-list
 nnoremap <C-o> :action Back <CR>
 nnoremap <C-i> :action Forward <CR>
+
+"--Change action
+let g:WhichKeyDesc_C= "c Change"
+
+nnoremap cd :action RenameElement <CR>
+let g:WhichKeyDesc_CD= "cd change definition"
+let g:WhichKeyDesc_CS= "cs change surround"
+let g:WhichKeyDesc_CX= "cx exchange {motion}"
+let g:WhichKeyDesc_CXX= "cxx line"
+let g:WhichKeyDesc_CXC= "cxc clear"
 
 "--Goto action
 let g:WhichKeyDesc_G= "g Goto"
@@ -133,7 +143,6 @@ nnoremap <leader>ah :action TypeHierarchy <CR>
 nnoremap <leader>ai :action ShowIntentionActions <CR>
 vnoremap <leader>ai :action ShowIntentionActions <CR>
 nnoremap <leader>am :action MethodHierarchy <CR>
-nnoremap <leader>an :action RenameElement <CR>
 nnoremap <leader>ap :action ShowPopupMenu <CR>
 vnoremap <leader>ap :action ShowPopupMenu <CR>
 nnoremap <leader>ar :action RefactoringMenu <CR>
@@ -148,7 +157,6 @@ let g:WhichKeyDesc_Act_Generate= "<leader>ag generate"
 let g:WhichKeyDesc_Act_Hierarchy= "<leader>ah hierarchy(class)"
 let g:WhichKeyDesc_Act_Intention= "<leader>ai intention actions"
 let g:WhichKeyDesc_Act_MethodHierarchy= "<leader>am hierarchy(method)"
-let g:WhichKeyDesc_Act_Rename= "<leader>an rename"
 let g:WhichKeyDesc_Act_Popup= "<leader>ap popup menu"
 let g:WhichKeyDesc_Act_Refactor= "<leader>ar refactor"
 let g:WhichKeyDesc_Act_Surround= "<leader>as surround"
