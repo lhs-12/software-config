@@ -6,6 +6,7 @@
 2. 下载配置: [雾凇拼音](https://github.com/iDvel/rime-ice), 覆盖到用户文件夹目录
 
 # 修改配置
+
 default.yml
 ```yml
 schema_list:
@@ -35,23 +36,40 @@ ascii_composer:
 
 # 快捷键
 key_binder:
-  # Lua 配置: 以词定字, 注释掉, 不用
-  # select_first_character: "bracketleft"  # 左中括号 [
-  # select_last_character: "bracketright"  # 右中括号 ]
-  # 用 [ ] 翻页
-  - { when: paging, accept: bracketleft, send: Page_Up }
-  - { when: has_menu, accept: bracketright, send: Page_Down }
+  # Lua 配置: 以词定字
+  select_first_character: "comma"  # ,
+  select_last_character: "period"  # .
 
+  bindings:
+    # 翻页 [ ]
+    - { when: paging, accept: bracketleft, send: Page_Up }
+    - { when: has_menu, accept: bracketright, send: Page_Down }
+    # Tab / Shift+Tab 切换光标至下/上一个拼音
+    - { when: composing, accept: Shift+Tab, send: Shift+Left }
+    - { when: composing, accept: Tab, send: Shift+Right }
+ 
+    # numbered_mode_switch:
+    # - { when: always, select: .next, accept: Control+Shift+1 }                  # 在最近的两个方案之间切换
+    # - { when: always, select: .next, accept: Control+Shift+exclam }             # 在最近的两个方案之间切换
+    # - { when: always, toggle: ascii_mode, accept: Control+Shift+2 }             # 切换中英
+    # - { when: always, toggle: ascii_mode, accept: Control+Shift+at }            # 切换中英
+    - { when: always, toggle: ascii_punct, accept: Control+Shift+3 }              # 切换中英标点
+    - { when: always, toggle: ascii_punct, accept: Control+Shift+numbersign }     # 切换中英标点
+    - { when: always, toggle: traditionalization, accept: Control+Shift+4 }       # 切换简繁
+    - { when: always, toggle: traditionalization, accept: Control+Shift+dollar }  # 切换简繁
+    # - { when: always, toggle: full_shape, accept: Control+Shift+5 }             # 切换全半角
+    # - { when: always, toggle: full_shape, accept: Control+Shift+percent }       # 切换全半角
 # 注释掉emacs_editing相关的快捷键
 ```
 
 weasel.yml
 ```yml
-# VSCode和IDEA默认英文, 支持vim切换
-# 注: 15.0版本的win版本的vim_mode暂不生效. 更新软件版本, 或自己写lua脚本实现
+# 针对应用配置
 app_options:
   firefox.exe:
-    inline_preedit: true # 行内显示预编辑区：规避 <https://github.com/rime/weasel/issues/946>
+    inline_preedit: true
+  msedge.exe:
+    ascii_mode: true
   code.exe:
     ascii_mode: true
     vim_mode: true
@@ -86,57 +104,4 @@ switches:
     reset: 1 # 默认用英文
   - name: ascii_punct
     reset: 1 # 默认用英文标点
-```
-
-# vim命令模式切换英文输入法(Win11临时兼容)
-15.0的win版本暂时没上线vim切换功能, 先自己写lua脚本实现
-
-lua目录添加文件: win_vim_mode.lua
-```lua
-local function is_win()
-    local path_separator = package.config:sub(1, 1)
-    if path_separator == '\\' then
-        return true
-    end
-    return false
-end
-
--- Vim模式输入法自动切换
-local function win_vim_mode(key, env)
-    -- 如果是Win
-    if is_win() then
-        -- 如果按下了Ctrl+[
-        if key:repr() == "Control+bracketleft" then
-            -- 检测当前是不是英文模式
-            local get_ascii_mode = env.engine.context:get_option("ascii_mode")
-            -- 如果不是英文模式, 就切换到英文模式
-            if not get_ascii_mode then
-                env.engine.context:set_option("ascii_mode", true)
-            end
-            -- 因为前面的输入被接管了, 所有需要重新发送一次给Vim, 使其到Normal模式
-            env.engine.commit_text("Control+bracketleft")
-            return 1
-        end
-        -- 如果按下了Esc
-        if key:repr() == "Escape" then
-            local get_ascii_mode = env.engine.context:get_option("ascii_mode")
-            if not get_ascii_mode then
-                env.engine.context:set_option("ascii_mode", true)
-            end
-            env.engine.commit_text("Escape")
-            return 1
-        end
-    end
-    return 2
-end
-
-return win_vim_mode
-```
-
-修改使用的拼音输入法的scheme文件, 比如`rime_ice.schema.yaml`, 添加lua脚本功能作为lua_processor
-```yml
-engine:
-  processors:
-    - lua_processor@*win_vim_mode      # win模式下的vim模式切换脚本
-    # - lua_processor@select_character  # 以词定字, 不用
 ```
