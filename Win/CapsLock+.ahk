@@ -6,13 +6,19 @@
 LShift & RShift::Capslock
 RShift & LShift::Capslock
 
-hook := InputHook("B L1 T0.2", "{Esc}")
+hook := InputHook("B L1", "{Esc}")
+sendEsc := true
 *CapsLock::
 {
 	hook.Start()
 	reason := hook.Wait()
+	global sendEsc
 	if (reason = "Stopped") {
-		Send "{Esc}"
+		if (sendEsc) {
+			Send "{Esc}"
+		} else {
+			sendEsc := true
+		}
 	} else if (reason = "Max") {
 		Send "{Blind}{Ctrl down}" hook.Input
 	}
@@ -27,10 +33,70 @@ hook := InputHook("B L1 T0.2", "{Esc}")
 }
 
 #HotIf GetKeyState("Capslock","P")
-h::Left
-j::Down
-k::Up
-l::Right
-n::Home
-m::End
+*h::
+{
+	global sendEsc := false
+	SetKeyDelay -1
+	Send "{Blind}{Left DownR}"
+}
+*h up::
+{
+	SetKeyDelay -1
+	Send "{Blind}{Left Up}"
+}
+*j::
+{
+	global sendEsc := false
+	SetKeyDelay -1
+	Send "{Blind}{Down DownR}"
+}
+*j up::
+{
+	SetKeyDelay -1
+	Send "{Blind}{Down Up}"
+}
+*k::
+{
+	global sendEsc := false
+	SetKeyDelay -1
+	Send "{Blind}{Up DownR}"
+}
+*k up::
+{
+	SetKeyDelay -1
+	Send "{Blind}{Up Up}"
+}
+*l::
+{
+	global sendEsc := false
+	SetKeyDelay -1
+	Send "{Blind}{Right DownR}"
+}
+*l up::
+{
+	SetKeyDelay -1
+	Send "{Blind}{Right Up}"
+}
+*n::
+{
+	global sendEsc := false
+	SetKeyDelay -1
+	Send "{Blind}{Home DownR}"
+}
+*n up::
+{
+	SetKeyDelay -1
+	Send "{Blind}{Home Up}"
+}
+*m::
+{
+	global sendEsc := false
+	SetKeyDelay -1
+	Send "{Blind}{End DownR}"
+}
+*m up::
+{
+	SetKeyDelay -1
+	Send "{Blind}{End Up}"
+}
 #HotIf

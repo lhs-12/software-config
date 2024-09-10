@@ -98,10 +98,12 @@ VSCode配置: settings.json
     // 等宽字体: 更纱黑体(https://github.com/be5invis/Sarasa-Gothic)
     // Nerd字体: JetBrainsMono Nerd(https://github.com/ryanoasis/nerd-fonts/tree/master/patched-fonts/JetBrainsMono)
     "editor.fontFamily": "'Sarasa Term SC Regular','JetBrainsMono Nerd Font'",
+    "editor.fontSize": 15,
     "editor.mouseWheelZoom": true,
     "editor.minimap.enabled": false,
     "editor.wordSeparators": "`~!@#$%^&*()=+[{]}\\|;:'\",.<>/?。，；：“”‘’、！（）", // 去掉英文-, 增加中文符号
     // Markdown
+    "[markdown]": {"editor.quickSuggestions": {"other": "on"}}, // Markdown提示
     "markdown-preview-enhanced.enablePreviewZenMode": true, // 去除多余预览功能
     "markdown-preview-enhanced.hideDefaultVSCodeMarkdownPreviewButtons": false, // 取消劫持默认markdown预览
     "markdown-preview-enhanced.breakOnSingleNewLine": false, // 要求Markdown行末两空格表示换行
@@ -233,5 +235,23 @@ Prettier配置文件
     font-size: 16px;
     line-height: 1.2;
   }
+}
+```
+
+Snippets配置
+```json
+// markdown.json
+{
+	"Folding Text Blocks": {
+		"prefix": "fold",
+		"body": [
+			"<details>",
+			"<summary>$1</summary>",
+			"<pre>",
+			"$2",
+			"</details>\n\n",
+		],
+		"description": "Folding Text Blocks"
+	}
 }
 ```
