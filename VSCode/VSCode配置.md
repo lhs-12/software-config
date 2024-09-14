@@ -103,7 +103,6 @@ VSCode配置: settings.json
     "editor.minimap.enabled": false,
     "editor.wordSeparators": "`~!@#$%^&*()=+[{]}\\|;:'\",.<>/?。，；：“”‘’、！（）", // 去掉英文-, 增加中文符号
     // Markdown
-    "[markdown]": {"editor.quickSuggestions": {"other": "on"}}, // Markdown提示
     "markdown-preview-enhanced.enablePreviewZenMode": true, // 去除多余预览功能
     "markdown-preview-enhanced.hideDefaultVSCodeMarkdownPreviewButtons": false, // 取消劫持默认markdown预览
     "markdown-preview-enhanced.breakOnSingleNewLine": false, // 要求Markdown行末两空格表示换行
@@ -211,7 +210,7 @@ Prettier配置文件
 ```json
 {
   "useTabs": false,
-  "tabWidth": 4,
+  "tabWidth": 2,
   "printWidth": 180,
   "singleQuote": true,
   "semi": true,
@@ -238,20 +237,14 @@ Prettier配置文件
 }
 ```
 
-Snippets配置
-```json
-// markdown.json
-{
-	"Folding Text Blocks": {
-		"prefix": "fold",
-		"body": [
-			"<details>",
-			"<summary>$1</summary>",
-			"<pre>",
-			"$2",
-			"</details>\n\n",
-		],
-		"description": "Folding Text Blocks"
-	}
-}
+可选配置: Markdown渲染折叠显示内容: Markdown Preview Enhanced: Extend Parser(Workspace)  
+```js
+  // 修改parser.js文件
+  onDidParseMarkdown: async function (html) {
+    const regex = /<h3([^>]*)>([^<]*)<\/h3>([\s\S]*?)(?=<h|$)/gi;
+    return html.replace(regex, (_, attrs, content, nextContent) => {
+      return `<details><summary><h3 style="display:inline-block"${attrs}>${content}</h3></summary>\n${nextContent.trim()}\n</details>`;
+    });
+  },
+  // 修改style.less: font-family: '仓耳华新体'; font-size: 20px;
 ```
