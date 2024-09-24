@@ -18,6 +18,7 @@ code ^
 --install-extension fabiospampinato.vscode-open-in-application ^      # Open in Application                 默认程序打开文件
 --install-extension ms-vscode-remote.vscode-remote-extensionpack ^    # Remote Development                  远程开发套件(WSL/容器/SSH...)
 --install-extension ms-vsliveshare.vsliveshare ^                      # Live Share                          实时共享
+--install-extension mark-wiemer.vscode-autohotkey-plus-plus ^         # AutoHotkey Plus Plus                AutoHotkey支持
 
 # Markdown及笔记
 --install-extension shd101wyy.markdown-preview-enhanced ^             # Markdown Preview Enhanced           Markdown功能集成
@@ -37,7 +38,7 @@ code ^
 --install-extension sdras.vue-vscode-snippets ^                       # Vue VSCode Snippets                 代码提示
 --install-extension dbaeumer.vscode-eslint ^                          # ESLint                              代码检查
 --install-extension esbenp.prettier-vscode ^                          # Prettier                            代码格式
---install-extension ritwickdey.liveserver ^                           # Live Server                         实时网页
+--install-extension ms-vscode.live-server ^                           # Live Preview                        实时网页
 --install-extension formulahendry.auto-rename-tag ^                   # Auto Rename Tag                     标签更改
 --install-extension ecmel.vscode-html-css ^                           # Html CSS Support                    CSS支持
 --install-extension zignd.html-css-class-completion ^                 # IntelliSense for CSS class names    CSS提示
@@ -53,7 +54,7 @@ code ^
 
 # Python
 --install-extension ms-python.python ^                                # Python                              Python支持
---install-extension ms-python.isort ^                                 # isort                               依赖整理
+--install-extension charliermarsh.ruff ^                              # Ruff                                格式化
 --install-extension kevinrose.vsc-python-indent ^                     # Python Indent                       缩进
 --install-extension njpwerner.autodocstring ^                         # autoDocstring                       文档格式
 ```
@@ -63,146 +64,157 @@ code ^
 快捷键配置: keybindings.json
 ```json
 [
-    // 打开命令
-    { "key": "ctrl+shift+a", "command": "workbench.action.showCommands" },
-    // 新建文件
-    { "key": "alt+insert", "command": "workbench.action.files.newUntitledFile", "when": "!editorTextFocus || editorTextFocus && !editorHasCodeActionsProvider" },
-    // 替换
-    { "key": "ctrl+r", "command": "editor.action.startFindReplaceAction", "when": "editorFocus || editorIsOpen" },
-    { "key": "ctrl+shift+r", "command": "workbench.action.replaceInFiles" },
-    // 切换Vim
-    { "key": "ctrl+alt+k", "command": "toggleVim" },
-    // 插入换行
-    { "key": "shift+Enter", "command": "editor.action.insertLineAfter", "when": "editorTextFocus && !editorReadonly" },
-    // 注释后换行
-    { "key": "ctrl+/", "command": "runCommands", "args": { "commands": [ "editor.action.commentLine", "cursorDown" ] }, "when": "editorTextFocus" },
-    // 打开类
-    { "key": "ctrl+n", "command": "workbench.action.showAllSymbols" },
-    // Quick Fix
-    { "key": "alt+enter", "command": "editor.action.quickFix", "when": "editorHasCodeActionsProvider && editorTextFocus && !editorReadonly" },
-    // 代码生成
-    { "key": "alt+insert", "command": "editor.action.sourceAction", "when": "editorHasCodeActionsProvider && editorTextFocus && !editorReadonly" },
+  // 打开命令
+  { "key": "ctrl+shift+a", "command": "workbench.action.showCommands" },
+  // 新建文件
+  { "key": "alt+insert", "command": "workbench.action.files.newUntitledFile", "when": "!editorTextFocus || editorTextFocus && !editorHasCodeActionsProvider" },
+  // 替换
+  { "key": "ctrl+r", "command": "editor.action.startFindReplaceAction", "when": "editorFocus || editorIsOpen" },
+  { "key": "ctrl+shift+r", "command": "workbench.action.replaceInFiles" },
+  // 切换Vim
+  { "key": "ctrl+alt+k", "command": "toggleVim" },
+  // 插入换行
+  { "key": "shift+Enter", "command": "editor.action.insertLineAfter", "when": "editorTextFocus && !editorReadonly" },
+  // 注释后换行
+  { "key": "ctrl+/", "command": "runCommands", "args": { "commands": ["editor.action.commentLine", "cursorDown"] }, "when": "editorTextFocus" },
+  // 打开类
+  { "key": "ctrl+n", "command": "workbench.action.showAllSymbols" },
+  // Quick Fix
+  { "key": "alt+enter", "command": "editor.action.quickFix", "when": "editorHasCodeActionsProvider && editorTextFocus && !editorReadonly" },
+  // 代码生成
+  { "key": "alt+insert", "command": "editor.action.sourceAction", "when": "editorHasCodeActionsProvider && editorTextFocus && !editorReadonly" }
 ]
 ```
 
 VSCode配置: settings.json
 ```json
 {
-    // "editor.formatOnSave": true,    // files.autoSave 为 onFocusChange 时关闭该配置
-    "files.autoSave": "onFocusChange", // 前端开发时注释该配置, 并打开 editor.formatOnSave
-
-    "explorer.compactFolders": false,
-    "workbench.startupEditor": "none",
-    "workbench.layoutControl.enabled": false,
-    "window.commandCenter": false,
-    // 等宽字体: 更纱黑体(https://github.com/be5invis/Sarasa-Gothic)
-    // Nerd字体: JetBrainsMono Nerd(https://github.com/ryanoasis/nerd-fonts/tree/master/patched-fonts/JetBrainsMono)
-    "editor.fontFamily": "'Sarasa Term SC Regular','JetBrainsMono Nerd Font'",
-    "editor.fontSize": 15,
-    "editor.mouseWheelZoom": true,
-    "editor.minimap.enabled": false,
-    "editor.wordSeparators": "`~!@#$%^&*()=+[{]}\\|;:'\",.<>/?。，；：“”‘’、！（）", // 去掉英文-, 增加中文符号
-    // Markdown
-    "markdown-preview-enhanced.enablePreviewZenMode": true, // 去除多余预览功能
-    "markdown-preview-enhanced.hideDefaultVSCodeMarkdownPreviewButtons": false, // 取消劫持默认markdown预览
-    "markdown-preview-enhanced.breakOnSingleNewLine": false, // 要求Markdown行末两空格表示换行
-    "markdown-preview-enhanced.printBackground": true, // 导出时使用preview的css
-    "markdown-preview-enhanced.previewTheme": "github-dark.css",
-    "markdown-preview-enhanced.mermaidTheme": "dark",
-    "markdown-preview-enhanced.revealjsTheme": "blood.css",
-    "markdown-preview-enhanced.plantumlJarPath": "D:/Program Files/tools/plantuml-1.2024.3.jar",
-    "pasteImage.path": "${currentFileDir}/pictures/${currentFileNameWithoutExt}/",
-    "pasteImage.defaultName": "x",
-    // 格式化配置
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "prettier.configPath": "C:/Users/L/.prettierrc",
-    "[java]": { "editor.defaultFormatter": "redhat.java" },
-    // Vim
-    "vim.smartRelativeLine": true,
-    "vim.incsearch": true,
-    "vim.hlsearch": true,
-    "vim.visualstar": true,
-    "vim.easymotion": true,
-    "vim.replaceWithRegister": true,
-    "vim.highlightedyank.enable": true,
-    "vim.highlightedyank.color": "#32593d",
-    "vim.highlightedyank.duration": 400,
-    "extensions.experimental.affinity": { "vscodevim.vim": 1 },
-    "vim.handleKeys": { "<C-x>": false, "<C-c>": false },
-    "vim.leader": "<space>",
-    "vim.normalModeKeyBindings": [
-        { "before": ["<C-q>"], "after": ["<C-x>"] },
-        { "before": ["H"], "after": ["^"] },
-        { "before": ["L"], "after": ["$"] },
-        { "before": ["c", "d"], "commands": ["editor.action.rename"] },
-        { "before": ["g", "f"], "commands": ["workbench.action.gotoSymbol"] },
-        { "before": ["g", "i"], "commands": ["editor.action.goToImplementation"] },
-        { "before": ["g", "p"], "commands": ["workbench.explorer.fileView.focus"] },
-        { "before": ["<leader>", "a", "f"], "commands": ["editor.action.organizeImports", "editor.action.formatDocument"] },
-        { "before": ["<leader>", "a", "p"], "commands": ["editor.action.showContextMenu"] },
-        { "before": ["<leader>", "a", "r"], "commands": ["editor.action.refactor"] },
-        { "before": ["<leader>", "d", "b"], "commands": ["editor.debug.action.toggleBreakpoint"] },
-        { "before": ["<leader>", "m", "m"], "commands": ["bookmarks.toggle"] },
-        { "before": ["<leader>", "m", "e"], "commands": ["bookmarks.toggleLabeled"] },
-        { "before": ["<leader>", "m", "s"], "commands": ["bookmarks.list"] },
-        { "before": ["<leader>", "w", "p"], "commands": ["workbench.action.toggleSidebarVisibility"] },
-        { "before": ["<leader>", "w", "r"], "commands": ["workbench.action.quickOpen"] },
-        { "before": ["<leader>", "w", "w"], "commands": ["workbench.action.closeActiveEditor"] },
-        { "before": ["<leader>", "w", "o"], "commands": ["workbench.action.closeOtherEditors"] },
-        { "before": ["<leader>", "w", "c"], "commands": ["workbench.action.toggleCenteredLayout"] },
-        { "before": ["<leader>", "w", "t"], "commands": ["translation.translate"] }
-    ],
-    "vim.visualModeKeyBindings": [
-        { "before": ["H"], "after": ["^"] },
-        { "before": ["L"], "after": ["$"] },
-        { "before": [">"], "commands": ["editor.action.indentLines"] },
-        { "before": ["<"], "commands": ["editor.action.outdentLines"] },
-        { "before": ["<leader>", "a", "r"], "commands": ["editor.action.refactor"] }
-    ],
-    "vim.operatorPendingModeKeyBindings": [
-        { "before": ["H"], "after": ["^"] },
-        { "before": ["L"], "after": ["$"] }
-    ]
+  "files.autoSave": "onFocusChange",
+  "notebook.formatOnSave.enabled": true,
+  "explorer.compactFolders": false,
+  "workbench.startupEditor": "none",
+  "workbench.layoutControl.enabled": false,
+  "window.commandCenter": false,
+  // 等宽字体: 更纱黑体(https://github.com/be5invis/Sarasa-Gothic)
+  // Nerd字体: JetBrainsMono Nerd(https://github.com/ryanoasis/nerd-fonts/tree/master/patched-fonts/JetBrainsMono)
+  "editor.fontFamily": "'Sarasa Term SC Regular','JetBrainsMono Nerd Font'",
+  "editor.fontSize": 15,
+  "editor.mouseWheelZoom": true,
+  "editor.minimap.enabled": false,
+  "editor.wordSeparators": "`~!@#$%^&*()=+[{]}\\|;:'\",.<>/?。，；：“”‘’、！（）", // 去掉英文-, 增加中文符号
+  // Markdown
+  "markdown-preview-enhanced.enablePreviewZenMode": true, // 去除多余预览功能
+  "markdown-preview-enhanced.hideDefaultVSCodeMarkdownPreviewButtons": false, // 取消劫持默认markdown预览
+  "markdown-preview-enhanced.breakOnSingleNewLine": false, // 要求Markdown行末两空格表示换行
+  "markdown-preview-enhanced.printBackground": true, // 导出时使用preview的css
+  "markdown-preview-enhanced.previewTheme": "github-dark.css",
+  "markdown-preview-enhanced.mermaidTheme": "dark",
+  "markdown-preview-enhanced.revealjsTheme": "blood.css",
+  "markdown-preview-enhanced.plantumlJarPath": "D:/Program Files/tools/plantuml-1.2024.3.jar",
+  "pasteImage.path": "${currentFileDir}/pictures/${currentFileNameWithoutExt}/",
+  "pasteImage.defaultName": "x",
+  // 格式化配置
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "prettier.configPath": "C:/Users/L/.prettierrc",
+  "[html]": { "files.autoSave": "off", "editor.formatOnSave": true },
+  "[javascript]": { "files.autoSave": "off", "editor.formatOnSave": true },
+  "[typescript]": { "files.autoSave": "off", "editor.formatOnSave": true },
+  "[css]": { "files.autoSave": "off", "editor.formatOnSave": true },
+  "[less]": { "files.autoSave": "off", "editor.formatOnSave": true },
+  "[vue]": { "files.autoSave": "off", "editor.formatOnSave": true },
+  "ruff.lineLength": 120,
+  "ruff.lint.select": ["F", "E", "W", "I", "UP", "B", "SIM"],
+  "[python]": { "editor.defaultFormatter": "charliermarsh.ruff", "editor.formatOnSave": true },
+  "[java]": { "editor.defaultFormatter": "redhat.java" },
+  // Vim
+  "vim.smartRelativeLine": true,
+  "vim.incsearch": true,
+  "vim.hlsearch": true,
+  "vim.visualstar": true,
+  "vim.easymotion": true,
+  "vim.replaceWithRegister": true,
+  "vim.highlightedyank.enable": true,
+  "vim.highlightedyank.color": "#32593d",
+  "vim.highlightedyank.duration": 400,
+  "extensions.experimental.affinity": { "vscodevim.vim": 1 },
+  "vim.handleKeys": { "<C-x>": false, "<C-c>": false },
+  "vim.leader": "<space>",
+  "vim.normalModeKeyBindings": [
+    { "before": ["<C-q>"], "after": ["<C-x>"] },
+    { "before": ["H"], "after": ["^"] },
+    { "before": ["L"], "after": ["$"] },
+    { "before": ["c", "d"], "commands": ["editor.action.rename"] },
+    { "before": ["g", "f"], "commands": ["workbench.action.gotoSymbol"] },
+    { "before": ["g", "i"], "commands": ["editor.action.goToImplementation"] },
+    { "before": ["g", "p"], "commands": ["workbench.explorer.fileView.focus"] },
+    { "before": ["<leader>", "a", "f"], "commands": ["editor.action.organizeImports", "editor.action.formatDocument"] },
+    { "before": ["<leader>", "a", "p"], "commands": ["editor.action.showContextMenu"] },
+    { "before": ["<leader>", "a", "r"], "commands": ["editor.action.refactor"] },
+    { "before": ["<leader>", "d", "b"], "commands": ["editor.debug.action.toggleBreakpoint"] },
+    { "before": ["<leader>", "m", "m"], "commands": ["bookmarks.toggle"] },
+    { "before": ["<leader>", "m", "e"], "commands": ["bookmarks.toggleLabeled"] },
+    { "before": ["<leader>", "m", "s"], "commands": ["bookmarks.list"] },
+    { "before": ["<leader>", "w", "p"], "commands": ["workbench.action.toggleSidebarVisibility"] },
+    { "before": ["<leader>", "w", "r"], "commands": ["workbench.action.quickOpen"] },
+    { "before": ["<leader>", "w", "w"], "commands": ["workbench.action.closeActiveEditor"] },
+    { "before": ["<leader>", "w", "o"], "commands": ["workbench.action.closeOtherEditors"] },
+    { "before": ["<leader>", "w", "c"], "commands": ["workbench.action.toggleCenteredLayout"] },
+    { "before": ["<leader>", "w", "t"], "commands": ["translation.translate"] }
+  ],
+  "vim.visualModeKeyBindings": [
+    { "before": ["H"], "after": ["^"] },
+    { "before": ["L"], "after": ["$"] },
+    { "before": [">"], "commands": ["editor.action.indentLines"] },
+    { "before": ["<"], "commands": ["editor.action.outdentLines"] },
+    { "before": ["<leader>", "a", "r"], "commands": ["editor.action.refactor"] }
+  ],
+  "vim.operatorPendingModeKeyBindings": [
+    { "before": ["H"], "after": ["^"] },
+    { "before": ["L"], "after": ["$"] }
+  ]
 }
-
 ```
 
 LaTeX Workshop 配置, 按需添加
 ```json
 {
-    // LaTeX Workshop 的配置
-    // 打开标签页进行pdf预览
-    "latex-workshop.view.pdf.viewer": "tab",
-    // 关闭自动编译
-    "latex-workshop.latex.autoBuild.run": "never",
-    // 编译工具配置(这里是为了加入xelatex配置, 其他与默认值保持一致)
-    "latex-workshop.latex.tools": [
-        {
-            "name": "latexmk", "command": "latexmk",
-            "args": [ "-synctex=1", "-interaction=nonstopmode", "-file-line-error", "-pdf", "-outdir=%OUTDIR%", "%DOC%" ],
-            "env": { }
-        },
-        {
-            "name": "xelatex", "command": "xelatex",
-            "args": [ "-synctex=1", "-interaction=nonstopmode", "-file-line-error", "%DOC%" ]
-        },
-        {
-            "name": "pdflatex", "command": "pdflatex",
-            "args": [ "-synctex=1", "-interaction=nonstopmode", "-file-line-error", "%DOC%" ],
-            "env": { }
-        },
-        {
-            "name": "bibtex", "command": "bibtex",
-            "args": [ "%DOCFILE%" ],
-            "env": { }
-        }
-    ],
-    // 编译组合配置(这里是为了加入xelatex配置, 其他配置与默认值保持一致)
-    "latex-workshop.latex.recipes": [
-        { "name": "xelatex", "tools": [ "xelatex" ] },
-        { "name": "latexmk", "tools": [ "latexmk" ] },
-        { "name": "pdflatex -> bibtex -> pdflatex*2", "tools": [ "pdflatex", "bibtex", "pdflatex", "pdflatex" ] }
-    ],
+  // LaTeX Workshop 的配置
+  // 打开标签页进行pdf预览
+  "latex-workshop.view.pdf.viewer": "tab",
+  // 关闭自动编译
+  "latex-workshop.latex.autoBuild.run": "never",
+  // 编译工具配置(这里是为了加入xelatex配置, 其他与默认值保持一致)
+  "latex-workshop.latex.tools": [
+    {
+      "name": "latexmk",
+      "command": "latexmk",
+      "args": ["-synctex=1", "-interaction=nonstopmode", "-file-line-error", "-pdf", "-outdir=%OUTDIR%", "%DOC%"],
+      "env": {}
+    },
+    {
+      "name": "xelatex",
+      "command": "xelatex",
+      "args": ["-synctex=1", "-interaction=nonstopmode", "-file-line-error", "%DOC%"]
+    },
+    {
+      "name": "pdflatex",
+      "command": "pdflatex",
+      "args": ["-synctex=1", "-interaction=nonstopmode", "-file-line-error", "%DOC%"],
+      "env": {}
+    },
+    {
+      "name": "bibtex",
+      "command": "bibtex",
+      "args": ["%DOCFILE%"],
+      "env": {}
+    }
+  ],
+  // 编译组合配置(这里是为了加入xelatex配置, 其他配置与默认值保持一致)
+  "latex-workshop.latex.recipes": [
+    { "name": "xelatex", "tools": ["xelatex"] },
+    { "name": "latexmk", "tools": ["latexmk"] },
+    { "name": "pdflatex -> bibtex -> pdflatex*2", "tools": ["pdflatex", "bibtex", "pdflatex", "pdflatex"] }
+  ]
 }
 ```
 
