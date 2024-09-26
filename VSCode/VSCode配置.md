@@ -9,7 +9,7 @@
 
 code ^
 # 通用
---install-extension vscodevim.vim ^                                   # Vim                                 Vim模拟器
+--install-extension asvetliakov.vscode-neovim ^                       # VSCode Neovim                       NeoVim合成扩展
 --install-extension alefragnani.bookmarks ^                           # Bookmarks                           书签
 --install-extension liwenkun.translation ^                            # Translation                         翻译
 --install-extension visualstudioexptteam.vscodeintellicode ^          # IntelliCode                         代码提示
@@ -66,14 +66,7 @@ code ^
 [
   // 打开命令
   { "key": "ctrl+shift+a", "command": "workbench.action.showCommands" },
-  // 新建文件
-  { "key": "alt+insert", "command": "workbench.action.files.newUntitledFile", "when": "!editorTextFocus || editorTextFocus && !editorHasCodeActionsProvider" },
-  // 替换
-  { "key": "ctrl+r", "command": "editor.action.startFindReplaceAction", "when": "editorFocus || editorIsOpen" },
-  { "key": "ctrl+shift+r", "command": "workbench.action.replaceInFiles" },
-  // 切换Vim
-  { "key": "ctrl+alt+k", "command": "toggleVim" },
-  // 插入换行
+  // 换行
   { "key": "shift+Enter", "command": "editor.action.insertLineAfter", "when": "editorTextFocus && !editorReadonly" },
   // 注释后换行
   { "key": "ctrl+/", "command": "runCommands", "args": { "commands": ["editor.action.commentLine", "cursorDown"] }, "when": "editorTextFocus" },
@@ -110,7 +103,7 @@ VSCode配置: settings.json
   "markdown-preview-enhanced.previewTheme": "github-dark.css",
   "markdown-preview-enhanced.mermaidTheme": "dark",
   "markdown-preview-enhanced.revealjsTheme": "blood.css",
-  "markdown-preview-enhanced.plantumlJarPath": "D:/Program Files/tools/plantuml-1.2024.3.jar",
+  "markdown-preview-enhanced.plantumlJarPath": "D:/Program Files/tools/plantuml.jar",
   "pasteImage.path": "${currentFileDir}/pictures/${currentFileNameWithoutExt}/",
   "pasteImage.defaultName": "x",
   // 格式化配置
@@ -126,53 +119,63 @@ VSCode配置: settings.json
   "ruff.lint.select": ["F", "E", "W", "I", "UP", "B", "SIM"],
   "[python]": { "editor.defaultFormatter": "charliermarsh.ruff", "editor.formatOnSave": true },
   "[java]": { "editor.defaultFormatter": "redhat.java" },
-  // Vim
-  "vim.smartRelativeLine": true,
-  "vim.incsearch": true,
-  "vim.hlsearch": true,
-  "vim.visualstar": true,
-  "vim.easymotion": true,
-  "vim.replaceWithRegister": true,
-  "vim.highlightedyank.enable": true,
-  "vim.highlightedyank.color": "#32593d",
-  "vim.highlightedyank.duration": 400,
-  "extensions.experimental.affinity": { "vscodevim.vim": 1 },
-  "vim.handleKeys": { "<C-x>": false, "<C-c>": false },
-  "vim.leader": "<space>",
-  "vim.normalModeKeyBindings": [
-    { "before": ["<C-q>"], "after": ["<C-x>"] },
-    { "before": ["H"], "after": ["^"] },
-    { "before": ["L"], "after": ["$"] },
-    { "before": ["c", "d"], "commands": ["editor.action.rename"] },
-    { "before": ["g", "f"], "commands": ["workbench.action.gotoSymbol"] },
-    { "before": ["g", "i"], "commands": ["editor.action.goToImplementation"] },
-    { "before": ["g", "p"], "commands": ["workbench.explorer.fileView.focus"] },
-    { "before": ["<leader>", "a", "f"], "commands": ["editor.action.organizeImports", "editor.action.formatDocument"] },
-    { "before": ["<leader>", "a", "p"], "commands": ["editor.action.showContextMenu"] },
-    { "before": ["<leader>", "a", "r"], "commands": ["editor.action.refactor"] },
-    { "before": ["<leader>", "d", "b"], "commands": ["editor.debug.action.toggleBreakpoint"] },
-    { "before": ["<leader>", "m", "m"], "commands": ["bookmarks.toggle"] },
-    { "before": ["<leader>", "m", "e"], "commands": ["bookmarks.toggleLabeled"] },
-    { "before": ["<leader>", "m", "s"], "commands": ["bookmarks.list"] },
-    { "before": ["<leader>", "w", "p"], "commands": ["workbench.action.toggleSidebarVisibility"] },
-    { "before": ["<leader>", "w", "r"], "commands": ["workbench.action.quickOpen"] },
-    { "before": ["<leader>", "w", "w"], "commands": ["workbench.action.closeActiveEditor"] },
-    { "before": ["<leader>", "w", "o"], "commands": ["workbench.action.closeOtherEditors"] },
-    { "before": ["<leader>", "w", "c"], "commands": ["workbench.action.toggleCenteredLayout"] },
-    { "before": ["<leader>", "w", "t"], "commands": ["translation.translate"] }
-  ],
-  "vim.visualModeKeyBindings": [
-    { "before": ["H"], "after": ["^"] },
-    { "before": ["L"], "after": ["$"] },
-    { "before": [">"], "commands": ["editor.action.indentLines"] },
-    { "before": ["<"], "commands": ["editor.action.outdentLines"] },
-    { "before": ["<leader>", "a", "r"], "commands": ["editor.action.refactor"] }
-  ],
-  "vim.operatorPendingModeKeyBindings": [
-    { "before": ["H"], "after": ["^"] },
-    { "before": ["L"], "after": ["$"] }
+  // NeoVim
+  "extensions.experimental.affinity": { "asvetliakov.vscode-neovim": 1 },
+  "vscode-neovim.neovimInitVimPaths.win32": "C:/Users/L/AppData/Local/vscode-nvim/init.lua",
+  "vscode-neovim.ctrlKeysForInsertMode": ["d", "o", "r", "t", "u", "w"],
+  "vscode-neovim.ctrlKeysForNormalMode": /*prettier-ignore*/ [ // 保留 c, n, s, x, z
+    "a", "b", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "o", "p", "q", "r", "t", "u", "v", "w", "y",
+    "up", "right", "left", "down", "backspace", "delete", "]",
   ]
 }
+```
+
+安装NeoVim, 配置文件
+```lua
+if vim.g.vscode then
+    local vscode = require('vscode')
+    local function keymap(mode, lhs, rhs, opts)
+        local options = {noremap = true, silent = true}
+        if opts then options = vim.tbl_extend('force', options, opts) end
+        vim.keymap.set(mode, lhs, rhs, options)
+    end
+    vim.g.mapleader = " "
+    keymap('n', '<C-q>', '<C-x>')
+    keymap('n', 'H', '^')
+    keymap('n', 'L', '$')
+    keymap('n', 'K', function() vscode.call('editor.action.showHover') end)
+    keymap('n', 'cd', function() vscode.call('editor.action.rename') end)
+    keymap('n', 'gf', function() vscode.call('workbench.action.gotoSymbol') end)
+    keymap('n', 'gi', function() vscode.call('editor.action.goToImplementation') end)
+    keymap('n', 'gs', function() vscode.call('java.action.navigateToSuperImplementation') end)
+    keymap('n', 'gp', function() vscode.call('workbench.explorer.fileView.focus') end)
+    keymap('n', '<leader>af', function() 
+        vscode.call('editor.action.organizeImports')
+        vscode.call('editor.action.formatDocument')
+    end)
+    keymap('n', '<leader>ap', function() vscode.call('editor.action.showContextMenu') end)
+    keymap('n', '<leader>ar', function() vscode.call('editor.action.refactor') end)
+    keymap('n', '<leader>db', function() vscode.call('editor.debug.action.toggleBreakpoint') end)
+    keymap('n', '<leader>mm', function() vscode.call('bookmarks.toggle') end)
+    keymap('n', '<leader>me', function() vscode.call('bookmarks.toggleLabeled') end)
+    keymap('n', '<leader>ms', function() vscode.call('bookmarks.listFromAllFiles') end)
+    keymap('n', '<leader>wp', function() vscode.call('workbench.action.toggleSidebarVisibility') end)
+    keymap('n', '<leader>wr', function() vscode.call('workbench.action.quickOpen') end)
+    keymap('n', '<leader>ww', function() vscode.call('workbench.action.closeActiveEditor') end)
+    keymap('n', '<leader>wo', function() vscode.call('workbench.action.closeOtherEditors') end)
+    keymap('n', '<leader>wc', function() vscode.call('workbench.action.toggleCenteredLayout') end)
+    keymap('v', 'H', '^')
+    keymap('v', 'L', '$')
+    keymap('v', 'af', function() vscode.call('editor.action.smartSelect.grow') end)
+    keymap('v', 'AF', function() vscode.call('editor.action.smartSelect.shrink') end)
+    keymap('v', '>', function() vscode.call('editor.action.indentLines') end)
+    keymap('v', '<', function() vscode.call('editor.action.outdentLines') end)
+    keymap('v', '<leader>ap', function() vscode.call('editor.action.showContextMenu') end)
+    keymap('v', '<leader>ar', function() vscode.call('editor.action.refactor') end)
+    keymap('v', '<leader>wt', function() vscode.call('translation.translate') end)
+    keymap('o', 'H', '^')
+    keymap('o', 'L', '$')
+end
 ```
 
 LaTeX Workshop 配置, 按需添加
