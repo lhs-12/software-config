@@ -11,7 +11,6 @@ code ^
 # 通用
 --install-extension asvetliakov.vscode-neovim ^                       # VSCode Neovim                       NeoVim合成扩展
 --install-extension alefragnani.bookmarks ^                           # Bookmarks                           书签
---install-extension liwenkun.translation ^                            # Translation                         翻译
 --install-extension visualstudioexptteam.vscodeintellicode ^          # IntelliCode                         代码提示
 --install-extension donjayamanne.githistory ^                         # Git History                         Git历史
 --install-extension james-yu.latex-workshop ^                         # LaTeX Workshop                      LaTeX与PDF支持
@@ -75,7 +74,10 @@ code ^
   // Quick Fix
   { "key": "alt+enter", "command": "editor.action.quickFix", "when": "editorHasCodeActionsProvider && editorTextFocus && !editorReadonly" },
   // 代码生成
-  { "key": "alt+insert", "command": "editor.action.sourceAction", "when": "editorHasCodeActionsProvider && editorTextFocus && !editorReadonly" }
+  { "key": "alt+insert", "command": "editor.action.sourceAction", "when": "editorHasCodeActionsProvider && editorTextFocus && !editorReadonly" },
+  // 切换标签页
+  { "key": "alt+left", "command": "workbench.action.previousEditor" },
+  { "key": "alt+right", "command": "workbench.action.nextEditor" },
 ]
 ```
 
@@ -94,6 +96,7 @@ VSCode配置: settings.json
   "editor.fontSize": 15,
   "editor.mouseWheelZoom": true,
   "editor.minimap.enabled": false,
+  "editor.lineNumbers": "relative",
   "editor.wordSeparators": "`~!@#$%^&*()=+[{]}\\|;:'\",.<>/?。，；：“”‘’、！（）", // 去掉英文-, 增加中文符号
   // Markdown
   "markdown-preview-enhanced.enablePreviewZenMode": true, // 去除多余预览功能
@@ -239,7 +242,19 @@ Prettier配置文件
   font-family: "Sarasa Term SC Regular";
   font-size: 18px;
   line-height: 1.4;
-  background-color: #1e1e1e;
+  background-color: #181818;
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  strong,
+  table th,
+  code,
+  kbd {
+    color: #d1d1d1;
+  }
   pre {
     background-color: #262626 !important;
   }
@@ -258,7 +273,7 @@ Prettier配置文件
   onDidParseMarkdown: async function (html) {
     const regex = /<h3([^>]*)>([^<]*)<\/h3>([\s\S]*?)(?=<h|$)/gi;
     return html.replace(regex, (_, attrs, content, nextContent) => {
-      return `<details><summary><h3 style="display:inline-block"${attrs}>${content}</h3></summary>\n${nextContent.trim()}\n</details>`;
+      return `<details><summary><h3 style="display:inline"${attrs}>${content}</h3></summary><br>\n${nextContent.trim()}\n</details><br>`;
     });
   },
   // 修改style.less: font-family: '仓耳华新体'; font-size: 20px;
