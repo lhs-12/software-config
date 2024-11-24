@@ -37,7 +37,6 @@ export HTTP_PROXY="socks5://localhost:10810"
 nvim
 mise
 tldr
-Anaconda
 ```
 
 # 常用命令

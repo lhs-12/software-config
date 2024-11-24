@@ -2,10 +2,23 @@
 " Find more examples here: https://jb.gg/share-ideavimrc
 "=========================================================================================
 " Idea Shortcut Conflicts
+sethandler <S-CR> a:ide
+sethandler <C-Pageup> a:vim
+sethandler <C-Pagedown> a:vim
+sethandler <C-Up> a:ide
+sethandler <C-Down> a:ide
+sethandler <C-Left> a:ide
+sethandler <C-Right> a:ide
+sethandler <S-Up> a:ide
+sethandler <S-Down> a:ide
+sethandler <S-Left> a:ide
+sethandler <S-Right> a:ide
 sethandler <C-2> a:vim
 sethandler <C-S-2> a:vim
 sethandler <C-6> a:vim
 sethandler <C-S-6> a:vim
+sethandler <C-;> a:vim
+sethandler <C-S-;> a:vim
 sethandler <C-A> a:vim
 sethandler <C-B> a:vim
 sethandler <C-C> a:vim
@@ -38,7 +51,7 @@ sethandler <C-S-v> a:vim  " used for system clipboard paste
 "=========================================================================================
 " Plugins
 set easymotion              " jump: <leader><leader> + f/t/w/b/e/ge/j/k
-set textobj-entire          " {v/d/x/y}ae: ae=ggVG ; ie=ggVG but without surrounded empty line
+set textobj-entire          " {v/d/x/y}ae or ie
 set matchit                 " Extended matching. use % and g%
 set exchange                " cx{motion} to exchange, or X in vMode
 set surround                " modify surroundings: ys, cs, ds, S
@@ -88,11 +101,6 @@ onoremap H ^
 nnoremap L $
 vnoremap L $
 onoremap L $
-"--insert mode select
-inoremap <S-Left> :action EditorLeftWithSelection <CR>
-inoremap <S-Right> :action EditorRightWithSelection <CR>
-inoremap <S-Up> :action EditorUpWithSelection <CR>
-inoremap <S-Down> :action EditorDownWithSelection <CR>
 "-- expand selection
 vnoremap af :action EditorSelectWord <CR>
 vnoremap AF :action EditorUnSelectWord <CR>
@@ -102,6 +110,8 @@ vnoremap > :action EditorIndentLineOrSelection <CR>
 "--rewrite jump-list
 nnoremap <C-o> :action Back <CR>
 nnoremap <C-i> :action Forward <CR>
+"--AceJump line
+noremap <C-S-;> :action AceLineAction <CR>
 
 "--Change action
 let g:WhichKeyDesc_C= "c Change"
@@ -134,6 +144,7 @@ let g:WhichKeyDesc_GE= "ge open in explorer"
 
 "---------------------------------- Leader Keymap ----------------------------------
 let g:WhichKeyDesc_Leader= "<leader> Leader"
+let g:WhichKeyDesc_Leader= "<leader><leader> EasyMotion Prefix"
 "----------------------------------- A for Act -----------------------------------
 nnoremap <leader>ac :action CopyReferencePopupGroup <CR>
 nnoremap <leader>af :action ReformatCode \| :action OptimizeImports <CR>
