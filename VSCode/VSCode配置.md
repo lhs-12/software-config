@@ -48,7 +48,7 @@ code ^
 --install-extension vmware.vscode-boot-dev-pack ^                     # Spring Boot Extension Pack          Spring支持
 --install-extension redhat.vscode-xml ^                               # XML                                 XML支持
 --install-extension redhat.vscode-yaml ^                              # YAML                                YAML支持
---install-extension redhat.fabric8-analytics                          # Red Hat Dependency Analytics        依赖分析
+--install-extension redhat.fabric8-analytics ^                        # Red Hat Dependency Analytics        依赖分析
 # 其他可选: SonarLint, Tools for MicroProfile, Quarkus...
 
 # Python

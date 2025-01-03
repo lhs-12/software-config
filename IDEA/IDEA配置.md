@@ -8,10 +8,9 @@
 idea64.exe installPlugins ^
 mobi.hsz.idea.gitignore ^                                   # .ignore
 com.jetbrains.plugins.ini4idea ^                            # Ini
-ru.adelf.idea.dotenv ^                                      # .​env files support
+ru.adelf.idea.dotenv ^                                      # .env files support
 com.mallowigi ^                                             # Atom Material Icons
 TheBlind.privateNotes ^                                     # Private Notes
-Gitflow-Fix ^                                               # Git Flow Integration Plus
 com.bruce.intellijplugin.generatesetter ^                   # GenerateAllSetter
 GenerateSerialVersionUID ^                                  # GenerateSerialVersionUID
 com.ccnode.codegenerator.MyBatisCodeHelperProMarketPlace ^  # MyBatisCodeHelperPro(Marketplace Edition)
@@ -74,7 +73,7 @@ Editor -> File and Code Templates -> includes -> FileHeader
  */
 ```
 
-Live Templates 添加 Test 组的 test 方法, 设置 Abbreviation: test，Applicable: Java -> declaration
+Live Templates 添加 Test 组的 test 方法, 设置 Abbreviation: test, Applicable: Java -> declaration
 ```
 @Test
 public void test$NAME$() {
@@ -128,7 +127,7 @@ Vim 快捷键冲突及功能参考
 | Ctrl+@ | 触发书签 2         | 插入上次插入的文本并停止插入   | 插入上次插入的文本并停止插入 | 无特定作用               | 无作用             |
 | Ctrl+6 | 去书签 6           | 无作用                         | 切换到另一个缓冲区           | 切换到另一个缓冲区       | 无作用             |
 | Ctrl+^ | 触发书签 6         | 无作用                         | 切换到另一个缓冲区           | 切换到另一个缓冲区       | 无作用             |
-| Ctrl+[ | 跳到附近大括号头部 | 退出Insert模式                 | 同Esc键，退出当前模式        | 退出Visual模式           | 取消命令行         |
+| Ctrl+[ | 跳到附近大括号头部 | 退出Insert模式                 | 同Esc键, 退出当前模式        | 退出Visual模式           | 取消命令行         |
 | Ctrl+] | 跳到附近大括号尾部 | 无作用                         | 跳转到光标下标识符的定义处   | 跳转到选中标识符的定义处 | 无作用             |
 | Ctrl+\ | 文件选择列表根目录 | 无作用                         | 无特定作用                   | 无特定作用               | 无作用             |
 | Ctrl+a | 全选               | 插入上次插入的文本             | 将光标下的数字加1            | 选中所有文本             | 移动到行首         |

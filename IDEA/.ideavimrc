@@ -101,7 +101,7 @@ onoremap H ^
 nnoremap L $
 vnoremap L $
 onoremap L $
-"-- expand selection
+"--expand selection
 vnoremap af :action EditorSelectWord <CR>
 vnoremap AF :action EditorUnSelectWord <CR>
 "--repeatable indent/outdent
@@ -110,8 +110,9 @@ vnoremap > :action EditorIndentLineOrSelection <CR>
 "--rewrite jump-list
 nnoremap <C-o> :action Back <CR>
 nnoremap <C-i> :action Forward <CR>
-"--AceJump line
-noremap <C-S-;> :action AceLineAction <CR>
+"--easymotion
+nmap s <Plug>(easymotion-s)
+vmap s <Plug>(easymotion-s)
 
 "--Change action
 let g:WhichKeyDesc_C= "c Change"

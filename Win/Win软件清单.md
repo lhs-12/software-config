@@ -14,6 +14,7 @@ Notion
 百度网盘
 网易云音乐
 PotPlayer
+AutoHotkey
 微信,QQ
 系统美化: TranslucentTB(透明化任务栏) + material-design-cursors(鼠标光标主题) + (个性化->颜色->深色)
 ```
@@ -26,11 +27,11 @@ VSCode
 JetBrains Toolbox -> IDEA
 MobaXterm
 Navicat(DeltaFoX)
-RedisDesktopManager(Github找安装包)
-Node.js
+RedisInsight
 Docker
 ApiFox/Postman
-AutoHotkey
+Python
+Node.js
 ```
 
 # 浏览器插件
