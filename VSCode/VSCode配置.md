@@ -25,6 +25,7 @@ code ^
 --install-extension mushan.vscode-paste-image ^                       # Paste Image                         Markdown图片复制
 --install-extension oorzc.mind-map ^                                  # vscode-mindmap(oorzc)               Mindmap支持
 --install-extension hediet.vscode-drawio ^                            # Draw.io Integration                 图表编辑(.drawio)
+--install-extension pomdtr.excalidraw-editor ^                        # Excalidraw                          图表编辑(.excalidraw)
 --install-extension ms-toolsai.jupyter ^                              # Jupyter                             Jupyter套件
 
 # 容器
@@ -109,6 +110,10 @@ VSCode配置: settings.json
   "markdown-preview-enhanced.plantumlJarPath": "D:/Program Files/tools/plantuml.jar",
   "pasteImage.path": "${currentFileDir}/pictures/${currentFileNameWithoutExt}/",
   "pasteImage.defaultName": "x",
+  // 画图
+  "hediet.vscode-drawio.appearance": "dark",
+  "excalidraw.theme": "dark",
+  "excalidraw.language": "zh-CN",
   // 格式化配置
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "prettier.configPath": "C:/Users/L/.prettierrc",
@@ -118,10 +123,9 @@ VSCode配置: settings.json
   "[css]": { "files.autoSave": "off", "editor.formatOnSave": true },
   "[less]": { "files.autoSave": "off", "editor.formatOnSave": true },
   "[vue]": { "files.autoSave": "off", "editor.formatOnSave": true },
-  "ruff.lineLength": 120,
-  "ruff.lint.select": ["F", "E", "W", "I", "UP", "B", "SIM"],
-  "[python]": { "editor.defaultFormatter": "charliermarsh.ruff", "editor.formatOnSave": true },
   "[java]": { "editor.defaultFormatter": "redhat.java" },
+  "[python]": { "editor.defaultFormatter": "charliermarsh.ruff", "editor.formatOnSave": true },
+  "ruff.configuration": "C:/Users/L/ruff.toml",
   // NeoVim
   "extensions.experimental.affinity": { "asvetliakov.vscode-neovim": 1 },
   "vscode-neovim.neovimInitVimPaths.win32": "C:/Users/L/AppData/Local/vscode-nvim/init.lua",
@@ -129,7 +133,7 @@ VSCode配置: settings.json
   "vscode-neovim.ctrlKeysForNormalMode": /*prettier-ignore*/ [ // 保留 c, n, s, x, z
     "a", "b", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "o", "p", "q", "r", "t", "u", "v", "w", "y",
     "up", "right", "left", "down", "backspace", "delete", "]",
-  ]
+  ],
 }
 ```
 
@@ -234,6 +238,17 @@ Prettier配置文件
   "semi": true,
   "bracketSpacing": true
 }
+```
+
+Ruff配置文件
+```toml
+line-length = 120
+indent-width = 4
+target-version = "py312"
+
+[lint]
+select = ["F", "E", "W", "A", "PLC", "PLE", "PLW", "I", "UP", "B", "SIM"]
+ignore = []
 ```
 
 修改主题：执行命令 Markdown Preview Enhanced: Customize CSS(Global)
