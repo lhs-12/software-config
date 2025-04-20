@@ -233,10 +233,7 @@ Prettier配置文件
 {
   "useTabs": false,
   "tabWidth": 2,
-  "printWidth": 180,
-  "singleQuote": true,
-  "semi": true,
-  "bracketSpacing": true
+  "printWidth": 120
 }
 ```
 

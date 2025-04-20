@@ -14,6 +14,7 @@ Notion
 百度网盘
 网易云音乐
 PotPlayer
+Z-Library + Koodo-Reader
 AutoHotkey
 微信,QQ
 系统美化: TranslucentTB(透明化任务栏) + material-design-cursors(鼠标光标主题) + (个性化->颜色->深色)
@@ -45,9 +46,14 @@ Vimium
 Vue.js devtools
 ```
 
-# 脚本
+# 设置
 
-Windows11新旧右键菜单切换
+win11: 资源管理器 -> 选项 -> 常规 -> 打开文件资源管理器时打开"此电脑"  
+win11: 资源管理器 -> 选项 -> 查看 -> 高级设置 -> 导航窗格 -> 勾选"显示所有文件夹"
+
+---
+
+执行Windows11新旧右键菜单切换脚本
 ```bat
 @echo off
 title Windows 11 新旧右键菜单切换
