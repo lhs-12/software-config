@@ -35,13 +35,13 @@ sparseVhd=true
 
 ---
 
-安装发行版 AlmaLinux-9 为例
+安装发行版, 以 FedoraLinux-42 为例
 
 - 查看可安装的 Linux 发行版: `wsl --list --online`
-- 执行安装: `wsl --install -d AlmaLinux-9`
-- 指定默认使用: `wsl -s AlmaLinux-9`
-- 启动: `wsl -d AlmaLinux-9`
-- 配置用户名和密码
+- 执行安装: `wsl --install -d FedoraLinux-42`
+- 指定默认使用: `wsl -s FedoraLinux-42`
+- 启动: `wsl -d FedoraLinux-42`
+- 配置用户名 (可选配置密码: `sudo passwd [用户名]`)
 
 > 也可以 Github 搜索下载 Linux-WSL 发行版(.appx 文件), 改后缀为 zip 解压到指定目录并打开
 
@@ -54,7 +54,7 @@ sparseVhd=true
 
 进入 WSL
 
-- 修改配置: `vim ~/.bashrc`
+- 修改配置: `vi ~/.bashrc`
 - 使配置生效: `source ~/.bashrc`
 - 执行`proxy`和`unproxy`实现代理开关
 
@@ -67,16 +67,17 @@ alias proxy='
     export HTTPS_PROXY="http://${hostip}:${hostport}";
     export HTTP_PROXY="http://${hostip}:${hostport}";
     export ALL_PROXY="http://${hostip}:${hostport}";
-    git config --global http.proxy "http://${hostip}:${hostport}"
-    git config --global https.proxy "http://${hostip}:${hostport}"
+    git config --global http.proxy "http://${hostip}:${hostport}";
+    git config --global https.proxy "http://${hostip}:${hostport}";
+    sudo sed -i "/proxy=http:/d" /etc/dnf/dnf.conf;
     echo -e "proxy=http://${hostip}:${hostport}" | sudo tee -a /etc/dnf/dnf.conf > /dev/null;
 '
 alias unproxy='
     unset HTTPS_PROXY;
     unset HTTP_PROXY;
     unset ALL_PROXY;
-    git config --global --unset http.proxy
-    git config --global --unset https.proxy
+    git config --global --unset http.proxy;
+    git config --global --unset https.proxy;
     sudo sed -i "/proxy=http:/d" /etc/dnf/dnf.conf;
 '
 ```
@@ -87,23 +88,58 @@ alias unproxy='
 - `alias | grep -E 'proxy|unproxy'`
 - `git config --global --get http.proxy`
 
-# 安装软件
+对于Chrome, 加参数: `chromium-browser --proxy-server=localhost:10808`
+
+# 安装配置
 
 ```sh
 # 打开Docker Desktop, 设置WSL集成
 
-# 添加仓库
-sudo dnf install epel-release
+# 设置真彩色
+echo 'export COLORTERM=truecolor' >> ~/.bashrc
 # 更新仓库元数据
 sudo dnf makecache
 # 更新所有包
 sudo dnf upgrade -y
+# 安装常用包
+sudo dnf install -y @core development-tools gcc-c++ net-tools git tldr --exclude=plymouth*
+# 取消软件边框修改参考: https://github.com/microsoft/wslg/issues/530#issuecomment-2628240995
+sudo dnf install -y fontconfig gnome-text-editor nautilus libglvnd-gles chromium
+# 安装字体
+sudo dnf install -y google-noto-sans-mono-cjk-vf-fonts
+sudo mkdir -p /usr/share/fonts/sarasa
+sudo find /mnt/c/Windows/Fonts -name "*Sarasa*" -exec cp {} /usr/share/fonts/sarasa \;
+sudo chown -R root: /usr/share/fonts/sarasa
+sudo chmod 644 /usr/share/fonts/sarasa/*
+sudo restorecon -vFr /usr/share/fonts/sarasa
+sudo fc-cache -fv
 # 安装mise(多语言版本控制)
 curl https://mise.run | sh
 echo 'eval "$(~/.local/bin/mise activate bash)"' >> ~/.bashrc
 source ~/.bashrc
-# 安装常用包
-sudo dnf install -y net-tools tldr git
+```
+
+# 输入法
+
+```sh
+sudo dnf install fcitx5 fcitx5-rime fcitx5-configtool
+
+vi ~/.bashrc # 修改内容
+export INPUT_METHOD=fcitx                                                                                               export GTK_IM_MODULE=fcitx
+export QT_IM_MODULE=fcitx
+export XMODIFIERS=@im=fcitx
+source ~/.bashrc
+
+cd ~/.local/share/fcitx5/rime
+sudo cp -r /mnt/c/Users/L/AppData/Roaming/Rime/* .
+rm -rf ./build
+
+fcitx5 --disable=wayland & # 启动
+fcitx5-configtool # 输入法选项框添加Rime
+fcitx5-remote -r # 重置
+pkill fcitx5
+fcitx5 --disable=wayland &
+fcitx5-diagnose # Rime不生效的时候用
 ```
 
 # GUI 应用无边框
@@ -111,8 +147,8 @@ sudo dnf install -y net-tools tldr git
 对于 JetBrains 系列产品, 可增加 VM 参数解决: `-Dawt.toolkit.name=WLToolkit`
 
 通用方案:  
-执行: `sudo dnf install -y wmctrl xdotool`  
-保存脚本: `fullscreen.sh`, 执行`./fullscreen.sh [应用名]`
+执行: `sudo dnf install -y wmctrl xdotool xorg-x11-utils`  
+保存脚本: `vi ~/fullscreen.sh`, 执行`~/fullscreen.sh [应用名]`
 
 ```bash
 #!/bin/bash

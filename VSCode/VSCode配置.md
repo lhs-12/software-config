@@ -17,6 +17,7 @@ code ^
 --install-extension fabiospampinato.vscode-open-in-application ^      # Open in Application                 默认程序打开文件
 --install-extension ms-vscode-remote.vscode-remote-extensionpack ^    # Remote Development                  远程开发套件(WSL/容器/SSH...)
 --install-extension ms-vsliveshare.vsliveshare ^                      # Live Share                          实时共享
+--install-extension yinfei.luahelper ^                                # Lua                                 Lua支持
 --install-extension mark-wiemer.vscode-autohotkey-plus-plus ^         # AutoHotkey Plus Plus                AutoHotkey支持
 
 # Markdown及笔记
@@ -123,6 +124,7 @@ VSCode配置: settings.json
   "[css]": { "files.autoSave": "off", "editor.formatOnSave": true },
   "[less]": { "files.autoSave": "off", "editor.formatOnSave": true },
   "[vue]": { "files.autoSave": "off", "editor.formatOnSave": true },
+  "[lua]": { "editor.defaultFormatter": "yinfei.luahelper" },
   "[java]": { "editor.defaultFormatter": "redhat.java" },
   "[python]": { "editor.defaultFormatter": "charliermarsh.ruff", "editor.formatOnSave": true },
   "ruff.configuration": "C:/Users/L/ruff.toml",
