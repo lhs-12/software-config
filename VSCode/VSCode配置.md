@@ -141,50 +141,39 @@ VSCode配置: settings.json
 
 安装NeoVim, 配置文件
 ```lua
-if vim.g.vscode then
-    local vscode = require('vscode')
-    local function keymap(mode, lhs, rhs, opts)
-        local options = {noremap = true, silent = true}
-        if opts then options = vim.tbl_extend('force', options, opts) end
-        vim.keymap.set(mode, lhs, rhs, options)
-    end
-    vim.g.mapleader = " "
-    keymap('n', '<C-q>', '<C-x>')
-    keymap('n', 'H', '^')
-    keymap('n', 'L', '$')
-    keymap('n', 'K', function() vscode.call('editor.action.showHover') end)
-    keymap('n', 'cd', function() vscode.call('editor.action.rename') end)
-    keymap('n', 'gf', function() vscode.call('workbench.action.gotoSymbol') end)
-    keymap('n', 'gi', function() vscode.call('editor.action.goToImplementation') end)
-    keymap('n', 'gs', function() vscode.call('java.action.navigateToSuperImplementation') end)
-    keymap('n', 'gp', function() vscode.call('workbench.explorer.fileView.focus') end)
-    keymap('n', '<leader>af', function() 
-        vscode.call('editor.action.organizeImports')
-        vscode.call('editor.action.formatDocument')
-    end)
-    keymap('n', '<leader>ap', function() vscode.call('editor.action.showContextMenu') end)
-    keymap('n', '<leader>ar', function() vscode.call('editor.action.refactor') end)
-    keymap('n', '<leader>db', function() vscode.call('editor.debug.action.toggleBreakpoint') end)
-    keymap('n', '<leader>mm', function() vscode.call('bookmarks.toggle') end)
-    keymap('n', '<leader>me', function() vscode.call('bookmarks.toggleLabeled') end)
-    keymap('n', '<leader>ms', function() vscode.call('bookmarks.listFromAllFiles') end)
-    keymap('n', '<leader>wp', function() vscode.call('workbench.action.toggleSidebarVisibility') end)
-    keymap('n', '<leader>wr', function() vscode.call('workbench.action.quickOpen') end)
-    keymap('n', '<leader>ww', function() vscode.call('workbench.action.closeActiveEditor') end)
-    keymap('n', '<leader>wo', function() vscode.call('workbench.action.closeOtherEditors') end)
-    keymap('n', '<leader>wc', function() vscode.call('workbench.action.toggleCenteredLayout') end)
-    keymap('v', 'H', '^')
-    keymap('v', 'L', '$')
-    keymap('v', 'af', function() vscode.call('editor.action.smartSelect.grow') end)
-    keymap('v', 'AF', function() vscode.call('editor.action.smartSelect.shrink') end)
-    keymap('v', '>', function() vscode.call('editor.action.indentLines') end)
-    keymap('v', '<', function() vscode.call('editor.action.outdentLines') end)
-    keymap('v', '<leader>ap', function() vscode.call('editor.action.showContextMenu') end)
-    keymap('v', '<leader>ar', function() vscode.call('editor.action.refactor') end)
-    keymap('v', '<leader>wt', function() vscode.call('translation.translate') end)
-    keymap('o', 'H', '^')
-    keymap('o', 'L', '$')
-end
+local vscode = require('vscode')
+local keymap = vim.keymap.set
+local opts = { noremap = true, silent = true }
+vim.g.mapleader = " "
+keymap('n', '<C-q>', '<C-x>', opts)
+keymap('n', 'K', function() vscode.call('editor.action.showHover') end, opts)
+keymap('n', 'cd', function() vscode.call('editor.action.rename') end, opts)
+keymap('v', '>', function() vscode.call('editor.action.indentLines') end, opts)
+keymap('v', '<', function() vscode.call('editor.action.outdentLines') end, opts)
+keymap('v', 'af', function() vscode.call('editor.action.smartSelect.grow') end, opts)
+keymap('v', 'AF', function() vscode.call('editor.action.smartSelect.shrink') end, opts)
+keymap('n', 'gf', function() vscode.call('workbench.action.gotoSymbol') end, opts)
+keymap('n', 'gi', function() vscode.call('editor.action.goToImplementation') end, opts)
+keymap('n', 'gs', function() vscode.call('java.action.navigateToSuperImplementation') end, opts)
+keymap('n', 'gp', function() vscode.call('workbench.explorer.fileView.focus') end, opts)
+keymap('n', 'gy', function() vscode.call('editor.action.goToTypeDefinition') end, opts)
+keymap('n', 'ge', function() vscode.call('remote-wsl.revealInExplorer') end, opts)
+keymap('n', '<leader>af', function() vscode.call('editor.action.organizeImports') vscode.call('editor.action.formatDocument') end, opts)
+keymap({'n', 'v'}, '<leader>ai', function() vscode.call('editor.action.quickFix') end, opts)
+keymap({'n', 'v'}, '<leader>ap', function() vscode.call('editor.action.showContextMenu') end, opts)
+keymap({'n', 'v'}, '<leader>ar', function() vscode.call('editor.action.refactor') end, opts)
+keymap('n', '<leader>db', function() vscode.call('editor.debug.action.toggleBreakpoint') end, opts)
+keymap('n', '<leader>mm', function() vscode.call('bookmarks.toggle') end, opts)
+keymap('n', '<leader>me', function() vscode.call('bookmarks.toggleLabeled') end, opts)
+keymap('n', '<leader>ms', function() vscode.call('bookmarks.listFromAllFiles') end, opts)
+keymap('n', '<leader>wp', function() vscode.call('workbench.action.toggleSidebarVisibility') end, opts)
+keymap('n', '<leader>wr', function() vscode.call('workbench.action.quickOpen') end, opts)
+keymap('n', '<leader>wo', function() vscode.call('workbench.action.closeOtherEditors') end, opts)
+keymap('n', '<leader>ww', function() vscode.call('workbench.action.closeActiveEditor') end, opts)
+keymap('n', '<leader>wz', function() vscode.call('workbench.action.toggleZenMode') end, opts)
+keymap('n', '<leader>wf', function() vscode.call('workbench.action.toggleFullScreen') end, opts)
+keymap('n', '<leader>wc', function() vscode.call('workbench.action.toggleCenteredLayout') end, opts)
+-- keymap('v', '<leader>wt', function() vscode.call('translation.translate') end, opts)
 ```
 
 LaTeX Workshop 配置, 按需添加
