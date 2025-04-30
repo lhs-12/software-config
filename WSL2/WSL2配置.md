@@ -95,6 +95,8 @@ alias unproxy='
 ```sh
 # 打开Docker Desktop, 设置WSL集成
 
+# 可参考https://kskroyal.com/10-important-things-to-do-right-after-installing-fedora-40/ 
+
 # 设置真彩色
 echo 'export COLORTERM=truecolor' >> ~/.bashrc
 # 更新仓库元数据

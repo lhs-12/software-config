@@ -94,13 +94,6 @@ map <C-c> "+y
 map <C-S-v> "+p
 "--replace ctrl x function by ctrl q
 noremap <C-q> <C-x>
-"--jump to begin or end
-nnoremap H ^
-vnoremap H ^
-onoremap H ^
-nnoremap L $
-vnoremap L $
-onoremap L $
 "--expand selection
 vnoremap af :action EditorSelectWord <CR>
 vnoremap AF :action EditorUnSelectWord <CR>
@@ -110,9 +103,6 @@ vnoremap > :action EditorIndentLineOrSelection <CR>
 "--rewrite jump-list
 nnoremap <C-o> :action Back <CR>
 nnoremap <C-i> :action Forward <CR>
-"--easymotion
-nmap s <Plug>(easymotion-s)
-vmap s <Plug>(easymotion-s)
 
 "--Change action
 let g:WhichKeyDesc_C= "c Change"
@@ -131,10 +121,12 @@ nnoremap gd :action GotoDeclaration <CR>
 nnoremap gf :action FileStructurePopup <CR>
 nnoremap gi :action GotoImplementation <CR>
 nnoremap gs :action GotoSuperMethod <CR>
+nnoremap gy :action GotoTypeDeclaration <CR>
 let g:WhichKeyDesc_GD= "gd declaration/usages"
 let g:WhichKeyDesc_GF= "gf file structure"
 let g:WhichKeyDesc_GI= "gi implementations"
 let g:WhichKeyDesc_GS= "gs super"
+let g:WhichKeyDesc_GY= "gy type declaration"
 
 nnoremap gq :action QuickImplementations <CR>
 nnoremap gp :action SelectInProjectView <CR>
@@ -202,7 +194,7 @@ nnoremap <leader>wz :action ToggleZenMode <CR>
 nnoremap <leader>wf :action ToggleFullScreen <CR>
 nnoremap <leader>wn :action ToggleDistractionFreeMode <CR>
 nnoremap <leader>wc :action HideAllWindows <CR>
-vnoremap <leader>wt :action $EditorTranslateAction <CR>
+vnoremap <leader>wt :action Translation.EditorTranslateAction <CR>
 let g:WhichKeyDesc_Windows= "<leader>w Windows"
 let g:WhichKeyDesc_Windows_ProjectView= "<leader>wp project view"
 let g:WhichKeyDesc_Windows_RecentFiles= "<leader>wr recent files"
