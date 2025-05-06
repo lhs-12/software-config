@@ -1,4 +1,4 @@
-﻿; C:/Users/L/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Startup/CapsLock+.ahk
+﻿; %APPDATA%/Microsoft/Windows/Start Menu/Programs/Startup/CapsLock+.ahk
 
 #Requires AutoHotkey 2.0+
 #SingleInstance Force

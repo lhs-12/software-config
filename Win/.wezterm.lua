@@ -16,7 +16,7 @@ if wezterm.target_triple == "x86_64-pc-windows-msvc" then
 	config.win32_system_backdrop = "Acrylic"
 	config.background = {
 		{
-			source = { File = "C:/Users/L/Pictures/wez.jpg" },
+			source = { File = os.getenv("HOMEPATH") .. "/Pictures/wez.jpg" },
 			opacity = 0.8,
 			hsb = { brightness = 0.05, hue = 0.5, saturation = 0.5 },
 		},

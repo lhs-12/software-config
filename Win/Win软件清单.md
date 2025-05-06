@@ -2,16 +2,16 @@
 
 # 基本软件
 ```
-VC++运行库(搜"The latest supported Visual C++ downloads")
+等宽字体: 更纱黑体(https://github.com/be5invis/Sarasa-Gothic)
+Nerd字体: Maple Mono(https://github.com/subframe7536/maple-font)
+VC++运行库(`winget search Microsoft.VCRedist`, 或搜索"The latest supported Visual C++ downloads")
 Office(用Office Tool Plus,搜kms.loli.beer)
-字体(sarasa-mono/term-sc-regular/semi, JetBrainsMono Nerd Font, Noto Mono)
 RIME输入法
-gsudo
 360压缩
 Snipaste
-Everything
+Everything Alpha版本
 Notion
-百度网盘
+百度网盘, 夸克网盘, 阿里网盘
 网易云音乐
 PotPlayer
 Z-Library + Koodo-Reader
@@ -23,16 +23,20 @@ AutoHotkey
 # 开发软件
 ```
 Git
+WezTerm, MobaXterm
 WSL2
-VSCode
-JetBrains Toolbox -> IDEA
-MobaXterm
-Navicat(DeltaFoX)
-RedisInsight
 Docker
-ApiFox/Postman
-Python
+VSCode, JetBrains Toolbox
+Navicat(DeltaFoX), RedisInsight, ApiFox/Postman/Hoppscotch
+UV(Python)
 Node.js
+
+winget install lsd-rs.lsd tldr-pages.tlrc ajeetdsouza.zoxide bootandy.dust \
+Neovim.Neovim  junegunn.fzf BurntSushi.ripgrep.MSVC sharkdp.fd
+
+修改配置 vi ~/.bashrc
+eval "$(zoxide init bash)"
+alias ls='lsd'
 ```
 
 # 浏览器插件

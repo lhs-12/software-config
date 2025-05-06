@@ -76,7 +76,16 @@ app_options:
   idea64.exe:
     ascii_mode: true
     vim_mode: true
+  pycharm64.exe:
+    ascii_mode: true
+    vim_mode: true
+  webstorm64.exe:
+    ascii_mode: true
+    vim_mode: true
   nvim.exe:
+    ascii_mode: true
+    vim_mode: true
+  wezterm-gui.exe:
     ascii_mode: true
     vim_mode: true
   windowsterminal.exe:

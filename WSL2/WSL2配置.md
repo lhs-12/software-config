@@ -19,7 +19,7 @@ wsl --unregister [发行版名称]
 
 ---
 
-用户目录下新建 wsl 配置文件, 如 `C:/Users/L/.wslconfig`  
+新建配置文件: `%HOMEPATH%/.wslconfig`  
 参考官方文档进行配置, 注意版本(如有需要, 使用 `wsl --update` 升级)
 
 ```toml

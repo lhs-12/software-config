@@ -4,29 +4,29 @@
 
 # 插件
 
-```shell
-idea64.exe installPlugins ^
-mobi.hsz.idea.gitignore ^                                   # .ignore
-com.jetbrains.plugins.ini4idea ^                            # Ini
-ru.adelf.idea.dotenv ^                                      # .env files support
-com.mallowigi ^                                             # Atom Material Icons
-TheBlind.privateNotes ^                                     # Private Notes
-com.bruce.intellijplugin.generatesetter ^                   # GenerateAllSetter
-GenerateSerialVersionUID ^                                  # GenerateSerialVersionUID
-com.ccnode.codegenerator.MyBatisCodeHelperProMarketPlace ^  # MyBatisCodeHelperPro(Marketplace Edition)
-MavenRunHelper ^                                            # Maven Helper
-cn.yiiguxing.plugin.translate ^                             # Translation
-com.alibaba.p3c.xenoamess ^                                 # Alibaba Java Coding Guidelines
-CheckStyle-IDEA ^                                           # CheckStyle-IDEA
-com.intellij.plugins.html.instantEditing ^                  # Live Edit
-Pythonid ^                                                  # Python
-IdeaVIM ^                                                   # IdeaVim
-eu.theblob42.idea.whichkey ^                                # Which-Key
-com.joshestein.ideavim-quickscope ^                         # IdeaVim-Quickscope
-org.jetbrains.IdeaVim-EasyMotion ^                          # IdeaVim-EasyMotion
-AceJump ^                                                   # AceJump
+```bash
+idea64.exe installPlugins \
+mobi.hsz.idea.gitignore \                                   # .ignore
+com.jetbrains.plugins.ini4idea \                            # Ini
+ru.adelf.idea.dotenv \                                      # .env files support
+com.mallowigi \                                             # Atom Material Icons
+TheBlind.privateNotes \                                     # Private Notes
+com.bruce.intellijplugin.generatesetter \                   # GenerateAllSetter
+GenerateSerialVersionUID \                                  # GenerateSerialVersionUID
+com.ccnode.codegenerator.MyBatisCodeHelperProMarketPlace \  # MyBatisCodeHelperPro(Marketplace Edition)
+MavenRunHelper \                                            # Maven Helper
+cn.yiiguxing.plugin.translate \                             # Translation
+com.alibaba.p3c.xenoamess \                                 # Alibaba Java Coding Guidelines
+CheckStyle-IDEA \                                           # CheckStyle-IDEA
+com.intellij.plugins.html.instantEditing \                  # Live Edit
+Pythonid \                                                  # Python
+IdeaVIM \                                                   # IdeaVim
+eu.theblob42.idea.whichkey \                                # Which-Key
+com.joshestein.ideavim-quickscope \                         # IdeaVim-Quickscope
+org.jetbrains.IdeaVim-EasyMotion \                          # IdeaVim-EasyMotion
+AceJump \                                                   # AceJump
 
-# 对以上内容使用vi命令编辑, 并执行编辑后的结果. 命令:%s/\^.*/^/
+# 对以上内容使用vi命令编辑, 并使用Bash执行. 命令:%s/\\.*/\\/
 
 # 其他
 # Big Data Tools 系列插件
@@ -105,20 +105,9 @@ public void test$NAME$() {
 
 # IdeaVim 配置
 
-配置文件(~/.ideavimrc)
-
+配置文件(~/.ideavimrc)  
 使用 RIME 输入法, 模式切换时变更输入法
 
-从 IDEA 调用 NeoVim 打开当前文件, 配合 neovide 使用  
-配置: Tools -> External Tools, 增加 NeoVim 选项配置
-
-```
-Program:            nvim
-Arguments:          --wsl --frame none --maximized ./$FileName$
-Working directory:  $FileDir$
-
-取消勾选Open console for tool output
-```
 
 Vim 快捷键冲突及功能参考
 | 快捷键 | IDEA功能           | Insert模式                     | Normal模式                   | Visual模式               | Command-line模式   |
@@ -130,7 +119,7 @@ Vim 快捷键冲突及功能参考
 | Ctrl+[ | 跳到附近大括号头部 | 退出Insert模式                 | 同Esc键, 退出当前模式        | 退出Visual模式           | 取消命令行         |
 | Ctrl+] | 跳到附近大括号尾部 | 无作用                         | 跳转到光标下标识符的定义处   | 跳转到选中标识符的定义处 | 无作用             |
 | Ctrl+\ | 文件选择列表根目录 | 无作用                         | 无特定作用                   | 无特定作用               | 无作用             |
-| Ctrl+a | 全选               | 插入上次插入的文本             | 将光标下的数字加1            | 选中所有文本             | 移动到行首         |
+| Ctrl+a | 全选               | 插入上次插入的文本             | 将光标下的数字加1            | 无特定作用               | 找到所有匹配文件   |
 | Ctrl+b | 去声明或使用处     | 无作用                         | 向上滚动一页                 | 向上滚动一页             | 向左移动一个字符   |
 | Ctrl+c | 复制               | 退出Insert模式,同Esc           | 中断当前操作                 | 退出Visual模式           | 取消命令行         |
 | Ctrl+d | 复制;对比文件      | 减少当前行缩进                 | 向下滚动半页                 | 向下滚动半页             | 显示可能的补全列表 |

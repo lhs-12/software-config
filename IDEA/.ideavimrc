@@ -81,14 +81,24 @@ let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
 "=========================================================================================
 " Config
 set scrolloff=5
+set number relativenumber
 set hlsearch
 set incsearch
-set number relativenumber
+set ignorecase
+set smartcase
 
 "=========================================================================================
 " Keymap
+"--close hlsearch
+nnoremap <esc> :noh<CR><esc>
+"--switch tab
+nnoremap L gt
+nnoremap H gT
 "--set space as leader key
 let mapleader="\<space>"
+"--blackhole x
+nnoremap x "_x
+nnoremap X "_X
 "--system clipboard map
 map <C-c> "+y
 map <C-S-v> "+p
@@ -103,11 +113,14 @@ vnoremap > :action EditorIndentLineOrSelection <CR>
 "--rewrite jump-list
 nnoremap <C-o> :action Back <CR>
 nnoremap <C-i> :action Forward <CR>
+"--easymotion
+nmap s <Plug>(easymotion-s)
+vmap s <Plug>(easymotion-s)
 
 "--Change action
 let g:WhichKeyDesc_C= "c Change"
 
-nnoremap cd :action RenameElement <CR>
+nnoremap cd :action RenameElement <CR><Right>
 let g:WhichKeyDesc_CD= "cd change definition"
 let g:WhichKeyDesc_CS= "cs change surround"
 let g:WhichKeyDesc_CX= "cx exchange {motion}"
