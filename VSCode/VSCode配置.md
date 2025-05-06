@@ -19,6 +19,7 @@ code \
 --install-extension mark-wiemer.vscode-autohotkey-plus-plus \         # AutoHotkey Plus Plus                AutoHotkey支持
 --install-extension johnnymorganz.stylua \                            # StyLua                              Lua支持
 --install-extension tamasfe.even-better-toml \                        # Even Better TOML                    TOML支持
+--install-extension redis.redis-for-vscode \                          # Redis for VS Code                   Redis
 
 # Markdown及笔记
 --install-extension shd101wyy.markdown-preview-enhanced \             # Markdown Preview Enhanced           Markdown功能集成
@@ -215,7 +216,9 @@ if vim.fn.isdirectory(leap_path) == 0 then
   vim.fn.system({ "git", "clone", "--depth=1", "https://github.com/ggandor/leap.nvim.git", leap_path })
 end
 vim.opt.rtp:append(leap_path)
-require('leap').add_default_mappings()
+vim.keymap.set({ 'n', 'x', 'o' }, 's', function()
+  require('leap').leap({ target_windows = { vim.api.nvim_get_current_win() } })
+end)
 ```
 
 LaTeX Workshop 配置, 按需添加
