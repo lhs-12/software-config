@@ -114,3 +114,5 @@ switches:
   - name: ascii_punct
     reset: 1 # 默认用英文标点
 ```
+
+`rime_ice.dict.yaml`里面, 开启"大字表"

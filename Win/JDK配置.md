@@ -36,6 +36,7 @@ echo choose JDK path:%JAVA_HOME%
 
 wmic ENVIRONMENT where "name='JAVA_HOME'" delete
 wmic ENVIRONMENT create name="JAVA_HOME",username="<system>",VariableValue="%JAVA_HOME%"
+SETX JAVA_HOME "%JAVA_HOME%" >nul
 
 echo press any key to exit
 pause>nul
