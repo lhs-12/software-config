@@ -49,7 +49,7 @@ config.font_size = 12.0
 config.adjust_window_size_when_changing_font_size = false
 config.default_cursor_style = "SteadyUnderline"
 config.font = wezterm.font_with_fallback({
-	"JetBrainsMono Nerd Font",
+	"Maple Mono NF CN",
 	"Sarasa Mono SC",
 })
 -- Keys
@@ -57,6 +57,7 @@ config.disable_default_key_bindings = false
 config.use_dead_keys = false
 local act = wezterm.action
 config.keys = {
+	{ mods = "CTRL|SHIFT", key = "w", action = act.CloseCurrentTab { confirm = false } },
 	{ mods = "CTRL|SHIFT", key = "j", action = act.ActivatePaneDirection("Next") },
 }
 return config

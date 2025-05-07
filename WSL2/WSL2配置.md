@@ -127,7 +127,8 @@ source ~/.bashrc
 sudo dnf install fcitx5 fcitx5-rime fcitx5-configtool
 
 vi ~/.bashrc # 修改内容
-export INPUT_METHOD=fcitx                                                                                               export GTK_IM_MODULE=fcitx
+export INPUT_METHOD=fcitx                                                                                               
+export GTK_IM_MODULE=fcitx
 export QT_IM_MODULE=fcitx
 export XMODIFIERS=@im=fcitx
 source ~/.bashrc
