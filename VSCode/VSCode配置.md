@@ -126,7 +126,7 @@ VSCode配置: settings.json
   "[lua]": { "editor.defaultFormatter": "JohnnyMorganz.stylua" },
   "[java]": { "editor.defaultFormatter": "redhat.java" },
   "[python]": { "editor.defaultFormatter": "charliermarsh.ruff", "editor.formatOnSave": true },
-  "ruff.configuration": "${env:USERPROFILE}/ruff.toml",
+  "ruff.configuration": "C:/Users/L/ruff.toml",
   // NeoVim
   "extensions.experimental.affinity": { "asvetliakov.vscode-neovim": 1 },
   "vscode-neovim.ctrlKeysForInsertMode": ["d", "o", "r", "t", "u", "w"],

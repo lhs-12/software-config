@@ -6,9 +6,9 @@
 ```bat
 @echo off
 :init
-set JAVA_HOME_08=C:\Users\L\.jdks\adopt-openjdk-1.8.0_302
-set JAVA_HOME_17=C:\Users\L\.jdks\temurin-17.0.10
-set JAVA_HOME_21=C:\Users\L\.jdks\openjdk-21.0.2
+set JAVA_HOME_08=%HOMEPATH%\.jdks\adopt-openjdk-1.8.0_302
+set JAVA_HOME_17=%HOMEPATH%\.jdks\temurin-17.0.10
+set JAVA_HOME_21=%HOMEPATH%\.jdks\openjdk-21.0.2
 :start
 
 echo current JDK version:
