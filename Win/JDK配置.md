@@ -1,45 +1,40 @@
 # JDK配置
 
-系统变量PATH增加`%JAVA_HOME%\bin`
+环境变量 -> 用户变量 -> Path增加`%JAVA_HOME%\bin`
 
-配置JDK版本切换脚本, 管理员权限运行
-```bat
-@echo off
-:init
-set JAVA_HOME_08=%HOMEPATH%\.jdks\adopt-openjdk-1.8.0_302
-set JAVA_HOME_17=%HOMEPATH%\.jdks\temurin-17.0.10
-set JAVA_HOME_21=%HOMEPATH%\.jdks\openjdk-21.0.2
-:start
+保存脚本`jdk-version-script.ps1`, 生成快捷方式  
+快捷方式右键属性 -> 快捷方式 -> 目标 -> 改启动方式`powershell -File "文件路径"`
 
-echo current JDK version:
-echo =============================================
-java -version
-echo =============================================
-echo support JDK list:
-echo  jdk8
-echo  jdk17
-echo  jdk21
-echo =============================================
-:select
-set /p opt=choose JDK version:
-if %opt%==8 (
-    set JAVA_HOME=%JAVA_HOME_08%
-)
-if %opt%==17 (
-    set JAVA_HOME=%JAVA_HOME_17%
-)
-if %opt%==21 (
-    set JAVA_HOME=%JAVA_HOME_21%
-)
+```ps1
+$JDK_PATHS = @{
+    "8"  = "$env:USERPROFILE\.jdks\adopt-openjdk-1.8.0_302"
+    "17" = "$env:USERPROFILE\.jdks\temurin-17.0.10"
+    "21" = "$env:USERPROFILE\.jdks\openjdk-21.0.2"
+}
 
-echo choose JDK path:%JAVA_HOME%
+Write-Host "current JDK version:"
+Write-Host "============================================="
+$javaVersion = java -version 2>&1
+Write-Host $javaVersion
+Write-Host "============================================="
 
-wmic ENVIRONMENT where "name='JAVA_HOME'" delete
-wmic ENVIRONMENT create name="JAVA_HOME",username="<system>",VariableValue="%JAVA_HOME%"
-SETX JAVA_HOME "%JAVA_HOME%" >nul
+Write-Host "support JDK list:"
+$JDK_PATHS.Keys | ForEach-Object { Write-Host "  jdk$_" }
+Write-Host "============================================="
 
-echo press any key to exit
-pause>nul
+$opt = Read-Host "choose JDK version"
+if (-not $JDK_PATHS.ContainsKey($opt)) {
+    Write-Host "version does not exist !"
+    exit 1
+}
 
-@echo on
+$JAVA_HOME = $JDK_PATHS[$opt]
+Write-Host "JDK Home: $JAVA_HOME"
+
+[Environment]::SetEnvironmentVariable("JAVA_HOME", $JAVA_HOME, "User")
+# [Environment]::SetEnvironmentVariable("JAVA_HOME", $JAVA_HOME, "Machine")
+Write-Host "JAVA_HOME updated for user environment"
+
+Write-Host "press any key to exit..."
+[Console]::ReadKey($true) | Out-Null
 ```
