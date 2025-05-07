@@ -14,8 +14,7 @@ $JDK_PATHS = @{
 
 Write-Host "current JDK version:"
 Write-Host "============================================="
-$javaVersion = java -version 2>&1
-Write-Host $javaVersion
+java -version 2>&1 | ForEach-Object { Write-Host $_ }
 Write-Host "============================================="
 
 Write-Host "support JDK list:"
