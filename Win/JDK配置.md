@@ -1,8 +1,6 @@
-# JDK配置
+# JDK 配置
 
-环境变量 -> 用户变量 -> Path增加`%JAVA_HOME%\bin`
-
-保存脚本`jdk-version-script.ps1`, 生成快捷方式  
+保存脚本`jdk-path.ps1`, 生成快捷方式  
 快捷方式右键属性 -> 快捷方式 -> 目标 -> 改启动方式`powershell -File "文件路径"`
 
 ```ps1
@@ -30,9 +28,21 @@ if (-not $JDK_PATHS.ContainsKey($opt)) {
 $JAVA_HOME = $JDK_PATHS[$opt]
 Write-Host "JDK Home: $JAVA_HOME"
 
-[Environment]::SetEnvironmentVariable("JAVA_HOME", $JAVA_HOME, "User")
-# [Environment]::SetEnvironmentVariable("JAVA_HOME", $JAVA_HOME, "Machine")
+[Environment]::SetEnvironmentVariable("JAVA_HOME", $JAVA_HOME, "User") # User/Machine
 Write-Host "JAVA_HOME updated for user environment"
+
+$regKey = [Microsoft.Win32.Registry]::CurrentUser.OpenSubKey("Environment", $false)
+$rawPath = $regKey.GetValue("Path", "", [Microsoft.Win32.RegistryValueOptions]::DoNotExpandEnvironmentNames)
+$regKey.Close()
+if ($rawPath -like "*%JAVA_HOME%\bin*") {
+    Write-Host "%JAVA_HOME%\bin is already in the user Path"
+} else {
+    if (!$rawPath.EndsWith(';')) { $rawPath = $rawPath + ";" }
+    $newPath = $rawPath + "%JAVA_HOME%\bin;"
+    # [Environment]::SetEnvironmentVariable("Path", $newPath, "User") # 有bug, 写入但不刷新
+    # Write-Host "%JAVA_HOME%\bin has been added to the user Path"
+    Write-Host "need to add %JAVA_HOME%\bin to Path!" -ForegroundColor Red
+}
 
 Write-Host "press any key to exit..."
 [Console]::ReadKey($true) | Out-Null
