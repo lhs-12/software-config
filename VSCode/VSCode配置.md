@@ -217,7 +217,23 @@ if vim.fn.isdirectory(leap_path) == 0 then
 end
 vim.opt.rtp:append(leap_path)
 vim.keymap.set({ 'n', 'x', 'o' }, 's', function()
-  require('leap').leap({ target_windows = { vim.api.nvim_get_current_win() } })
+  local winid = vim.api.nvim_get_current_win()
+  local c1 = vim.fn.getcharstr()
+  local c2 = vim.fn.getcharstr()
+  if c1 == ' ' and c2 == ' ' then -- s<space><space> leap line
+    local targets = {}
+    local winid = vim.api.nvim_get_current_win()
+    local wininfo = vim.fn.getwininfo(winid)[1]
+    local lnum = wininfo.topline
+    while lnum <= wininfo.botline do
+      table.insert(targets, { pos = { lnum, 1 }, winid = winid })
+      lnum = lnum + 1
+    end
+    require('leap').leap { targets = targets, target_windows = { winid } }
+  else -- s<char1><char2> leap char1
+    vim.api.nvim_feedkeys(c1 .. c2, 'n', false)
+    require('leap').leap({ target_windows = { winid } })
+  end
 end)
 ```
 

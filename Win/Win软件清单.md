@@ -1,4 +1,4 @@
-# <center>Win10软件清单</center>
+# <center>Win软件清单</center>
 
 # 基本软件
 ```
