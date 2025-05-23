@@ -115,7 +115,6 @@ VSCode配置: settings.json
   "excalidraw.language": "zh-CN",
   // 格式化配置
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "prettier.configPath": "C:/Users/L/.prettierrc",
   "[html]": { "files.autoSave": "off", "editor.formatOnSave": true },
   "[javascript]": { "files.autoSave": "off", "editor.formatOnSave": true },
   "[typescript]": { "files.autoSave": "off", "editor.formatOnSave": true },
@@ -126,7 +125,6 @@ VSCode配置: settings.json
   "[lua]": { "editor.defaultFormatter": "JohnnyMorganz.stylua" },
   "[java]": { "editor.defaultFormatter": "redhat.java" },
   "[python]": { "editor.defaultFormatter": "charliermarsh.ruff", "editor.formatOnSave": true },
-  "ruff.configuration": "C:/Users/L/ruff.toml",
   // NeoVim
   "extensions.experimental.affinity": { "asvetliakov.vscode-neovim": 1 },
   "vscode-neovim.ctrlKeysForInsertMode": ["d", "o", "r", "t", "u", "w"],
@@ -281,6 +279,7 @@ LaTeX Workshop 配置, 按需添加
 ```
 
 Prettier配置文件
+Windows: `%HOMEPATH%\.prettierrc`
 ```json
 {
   "useTabs": false,
@@ -289,7 +288,8 @@ Prettier配置文件
 }
 ```
 
-Ruff配置文件
+Ruff配置文件  
+Windows: `%APPDATA%\ruff\ruff.toml`
 ```toml
 line-length = 120
 indent-width = 4
@@ -308,10 +308,6 @@ ignore = []
   font-size: 18px;
   line-height: 1.4;
   background-color: #181818;
-  /*prettier-ignore*/
-  h1, h2, h3, h4, h5, h6, strong, table th, code, kbd { 
-    color: #d1d1d1;
-  }
   pre {
     background-color: #262626 !important;
   }
@@ -321,17 +317,50 @@ ignore = []
     font-size: 16px;
     line-height: 1.2;
   }
+  /* prettier-ignore */
+  h1, h2, h3, h4, h5, h6, strong, table th, code, kbd { 
+    color: #d1d1d1;
+  }
+  /* prettier-ignore */
+  h2::before, h3::before, h4::before, h5::before, h6::before {
+    color: #707070;
+    font-weight: normal;
+    margin-right: 4px;
+  }
+  h2::before { content: "## " }
+  h3::before { content: "### " }
+  h4::before { content: "#### " }
+  h5::before { content: "##### " }
+  h6::before { content: "###### " }
 }
 ```
 
 可选配置: Markdown渲染折叠显示内容: Markdown Preview Enhanced: Extend Parser(Workspace)
 ```js
-  // 修改parser.js文件
+// 修改parser.js文件
   onDidParseMarkdown: async function (html) {
     const regex = /<h3([^>]*)>([^<]*)<\/h3>([\s\S]*?)(?=<h|$)/gi;
     return html.replace(regex, (_, attrs, content, nextContent) => {
       return `<details><summary><h3 style="display:inline"${attrs}>${content}</h3></summary><br>\n${nextContent.trim()}\n</details><br>`;
     });
   },
-  // 修改style.less: font-family: '仓耳华新体'; font-size: 20px;
+```
+```less
+// 修改style.less
+.markdown-preview.markdown-preview {
+  font-family: "仓耳华新体";
+  font-size: 18px;
+  counter-reset: h2;
+  h2 {
+    counter-reset: h3;
+  }
+  h2::before {
+    counter-increment: h2;
+    content: counter(h2) ". ";
+  }
+  h3::before {
+    counter-increment: h3;
+    content: counter(h2) "." counter(h3) " ";
+  }
+}
 ```
