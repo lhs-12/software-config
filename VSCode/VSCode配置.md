@@ -3,7 +3,7 @@
 # 插件
 
 ```bash
-# 使用Vim编辑以下文本并使用Bash执行
+# 使用Vim编辑以下文本并使用Bash执行(Win改用PS, 行尾用`)
 # 编辑命令:g/^s*$\|^#.*/d | %s/\\.*/\\/
 
 code \
@@ -350,17 +350,24 @@ ignore = []
 .markdown-preview.markdown-preview {
   font-family: "仓耳华新体";
   font-size: 18px;
-  counter-reset: h2;
+  counter-reset: h2 h3-independent;
   h2 {
+    counter-increment: h2;
     counter-reset: h3;
   }
   h2::before {
-    counter-increment: h2;
-    content: counter(h2) ". ";
+    content: counter(h2) ".";
+    font-size: 1.2rem;
   }
-  h3::before {
+  h2 ~ * h3::before {
     counter-increment: h3;
-    content: counter(h2) "." counter(h3) " ";
+    content: counter(h2) "." counter(h3);
+    font-size: 1rem;
+  }
+  h3:not(h2 ~ * h3)::before {
+    counter-increment: h3-independent;
+    content: counter(h3-independent) ".";
+    font-size: 1rem;
   }
 }
 ```

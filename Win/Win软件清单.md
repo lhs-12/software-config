@@ -31,12 +31,15 @@ Navicat(DeltaFoX), RedisInsight, ApiFox/Postman/Hoppscotch
 UV(Python)
 Node.js
 
-winget install lsd-rs.lsd tldr-pages.tlrc ajeetdsouza.zoxide bootandy.dust \
-Neovim.Neovim  junegunn.fzf BurntSushi.ripgrep.MSVC sharkdp.fd
+使用PowerShell执行
+winget install lsd-rs.lsd tldr-pages.tlrc Neovim.Neovim ajeetdsouza.zoxide bootandy.dust `
+sxyazi.yazi Gyan.FFmpeg jqlang.jq ImageMagick.ImageMagick ` 
+junegunn.fzf sharkdp.fd BurntSushi.ripgrep.MSVC
 
 修改配置 vi ~/.bashrc
 eval "$(zoxide init bash)"
 alias ls='lsd'
+alias fdns='ipconfig -flushdns'
 ```
 
 # 浏览器插件

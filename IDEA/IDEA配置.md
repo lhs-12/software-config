@@ -26,7 +26,7 @@ com.joshestein.ideavim-quickscope \                         # IdeaVim-Quickscope
 org.jetbrains.IdeaVim-EasyMotion \                          # IdeaVim-EasyMotion
 AceJump \                                                   # AceJump
 
-# 对以上内容使用vi命令编辑, 并使用Bash执行. 命令:%s/\\.*/\\/
+# 对以上内容使用vi命令编辑, 并使用Bash执行(Win改用PS, 行尾用`). 命令:%s/\\.*/\\/
 
 # 其他
 # Big Data Tools 系列插件

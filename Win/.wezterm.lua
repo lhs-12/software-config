@@ -34,6 +34,10 @@ wezterm.on("format-tab-title", function(tab, tabs)
 	return { { Text = " " .. index .. process .. " " } }
 end)
 -- Window
+wezterm.on("gui-startup", function(cmd)
+	local tab, pane, window = wezterm.mux.spawn_window(cmd or {})
+	window:gui_window():set_position(400, 200)
+end)
 config.window_close_confirmation = "NeverPrompt"
 config.window_decorations = "RESIZE"
 config.enable_scroll_bar = true
@@ -57,7 +61,7 @@ config.disable_default_key_bindings = false
 config.use_dead_keys = false
 local act = wezterm.action
 config.keys = {
-	{ mods = "CTRL|SHIFT", key = "w", action = act.CloseCurrentTab { confirm = false } },
+	{ mods = "CTRL|SHIFT", key = "w", action = act.CloseCurrentTab({ confirm = false }) },
 	{ mods = "CTRL|SHIFT", key = "j", action = act.ActivatePaneDirection("Next") },
 }
 return config
