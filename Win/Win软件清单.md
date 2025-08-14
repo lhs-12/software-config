@@ -23,7 +23,7 @@ AutoHotkey
 # 开发软件
 ```
 Git
-WezTerm, MobaXterm
+WezTerm(Nightly), MobaXterm
 WSL2
 Docker
 VSCode, JetBrains Toolbox
@@ -48,9 +48,9 @@ alias cdg='cd_g() { cd $(fd --type directory $1 $2 | fzf);}; cd_g'
 alias fdns='ipconfig -flushdns'
 ```
 
-yazi配置: 主题选ayu-dark  
-yazi.toml
+yazi配置
 ```toml
+# vim $APPDATA/yazi/config/yazi.toml
 [open]
 append_rules = [{ name = "*/", use = ["open", "edit"], for = "windows" }]
 
@@ -65,6 +65,11 @@ open = [
 
 [plugin]
 prepend_previewers = [{ mime = "video/*", run = "noop" }]
+
+# 执行命令: ya pack -a kmlupreti/ayu-dark
+# vim $APPDATA/yazi/config/theme.toml
+[flavor]
+dark = "ayu-dark"
 ```
 
 # 浏览器插件
