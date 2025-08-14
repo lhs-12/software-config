@@ -34,12 +34,37 @@ Node.js
 使用PowerShell执行
 winget install lsd-rs.lsd tldr-pages.tlrc Neovim.Neovim ajeetdsouza.zoxide bootandy.dust `
 sxyazi.yazi Gyan.FFmpeg jqlang.jq ImageMagick.ImageMagick ` 
-junegunn.fzf sharkdp.fd BurntSushi.ripgrep.MSVC
+junegunn.fzf sharkdp.fd BurntSushi.ripgrep.MSVC Clement.bottom
 
 修改配置 vi ~/.bashrc
 eval "$(zoxide init bash)"
 alias ls='lsd'
+alias la='lsd -a'
+alias ll='lsd --long --header'
+alias less='bat'
+alias cat='bat --paging=never'
+alias yz='yazi'
+alias cdg='cd_g() { cd $(fd --type directory $1 $2 | fzf);}; cd_g'
 alias fdns='ipconfig -flushdns'
+```
+
+yazi配置: 主题选ayu-dark  
+yazi.toml
+```toml
+[open]
+append_rules = [{ name = "*/", use = ["open", "edit"], for = "windows" }]
+
+[opener]
+edit = [{ desc = "NeoVim", for = "windows", block = true, run = 'nvim %*' }]
+play = [{ desc = "PotPlayer", for = "windows", orphan = true, run = '"C:/Program Files/DAUM/PotPlayer/PotPlayerMini64.exe" %0' }]
+open = [
+    { desc = "Open", for = "windows", orphan = true, run = 'start "" "%1"' },
+    { desc = "VSCode", for = "windows", orphan = true, run = 'code %*' },
+    { desc = "PotPlayer", for = "windows", orphan = true, run = '"C:/Program Files/DAUM/PotPlayer/PotPlayerMini64.exe" %0' },
+]
+
+[plugin]
+prepend_previewers = [{ mime = "video/*", run = "noop" }]
 ```
 
 # 浏览器插件
