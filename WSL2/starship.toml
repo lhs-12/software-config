@@ -1,0 +1,7 @@
+# location: ~/.config/starship.toml
+command_timeout = 500
+
+[directory]
+truncation_length = 5
+truncation_symbol = '…/'
+truncate_to_repo = false
