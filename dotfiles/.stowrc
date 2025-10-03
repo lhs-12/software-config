@@ -1,0 +1,4 @@
+--ignore=.stowrc
+--ignore='^setup-.*\.sh$'
+--ignore='\.md$'
+--ignore='\.icls$'

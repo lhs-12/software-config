@@ -1,0 +1,62 @@
+{
+  "files.autoSave": "onFocusChange",
+  "notebook.formatOnSave.enabled": true,
+  "explorer.compactFolders": false,
+  "workbench.startupEditor": "none",
+  "workbench.iconTheme": "vscode-icons",
+  "workbench.layoutControl.enabled": false,
+  "editor.wordSegmenterLocales": ["zh"],
+  "editor.fontFamily": "'Sarasa Term SC Regular','Maple Mono NF CN'",
+  "editor.fontSize": 15,
+  "editor.mouseWheelZoom": true,
+  "editor.smoothScrolling": true,
+  "editor.minimap.enabled": false,
+  "editor.lineNumbers": "relative",
+  "editor.linkedEditing": true,
+  "diffEditor.hideUnchangedRegions.enabled": true,
+  "debug.showBreakpointsInOverviewRuler": true,
+  // Terminal
+  "terminal.integrated.profiles.windows": {
+    "Bash(UCRT64)": {
+      "path": "cmd.exe",
+      "args": ["/k", "C:\\msys64\\msys2_shell.cmd -defterm -here -no-start -ucrt64 -shell bash -l -i"],
+      "icon": "terminal-bash"
+    },
+    "Git Bash": null
+  },
+  // Markdown
+  "markdown-preview-enhanced.enablePreviewZenMode": true, // 去除多余预览功能
+  "markdown-preview-enhanced.hideDefaultVSCodeMarkdownPreviewButtons": false, // 取消劫持默认markdown预览
+  "markdown-preview-enhanced.breakOnSingleNewLine": false, // 要求Markdown行末两空格表示换行
+  "markdown-preview-enhanced.printBackground": true, // 导出时使用preview的css
+  "markdown-preview-enhanced.previewTheme": "github-dark.css",
+  "markdown-preview-enhanced.mermaidTheme": "dark",
+  "markdown-preview-enhanced.revealjsTheme": "blood.css",
+  "markdown-preview-enhanced.plantumlJarPath": "D:/Program Files/tools/plantuml.jar",
+  "markdown-preview-enhanced.chromePath": "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe",
+  "pasteImage.path": "${currentFileDir}/pictures/${currentFileNameWithoutExt}/",
+  "pasteImage.defaultName": "x",
+  // 画图
+  "hediet.vscode-drawio.appearance": "dark",
+  "excalidraw.theme": "dark",
+  "excalidraw.language": "zh-CN",
+  // 格式化配置
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[html]": { "files.autoSave": "off", "editor.formatOnSave": true },
+  "[javascript]": { "files.autoSave": "off", "editor.formatOnSave": true },
+  "[typescript]": { "files.autoSave": "off", "editor.formatOnSave": true },
+  "[css]": { "files.autoSave": "off", "editor.formatOnSave": true },
+  "[less]": { "files.autoSave": "off", "editor.formatOnSave": true },
+  "[vue]": { "files.autoSave": "off", "editor.formatOnSave": true },
+  "[toml]": { "editor.defaultFormatter": "tamasfe.even-better-toml" },
+  "[lua]": { "editor.defaultFormatter": "JohnnyMorganz.stylua" },
+  "[java]": { "editor.defaultFormatter": "redhat.java" },
+  "[python]": { "editor.defaultFormatter": "charliermarsh.ruff", "editor.formatOnSave": true },
+  // NeoVim
+  "extensions.experimental.affinity": { "asvetliakov.vscode-neovim": 1 },
+  "vscode-neovim.ctrlKeysForInsertMode": ["d", "o", "r", "t", "u", "w"],
+  "vscode-neovim.ctrlKeysForNormalMode": /*prettier-ignore*/ [ // 保留 c, n, s, x, z
+    "a", "b", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "o", "p", "q", "r", "t", "u", "v", "w", "y",
+    "up", "right", "left", "down", "backspace", "delete", "]",
+  ]
+}
