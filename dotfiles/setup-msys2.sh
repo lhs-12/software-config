@@ -77,20 +77,22 @@ fi
 echo "Appending managed msys2 block to $RC"
 cat >> "$RC" <<'EOF' # verify PATH command: echo $PATH | tr ':' '\n'
 # >>> script-managed-bashrc-start >>>
-export PATH="/d/Program Files/tools:$PATH"
-export PATH="$(cygpath -u "$(uv tool dir --bin)"):$PATH"
-eval "$(zoxide init bash)"
-alias ls='lsd'
-alias la='lsd -a'
-alias ll='lsd --long --header'
-alias less='bat'
-alias cat='bat --paging=never'
-alias vi='nvim --clean'
-alias vim='nvim'
-alias yz='yazi'
-alias cdg='cd_g() { cd $(fd --type directory $1 $2 | fzf);}; cd_g'
-alias fdns='ipconfig -flushdns'
-alias sva='source .venv/Scripts/activate'
+if [ -n "$MSYSTEM" ] && [ "$MSYSTEM" = "UCRT64" ]; then
+    export PATH="/d/Program Files/tools:$PATH"
+    export PATH="$(cygpath -u "$(uv tool dir --bin)"):$PATH"
+    eval "$(zoxide init bash)"
+    alias ls='lsd'
+    alias la='lsd -a'
+    alias ll='lsd --long --header'
+    alias less='bat'
+    alias cat='bat --paging=never'
+    alias vi='nvim --clean'
+    alias vim='nvim'
+    alias yz='yazi'
+    alias cdg='cd_g() { cd $(fd --type directory $1 $2 | fzf);}; cd_g'
+    alias fdns='ipconfig -flushdns'
+    alias sva='source .venv/Scripts/activate'
+fi
 # <<< script-managed-bashrc-end <<<
 EOF
 source "$RC"
