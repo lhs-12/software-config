@@ -80,6 +80,7 @@ cat >> "$RC" <<'EOF' # verify PATH command: echo $PATH | tr ':' '\n'
 if [ -n "$MSYSTEM" ] && [ "$MSYSTEM" = "UCRT64" ]; then
     export PATH="/d/Program Files/tools:$PATH"
     export PATH="$(cygpath -u "$(uv tool dir --bin)"):$PATH"
+    export PATH="$(cygpath -u "$LOCALAPPDATA/Programs/Microsoft VS Code/bin"):$PATH"
     eval "$(zoxide init bash)"
     alias ls='lsd'
     alias la='lsd -a'
