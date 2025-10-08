@@ -18,7 +18,7 @@ pacman -S --needed --noconfirm --disable-download-timeout base-devel mingw-w64-u
 pacman -S --needed --noconfirm mingw-w64-ucrt-x86_64-ca-certificates && update-ca-trust
 pacman -S --needed --noconfirm --disable-download-timeout \
   stow fish zip unzip \
-  mingw-w64-ucrt-x86_64-{neovim,lsd,bat,zoxide,dust,python-tldr} \
+  mingw-w64-ucrt-x86_64-{neovim,tree-sitter,lsd,bat,zoxide,dust,python-tldr} \
   mingw-w64-ucrt-x86_64-{yazi,ffmpeg,jq,imagemagick,mdbook} \
   mingw-w64-ucrt-x86_64-{fzf,fd,ripgrep,bottom}
 

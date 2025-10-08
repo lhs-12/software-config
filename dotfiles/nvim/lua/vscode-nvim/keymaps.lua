@@ -49,7 +49,7 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 m("n", "<leader>?", function()
-  vim.cmd("e $LOCALAPPDATA/nvim/lua/vscode-nvim/config/keymaps.lua")
+  vim.cmd("e $LOCALAPPDATA/nvim/lua/vscode-nvim/keymaps.lua")
   vim.bo.modifiable = false
   vim.bo.readonly = true
 end, opts)

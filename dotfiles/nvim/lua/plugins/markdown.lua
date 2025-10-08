@@ -1,24 +1,20 @@
 return {
   "MeanderingProgrammer/render-markdown.nvim",
   dependencies = { "nvim-treesitter/nvim-treesitter" },
-  event = "VeryLazy",
+  event = "LazyFile",
   opts = {
+    -- stylua: ignore
     code = {
-      width = "block",
-      min_width = 80,
-      border = "thin",
-      left_pad = 1,
-      right_pad = 1,
-      position = "right",
-      language_icon = true,
-      language_name = true,
+      width = "block", min_width = 80,
+      border = "thin", left_pad = 1, right_pad = 1,
+      position = "right", language_icon = true, language_name = true,
       highlight_inline = "RenderMarkdownCodeInfo",
     },
     anti_conceal = { disabled_modes = { "n" } },
     -- https://github.com/MeanderingProgrammer/render-markdown.nvim/issues/509
     win_options = { concealcursor = { rendered = "nvc" } },
 
-    -- TODO: 
+    -- TODO:
     -- 代码补全: blink.cmp, markdown lsp
     -- completions = {
     --   blink = { enabled = true },
@@ -31,5 +27,5 @@ return {
     -- 双向链接: marksman lsp
     -- 格式化: pretierd + cbfmt
   },
-  config = function(_, opts) require("render-markdown").setup(opts) end,
+  ft = { "markdown", "norg", "rmd", "org", "codecompanion" },
 }
