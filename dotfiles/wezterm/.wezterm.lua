@@ -55,8 +55,8 @@ config.font_size = 12.0
 config.adjust_window_size_when_changing_font_size = false
 config.default_cursor_style = "SteadyUnderline"
 config.font = wezterm.font_with_fallback({
-	"Maple Mono NF CN",
-	"Sarasa Mono SC",
+	"Maple Mono Normal NL NF CN",
+	"Sarasa Term SC",
 })
 -- Keys
 config.disable_default_key_bindings = false

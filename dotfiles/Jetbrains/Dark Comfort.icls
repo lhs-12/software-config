@@ -12,7 +12,7 @@
     <property name="vendorUrl">http://</property>
     <property name="version">0.1</property>
   </metaInfo>
-  <option name="CONSOLE_FONT_NAME" value="Sarasa Mono SC" />
+  <option name="CONSOLE_FONT_NAME" value="Sarasa Term SC" />
   <option name="CONSOLE_FONT_SIZE" value="14" />
   <option name="CONSOLE_LINE_SPACING" value="1.0" />
   <colors>

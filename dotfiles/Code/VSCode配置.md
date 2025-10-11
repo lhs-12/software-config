@@ -116,7 +116,7 @@ code \
 ```css
 /* https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
 .markdown-preview.markdown-preview {
-  font-family: "Sarasa Term SC Regular";
+  font-family: "Sarasa Term SC";
   font-size: 18px;
   line-height: 1.4;
   background-color: #181818;
@@ -124,7 +124,7 @@ code \
     background-color: #262626 !important;
   }
   code {
-    font-family: "Sarasa Term SC Regular";
+    font-family: "Sarasa Term SC";
     display: inline-block;
     font-size: 16px;
     line-height: 1.2;

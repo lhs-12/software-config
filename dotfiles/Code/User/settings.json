@@ -6,7 +6,7 @@
   "workbench.iconTheme": "vscode-icons",
   "workbench.layoutControl.enabled": false,
   "editor.wordSegmenterLocales": ["zh"],
-  "editor.fontFamily": "'Sarasa Term SC Regular','Maple Mono NF CN'",
+  "editor.fontFamily": "'Sarasa Term SC','Maple Mono Normal NL NF CN'",
   "editor.fontSize": 15,
   "editor.mouseWheelZoom": true,
   "editor.smoothScrolling": true,

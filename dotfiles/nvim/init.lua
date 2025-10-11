@@ -3,7 +3,7 @@ if vim.g.vscode then
   return
 end
 if vim.g.neovide then
-  vim.o.guifont = "Maple Mono NF CN:h14"
+  vim.o.guifont = "Maple Mono Normal NL NF CN:h14"
 end
 
 require("config.options")

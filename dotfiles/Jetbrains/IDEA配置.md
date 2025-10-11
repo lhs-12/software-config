@@ -93,8 +93,8 @@ public void test$NAME$() {
 
 配置:
 -   Appearance & Behavior -> File Colors -> Test 改颜色(282828), Non-Project Files 改为 Green
--   Editor -> Font -> Sarasa Mono SC Semibold 16 1.0
--   Editor -> Color Scheme -> Console Font -> Sarasa Mono SC Semibold 14 1.0
+-   Editor -> Font -> Sarasa Term SC Semibold 16 1.0
+-   Editor -> Color Scheme -> Console Font -> Sarasa Term SC Semibold 14 1.0
 -   Editor -> Color Scheme -> General -> Text -> Default text -> Background: 1D1D1D
 -   Editor -> Color Scheme -> General -> Editor -> Gutter background -> Background: 1D1D1D
 -   Editor -> Color Scheme -> General -> Editor -> Caret row -> Background: 323232
