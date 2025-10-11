@@ -1,7 +1,7 @@
-[render-markdown](./lua/plugins/render-markdown.lua)
+# TODO
 
-[Bufferline](https://shaobin-jiang.github.io/blog/posts/neovim-beginner-guide/07/)
-
-[nvim-tree,Lualine,Indent-Blankline,Telescope,Grug-Far](https://shaobin-jiang.github.io/blog/posts/neovim-beginner-guide/13/)
+[Markdown](./lua/plugins/markdown.lua)
 
 [LSP](https://shaobin-jiang.github.io/blog/posts/neovim-beginner-guide/09/)
+
+lsp,mason,conform,blink.cmp,todo-comments,Grug-Far

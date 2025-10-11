@@ -5,4 +5,9 @@ end
 if vim.g.neovide then
   vim.o.guifont = "Maple Mono NF CN:h14"
 end
-require("config.lazy")
+
+require("config.options")
+require("config.lazy_bootstrap")
+require("config.lazy_setup")
+require("config.autocmds")
+require("config.keymaps")

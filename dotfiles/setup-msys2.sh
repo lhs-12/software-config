@@ -24,6 +24,11 @@ pacman -S --needed --noconfirm --disable-download-timeout \
 
 ya pkg add kmlupreti/ayu-dark # install yazi plugins
 
+# install win32yank
+curl -L -o win32yank-x64.zip $(curl -s https://api.github.com/repos/equalsraf/win32yank/releases/latest | \
+jq -r '.assets[] | select(.name | test("win32yank-x64.*\\.zip$")) | .browser_download_url') \
+&& unzip -q -d /usr/bin/ win32yank-x64.zip && rm win32yank-x64.zip
+
 # install Git
 echo "Installing Git..."
 pacman -S --needed --noconfirm git mingw-w64-ucrt-x86_64-git-lfs
