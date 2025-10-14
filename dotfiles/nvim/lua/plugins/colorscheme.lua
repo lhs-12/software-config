@@ -1,4 +1,5 @@
 return {
+  { "nvim-tree/nvim-web-devicons", opts = {} },
   {
     "vv9k/bogster",
     opts = {},
@@ -16,5 +17,4 @@ return {
       vim.api.nvim_set_hl(0, "RenderMarkdownCode", { bg = "#1c212a" })
     end,
   },
-  { "nvim-tree/nvim-web-devicons", opts = {} },
 }

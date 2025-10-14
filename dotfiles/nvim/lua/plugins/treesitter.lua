@@ -29,7 +29,6 @@ return {
           local noIndent = {}
           if not vim.list_contains(noIndent, ev.match) then
             vim.wo.foldmethod = "expr"
-            vim.wo.foldlevel = 99
             vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
             vim.bo[bufnr].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
           end

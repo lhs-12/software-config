@@ -4,4 +4,4 @@
 
 [LSP](https://shaobin-jiang.github.io/blog/posts/neovim-beginner-guide/09/)
 
-lsp,mason,conform,blink.cmp,todo-comments,Grug-Far
+lsp,mason,conform,blink.cmp,Grug-Far

@@ -1,4 +1,5 @@
 --  See `:help vim.keymap.set()`
+vim.keymap.set("n", "Q", "<nop>")
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>") -- See `:help hlsearch`
 -- 在内置终端中更方便地退出终端模式. 注:此方法在终端模拟器/tmux不生效, 用<C-\><C-n>
 vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })

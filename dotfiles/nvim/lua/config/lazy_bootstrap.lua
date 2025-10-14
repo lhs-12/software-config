@@ -13,7 +13,7 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
     os.exit(1)
   end
 end
-vim.opt.rtp:prepend(lazypath)
+vim.o.runtimepath = lazypath .. ',' .. vim.o.runtimepath
 
 -- Define custom lazy loading event
 local Event = require("lazy.core.handler.event")

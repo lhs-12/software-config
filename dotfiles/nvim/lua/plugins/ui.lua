@@ -13,18 +13,10 @@ return {
   {
     "nvim-lualine/lualine.nvim",
     event = "LazyFile",
-    opts = {
-      extensions = {},
-    },
-  },
-  {
-    "nvim-mini/mini.diff",
-    event = "VeryLazy",
-    keys = {
-      { "<leader>go", function() require("mini.diff").toggle_overlay(0) end, desc = "mini.diff overlay" },
-    },
-    opts = {
-      view = { style = "sign" },
-    },
+    opts = {},
+    config = function(_, opts)
+      vim.o.showmode = false
+      require('lualine').setup(opts)
+    end
   },
 }

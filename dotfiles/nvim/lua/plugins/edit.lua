@@ -1,30 +1,6 @@
 return {
   { "windwp/nvim-autopairs", event = "LazyFile", opts = {} },
   { "windwp/nvim-ts-autotag", event = "LazyFile", opts = {} },
-  {
-    "nvim-mini/mini.ai",
-    event = "VeryLazy",
-    opts = function()
-      local ai = require("mini.ai")
-      return {
-        n_lines = 100, -- context lines
-        custom_textobjects = {
-          -- treesitter-textobjects.select
-          c = ai.gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }),
-          f = ai.gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" }),
-          -- e for entire buffer
-          e = function()
-            local from = { line = 1, col = 1 }
-            local to = { line = vim.fn.line("$"), col = vim.fn.col({ vim.fn.line("$"), "$" }) }
-            return { from = from, to = to }
-          end,
-          u = ai.gen_spec.function_call(), -- u for "Usage"
-          U = ai.gen_spec.function_call({ name_pattern = "[%w_]" }), -- without dot in function name
-        },
-      }
-    end,
-    config = function(_, opts) require("mini.ai").setup(opts) end, -- :h MiniAi-builtin-textobjects
-  },
 
   --     Old text                    Command         New text
   -- ----------------------------------------------------------------------
@@ -37,4 +13,35 @@ return {
   --     <b>or tag* types</b>        csth1<CR>       <h1>or tag types</h1>
   --     delete(functi*on calls)     dsf             function calls
   { "kylechui/nvim-surround", event = "LazyFile", opts = {} },
+
+  {
+    "numToStr/Comment.nvim",
+    event = "LazyFile",
+    opts = {
+      toggler = { line = "gcc", block = "gbc" },
+      opleader = { line = "gc", block = "gb" },
+      extra = { above = "gcO", below = "gco", eol = "gcA" },
+    },
+  },
+  {
+    "tigion/swap.nvim",
+    keys = { { "`", mode = { "n" }, function() require("swap").switch() end, desc = "Swap word" } },
+    opts = {
+      all = { modules = { "opposites", "chains" } },
+      chains = {
+        words_by_ft = {
+          -- stylua: ignore
+          markdown = {
+            { "- [ ]", "- [x]", "- [~]", "- [-]" }, -- render-markdown checkboxes
+            { -- render-markdown callouts
+              "> [!NOTE]", "> [!TIP]", "> [!IMPORTANT]", "> [!WARNING]", "> [!CAUTION]", "> [!ABSTRACT]",
+              "> [!SUMMARY]", "> [!TLDR]", "> [!INFO]", "> [!TODO]", "> [!HINT]", "> [!SUCCESS]", "> [!CHECK]",
+              "> [!DONE]", "> [!QUESTION]", "> [!HELP]", "> [!FAQ]", "> [!ATTENTION]", "> [!FAILURE]", "> [!FAIL]",
+              "> [!MISSING]", "> [!DANGER]", "> [!ERROR]", "> [!BUG]", "> [!EXAMPLE]", "> [!QUOTE]", "> [!CITE]",
+            },
+          },
+        },
+      },
+    },
+  },
 }
