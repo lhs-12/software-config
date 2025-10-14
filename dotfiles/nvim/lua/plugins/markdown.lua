@@ -28,8 +28,6 @@ return {
       --   blink = { enabled = true },
       --   lsp = { enabled = true },
       -- },
-      -- 图标状态切换: switch.nvim,
-      -- 图片预览: snacks.nvim
       -- 添加图片: img-clip.nvim
       -- 自动添加列表前缀: bullets.nvim
       -- 双向链接: marksman lsp
