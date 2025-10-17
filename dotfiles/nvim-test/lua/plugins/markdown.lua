@@ -23,14 +23,7 @@ return {
       win_options = { concealcursor = { rendered = "nvc" } },
 
       -- TODO: https://github.com/patricorgi/dotfiles/blob/main/.config/nvim
-      -- 代码补全: blink.cmp, markdown lsp
-      -- completions = {
-      --   blink = { enabled = true },
-      --   lsp = { enabled = true },
-      -- },
       -- 添加图片: img-clip.nvim
-      -- 自动添加列表前缀: bullets.nvim
-      -- 双向链接: marksman lsp
       -- 格式化: pretierd + cbfmt
     },
     ft = { "markdown", "norg", "rmd", "org", "codecompanion" },

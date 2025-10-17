@@ -13,6 +13,7 @@ return {
             basedpyright = {
               disableOrganizeImports = true, -- use Ruff
               analysis = {
+                diagnosticMode = "workspace",
                 typeCheckingMode = "off",
               },
             },
@@ -21,6 +22,7 @@ return {
       },
     },
   },
+  -- Java
   {
     "mfussenegger/nvim-jdtls",
     opts = function(_, opts)

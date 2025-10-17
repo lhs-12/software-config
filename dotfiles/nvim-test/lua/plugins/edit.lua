@@ -13,7 +13,18 @@ return {
   --     <b>or tag* types</b>        csth1<CR>       <h1>or tag types</h1>
   --     delete(functi*on calls)     dsf             function calls
   { "kylechui/nvim-surround", event = "LazyFile", opts = {} },
-
+  {
+    "nvim-mini/mini.operators",
+    event = "VeryLazy",
+    -- stylua: ignore
+    opts = {
+      replace  = { prefix = "gp", reindent_linewise = true },
+      exchange = { prefix = "gP", reindent_linewise = true },
+      evaluate = { prefix = nil, func = nil },
+      multiply = { prefix = nil, func = nil },
+      sort     = { prefix = nil, func = nil },
+    },
+  },
   {
     "numToStr/Comment.nvim",
     event = "LazyFile",
