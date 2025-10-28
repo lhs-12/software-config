@@ -63,7 +63,11 @@ echo "Installing Python UV and UV tools..."
 pacman -S --needed --noconfirm mingw-w64-ucrt-x86_64-uv
 uv tool install ruff@latest
 
-# todo: Node.js, Mise...
+# install Node.js
+echo "Installing Node.js"
+curl -fsSL https://fnm.vercel.app/install | bash -s -- --skip-shell
+export PATH="$HOME/.local/share/fnm:$PATH"
+fnm install --lts
 
 # edit ~/.bashrc
 echo "Edit ~/.bashrc"
@@ -85,7 +89,9 @@ cat >> "$RC" <<'EOF' # verify PATH command: echo $PATH | tr ':' '\n'
 if [ -n "$MSYSTEM" ] && [ "$MSYSTEM" = "UCRT64" ]; then
     export PATH="/d/Program Files/tools:$PATH"
     export PATH="$(cygpath -u "$(uv tool dir --bin)"):$PATH"
+    export PATH="$HOME/.local/share/fnm:$PATH"
     export PATH="$(cygpath -u "$LOCALAPPDATA/Programs/Microsoft VS Code/bin"):$PATH"
+    eval "$(fnm env)"
     eval "$(zoxide init bash)"
     alias ls='lsd'
     alias la='lsd -a'
@@ -94,14 +100,20 @@ if [ -n "$MSYSTEM" ] && [ "$MSYSTEM" = "UCRT64" ]; then
     alias cat='bat --paging=never'
     alias vi='nvim --clean'
     alias vim='nvim'
-    alias yz='yazi'
-    alias cdg='cd_g() { cd $(fd --type directory $1 $2 | fzf);}; cd_g'
+    alias cdg='cd_g() { local d=$(fd -td "${1:-}" "${2:-.}" | fzf); [ -n "$d" ] && cd "$d"; }; cd_g'
     alias fdns='ipconfig -flushdns'
     alias sva='source .venv/Scripts/activate'
+    alias yz='yazi'
+    function yy() {
+        local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+        yazi "$@" --cwd-file="$tmp"
+        IFS= read -r -d '' cwd < "$tmp"
+        [ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && builtin cd -- "$cwd"
+        rm -f -- "$tmp"
+    }
 fi
 # <<< script-managed-bashrc-end <<<
 EOF
-source "$RC"
 
-echo "MSYS2 Setup Done."
+echo "MSYS2 Setup Done. Please execute 'source ~/.bashrc'"
 exit 0
