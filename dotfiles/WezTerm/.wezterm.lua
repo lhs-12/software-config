@@ -7,7 +7,7 @@ end
 if wezterm.target_triple == "x86_64-unknown-linux-gnu" then
 	config.background = {
 		{
-			source = { File = os.getenv("HOME") .. "/Pictures/01.jpg" },
+			source = { File = os.getenv("HOME") .. "/Pictures/Wallpapers/01.jpg" },
 			hsb = { brightness = 0.05, hue = 0.5, saturation = 0.5 },
 		},
 	}
