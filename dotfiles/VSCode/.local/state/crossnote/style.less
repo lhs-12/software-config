@@ -1,0 +1,32 @@
+/* Markdown Preview Enhanced: Customize CSS(Global) */
+/* https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
+.markdown-preview.markdown-preview {
+  font-family: "Sarasa Term SC";
+  font-size: 18px;
+  line-height: 1.4;
+  background-color: #181818;
+  pre {
+    background-color: #262626 !important;
+  }
+  code {
+    font-family: "Sarasa Term SC";
+    display: inline-block;
+    font-size: 16px;
+    line-height: 1.2;
+  }
+  /* prettier-ignore */
+  h1, h2, h3, h4, h5, h6, strong, table th, code, kbd { 
+    color: #d1d1d1;
+  }
+  /* prettier-ignore */
+  h2::before, h3::before, h4::before, h5::before, h6::before {
+    color: #707070;
+    font-weight: normal;
+    margin-right: 4px;
+  }
+  h2::before { content: "## " }
+  h3::before { content: "### " }
+  h4::before { content: "#### " }
+  h5::before { content: "##### " }
+  h6::before { content: "###### " }
+}

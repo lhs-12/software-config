@@ -1,0 +1,48 @@
+{
+  "files.autoSave": "onFocusChange",
+  "explorer.compactFolders": false,
+  "workbench.startupEditor": "none",
+  "workbench.iconTheme": "vscode-icons",
+  "editor.wordSegmenterLocales": ["zh"],
+  "editor.fontFamily": "'Iosevka Term', 'MiSans', 'MiSans L3','Symbols Nerd Font Mono','Noto Color Emoji'",
+  "editor.fontSize": 16,
+  "editor.mouseWheelZoom": true,
+  "editor.smoothScrolling": true,
+  "editor.minimap.enabled": false,
+  "editor.linkedEditing": true,
+  "debug.showBreakpointsInOverviewRuler": true,
+  // Markdown
+  "markdown-preview-enhanced.enablePreviewZenMode": true, // 去除多余预览功能
+  "markdown-preview-enhanced.hideDefaultVSCodeMarkdownPreviewButtons": false, // 取消劫持默认markdown预览
+  "markdown-preview-enhanced.breakOnSingleNewLine": false, // 要求Markdown行末两空格表示换行
+  "markdown-preview-enhanced.printBackground": true, // 导出时使用preview的css
+  "markdown-preview-enhanced.previewTheme": "github-dark.css",
+  "markdown-preview-enhanced.mermaidTheme": "dark",
+  "markdown-preview-enhanced.revealjsTheme": "blood.css",
+  "pasteImage.path": "${currentFileDir}/pictures/${currentFileNameWithoutExt}/",
+  "pasteImage.defaultName": "x",
+  // 画图
+  "hediet.vscode-drawio.appearance": "dark",
+  "excalidraw.theme": "dark",
+  "excalidraw.language": "zh-CN",
+  // 格式化配置
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[html]": { "files.autoSave": "off", "editor.formatOnSave": true },
+  "[javascript]": { "files.autoSave": "off", "editor.formatOnSave": true },
+  "[typescript]": { "files.autoSave": "off", "editor.formatOnSave": true },
+  "[css]": { "files.autoSave": "off", "editor.formatOnSave": true },
+  "[less]": { "files.autoSave": "off", "editor.formatOnSave": true },
+  "[vue]": { "files.autoSave": "off", "editor.formatOnSave": true },
+  "[toml]": { "editor.defaultFormatter": "tamasfe.even-better-toml" },
+  "[lua]": { "editor.defaultFormatter": "JohnnyMorganz.stylua" },
+  "[java]": { "editor.defaultFormatter": "redhat.java" },
+  "[python]": { "editor.defaultFormatter": "charliermarsh.ruff", "editor.formatOnSave": true },
+  // NeoVim
+  "extensions.experimental.affinity": { "asvetliakov.vscode-neovim": 1 },
+  "vscode-neovim.ctrlKeysForInsertMode": ["d", "o", "r", "t", "u", "w"],
+  "vscode-neovim.ctrlKeysForNormalMode": /*prettier-ignore*/ [ // 保留 c, n, s, x, z
+    "a", "b", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "o", "p", "q", "r", "t", "u", "v", "w", "y",
+    "up", "right", "left", "down", "backspace", "delete", "]",
+  ],
+  "diffEditor.hideUnchangedRegions.enabled": true
+}
