@@ -33,7 +33,7 @@ proxy_on # enable proxy by default
 
 proxy_off() {
   unset http_proxy https_proxy ftp_proxy rsync_proxy all_proxy no_proxy \
-        HTTP_PROXY HTTPS_PROXY FTP_PROXY RSYNC_PROXY ALL_PROXY NO_PROXY
+    HTTP_PROXY HTTPS_PROXY FTP_PROXY RSYNC_PROXY ALL_PROXY NO_PROXY
   git config --global --unset http.proxy
   git config --global --unset https.proxy
 }
@@ -227,3 +227,5 @@ fi
 eval "$(batman --export-env)"
 eval "$(zoxide init bash)"
 eval "$(mise activate bash)"
+
+export PATH="$HOME/.local/bin:$PATH"
