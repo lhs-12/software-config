@@ -229,3 +229,4 @@ eval "$(zoxide init bash)"
 eval "$(mise activate bash)"
 
 export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/.opencode/bin:$PATH"
