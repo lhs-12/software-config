@@ -11,6 +11,11 @@ if wezterm.target_triple == "x86_64-unknown-linux-gnu" then
 			hsb = { brightness = 0.05, hue = 0.5, saturation = 0.5 },
 		},
 	}
+	config.default_prog = { "bash" }
+	config.launch_menu = {
+		{ label = "Bash", args = { "bash" } },
+		{ label = "Fish", args = { "fish" } },
+	}
 	config.mouse_bindings = {
 		{
 			event = { Down = { streak = 1, button = { WheelUp = 1 } } },
