@@ -1,0 +1,23 @@
+[open]
+append_rules = [{ name = "*/", use = ["open", "edit"] }]
+
+[opener]
+edit = [
+    { desc = "NeoVim", for = "windows", block = true, run = 'nvim %*' },
+    { desc = "NeoVim", for = "linux", block = true, run = 'nvim $*' }
+]
+play = [
+    { desc = "PotPlayer", for = "windows", orphan = true, run = '"C:/Program Files/DAUM/PotPlayer/PotPlayerMini64.exe" %0' },
+    { desc = "Haruna", for = "linux", orphan = true, run = 'haruna "$0"' },
+]
+open = [
+    { desc = "Open", for = "windows", orphan = true, run = 'start "" "%1"' },
+    { desc = "VSCode", for = "windows", orphan = true, run = 'code %*' },
+    { desc = "PotPlayer", for = "windows", orphan = true, run = '"C:/Program Files/DAUM/PotPlayer/PotPlayerMini64.exe" %0' },
+    { desc = "Open", for = "linux", orphan = true, run = 'xdg-open "$0"' },
+    { desc = "VSCode", for = "linux", orphan = true, run = 'code $*' },
+    { desc = "Haruna", for = "linux", orphan = true, run = 'haruna "$0"' }
+]
+
+[plugin]
+prepend_previewers = [{ mime = "video/*", run = "noop" }]

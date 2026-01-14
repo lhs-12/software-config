@@ -1,0 +1,27 @@
+patch:
+  # 特定应用设置
+  app_options:
+    firefox.exe:
+      inline_preedit: true
+    msedge.exe:
+      ascii_mode: true
+    code.exe:
+      ascii_mode: true
+      vim_mode: true
+    idea64.exe:
+      ascii_mode: true
+      vim_mode: true
+    wezterm-gui.exe:
+      ascii_mode: true
+      vim_mode: true
+    windowsterminal.exe:
+      ascii_mode: true
+      vim_mode: true
+  # 主题设置
+  style/color_scheme: steam # 默认配色方案
+  style/font_face: "MiSans, MiSans L3, Segoe UI Emoji, Noto Color Emoji" # 字体
+  style/label_font_face: "MiSans, MiSans L3"    # 标签字体
+  style/comment_font_face: "MiSans, MiSans L3"  # 注释字体
+  style/font_point: 12          # 全局字体字号
+  style/label_font_point: 12    # 标签字体字号，不设定 fallback 到 font_point
+  style/comment_font_point: 11  # 注释字体字号，不设定 fallback 到 font_point

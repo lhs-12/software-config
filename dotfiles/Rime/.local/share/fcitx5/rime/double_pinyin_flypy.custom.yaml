@@ -1,0 +1,4 @@
+patch:
+  translator/dictionary: private_dict
+  switches/@0/reset: 1 # 默认用英文
+  switches/@1/reset: 1 # 默认用英文标点

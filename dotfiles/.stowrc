@@ -1,0 +1,4 @@
+--ignore='^setup-.*\.sh$'
+--ignore='\.md$'
+--ignore='\.icls$'
+--ignore='cached_layouts'

@@ -1,0 +1,10 @@
+[76d475dc-3e43-4742-8b50-8b68e257e74e]
+Description=Flameshot always-on-top
+wmclass=flameshot
+above=true
+aboverule=2
+wmclassmatch=1
+
+[General]
+count=1
+rules=76d475dc-3e43-4742-8b50-8b68e257e74e
