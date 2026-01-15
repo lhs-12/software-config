@@ -33,6 +33,7 @@
   "[css]": { "files.autoSave": "off", "editor.formatOnSave": true },
   "[less]": { "files.autoSave": "off", "editor.formatOnSave": true },
   "[vue]": { "files.autoSave": "off", "editor.formatOnSave": true },
+  "[xml]": { "editor.defaultFormatter": "redhat.vscode-xml" },
   "[toml]": { "editor.defaultFormatter": "tamasfe.even-better-toml" },
   "[lua]": { "editor.defaultFormatter": "JohnnyMorganz.stylua" },
   "[java]": { "editor.defaultFormatter": "redhat.java" },
