@@ -12,6 +12,9 @@ PS1='[\u@\h \W]\$ '
 export LANG=en_US.UTF-8
 export LANGUAGE=en_US
 
+# system update
+alias sysup='bash ~/.config/my_scripts/sysup.sh'
+
 # ---------- proxy ----------
 proxy_on() {
   local proxy="http://127.0.0.1:10808"

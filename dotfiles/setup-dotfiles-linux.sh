@@ -4,7 +4,7 @@ cd "$(dirname "$0")"
 
 FOLD_GROUP=(
     "Bash" "Pictures" "OhMyPosh" "Yazi" "WezTerm" "FontConfig" "Fcitx5" "Flameshot"
-    "LazyVim" "Mise" "Ruff" "Jetbrains"
+    "LazyVim" "Mise" "Ruff" "Jetbrains" "MyScripts"
 )
 
 NO_FOLD_GROUP=(
