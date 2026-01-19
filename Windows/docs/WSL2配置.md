@@ -17,6 +17,8 @@ wsl --unregister [发行版名称]
 
 根据官方文档,使用 wsl 命令配置前置环境
 
+> 参考文档：https://learn.microsoft.com/zh-cn/windows/wsl/networking#mirrored-mode-networking
+
 ---
 
 新建配置文件: `%HOMEPATH%/.wslconfig`  
