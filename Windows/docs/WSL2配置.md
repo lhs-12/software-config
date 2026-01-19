@@ -192,9 +192,33 @@ echo "All windows have been processed"
 
 # 安装docker在wsl中
 
-powershell执行以下命令
+安装docker 和 docker-compose
 ```bash
-wsl -d Arch -- pacman -S docker docker-compose --noconfirm
+pacman -S docker docker-compose --noconfirm
+```
+
+配置docker代理
+
+```bash
+# 1. 创建配置目录
+mkdir -p /etc/systemd/system/docker.service.d
+
+# 2. 写入代理配置文件
+cat > /etc/systemd/system/docker.service.d/http-proxy.conf << 'EOF'
+[Service]
+Environment="HTTP_PROXY=http://127.0.0.1:10808"
+Environment="HTTPS_PROXY=http://127.0.0.1:10808"
+Environment="NO_PROXY=localhost,127.0.0.1,【自己的docker仓库】"
+EOF
+
+# 3. 重新加载 systemd 配置
+systemctl daemon-reload
+
+# 4. 重启 Docker 服务
+systemctl restart docker
+
+# 5. 验证配置
+systemctl show --property=Environment docker
 ```
 
 # VSCode 编辑调试 WSL 项目
