@@ -1,22 +1,26 @@
 #!/bin/bash
 
 # ==============================================================================
-# sysup - Arch Linux 更新辅助工具(Arch News + Update)
-# 功能：可获取不同语言的Arch新闻，高亮“手动干预”警告，然后执行 yay/paru
-# 参数：
-#   --count N    最大显示新闻数量
-#   --lang zh|en 指定语言
+# sysup - Arch Linux update helper (Arch News + Update)
+# Features:
+#   - Fetch Arch news in different languages
+#   - Highlight "manual intervention" warnings
+#   - Then run yay / paru
+#
+# Options:
+#   --count N    Maximum number of news items to display
+#   --lang zh|en Specify language
 # ==============================================================================
 
 # ------------------------------
-# 1. 默认参数
+# 1. Default parameters
 # ------------------------------
 COUNT_LIMIT=15
 LANG_MODE="en"
-# LANG_MODE=$(locale 2>/dev/null | grep -q "zh_CN" && echo zh || echo en) # 默认跟随系统语言
+# LANG_MODE=$(locale 2>/dev/null | grep -q "zh_CN" && echo zh || echo en) # follow system locale
 
 # ------------------------------
-# 2. 参数解析（GNU 风格）
+# 2. Argument parsing (GNU-style)
 # ------------------------------
 while [ $# -gt 0 ]; do
     case "$1" in
@@ -35,7 +39,7 @@ while [ $# -gt 0 ]; do
 done
 
 # ------------------------------
-# 3. 检查 AUR 助手
+# 3. Detect AUR helper
 # ------------------------------
 UPDATE_CMD=""
 if command -v paru >/dev/null 2>&1; then
@@ -48,7 +52,7 @@ else
 fi
 
 # ------------------------------
-# 4. 定义本地化文本
+# 4. Localized strings
 # ------------------------------
 if [ "$LANG_MODE" = "zh" ]; then
     NEWS_URL="https://www.archlinuxcn.org/category/news/feed/"
@@ -77,7 +81,7 @@ else
 fi
 
 # ------------------------------
-# 5. 执行逻辑
+# 5. Main execution logic
 # ------------------------------
 printf "\n\033[1;36m%s\033[0m\n" "$MSG_PREPARING"
 printf "\033[1;36m%s\033[0m\n" "$MSG_FETCHING"
@@ -107,8 +111,8 @@ try:
         date_str = pub_date[:16]
 
         check_text = title.lower()
-        # 双语关键词检测
-        if any(x in check_text for x in ['intervention', '手动干预', '干预']):
+        # Highlight keywords related to manual intervention
+        if any(x in check_text for x in ['intervention', 'manual', '手动干预', '干预']):
             color = '\033[1;31m' # Red
             prefix = '!!! '
         else:
@@ -123,16 +127,29 @@ except Exception as e:
 EOF
 )
 
-# 访问新闻源, 数据交给python处理
+# Fetch news and pipe to python for processing
 if curl -sS -L --connect-timeout 15 -A "Mozilla/5.0" "$NEWS_URL" \
-    | python -c "$PYTHON_SCRIPT" "$COUNT_LIMIT" "$PY_HEADER"; 
-    then
-    # 获取成功，等待确认
+    | python -c "$PYTHON_SCRIPT" "$COUNT_LIMIT" "$PY_HEADER";
+then
+    # News fetched successfully
+
     printf "\n%s" "$MSG_CONFIRM"
     read -r confirm
 
     case "$confirm" in
         [Yy]*|"" )
+            printf "\n\033[1;34m==> Checking/Updating keyrings first...\033[0m\n"
+            KEYRING_TARGETS="archlinux-keyring"
+            # Only include archlinuxcn-keyring if it is installed
+            if pacman -Qq archlinuxcn-keyring >/dev/null 2>&1; then
+                KEYRING_TARGETS="$KEYRING_TARGETS archlinuxcn-keyring"
+            fi
+            # Sync package databases and update keyring packages if needed
+            if sudo pacman -Sy --needed --noconfirm $KEYRING_TARGETS; then
+                printf "\033[1;32m==> Keyrings verified.\033[0m\n"
+            else
+                printf "\033[1;31m!!! Warning: Keyring update encountered issues. Proceeding...\033[0m\n"
+            fi
             printf "\n\033[1;36m%s\033[0m\n" "$MSG_EXECUTING"
             $UPDATE_CMD
             ;;
@@ -142,7 +159,7 @@ if curl -sS -L --connect-timeout 15 -A "Mozilla/5.0" "$NEWS_URL" \
             ;;
     esac
 else
-    # 获取失败，询问是否坚持更新
+    # Failed to fetch or parse news, ask whether to force update
     printf "\n\033[1;31m%s\033[0m\n" "$MSG_ERR_FETCH"
 
     printf "%s" "$MSG_FORCE_ASK"
@@ -150,6 +167,16 @@ else
 
     case "$force_confirm" in
         [Yy]* )
+            printf "\n\033[1;34m==> Checking/Updating keyrings first...\033[0m\n"
+            KEYRING_TARGETS="archlinux-keyring"
+            if pacman -Qq archlinuxcn-keyring >/dev/null 2>&1; then
+                KEYRING_TARGETS="$KEYRING_TARGETS archlinuxcn-keyring"
+            fi
+            if sudo pacman -Sy --needed --noconfirm $KEYRING_TARGETS; then
+                printf "\033[1;32m==> Keyrings verified.\033[0m\n"
+            else
+                printf "\033[1;31m!!! Warning: Keyring update encountered issues. Proceeding...\033[0m\n"
+            fi
             printf "\n\033[1;31m%s\033[0m\n" "$MSG_FORCING"
             $UPDATE_CMD
             ;;
