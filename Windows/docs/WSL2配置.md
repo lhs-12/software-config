@@ -190,6 +190,13 @@ done
 echo "All windows have been processed"
 ```
 
+# 安装docker在wsl中
+
+powershell执行以下命令
+```bash
+wsl -d Arch -- pacman -S docker docker-compose --noconfirm
+```
+
 # VSCode 编辑调试 WSL 项目
 
 > Windows 的硬盘挂载在了 wsl 系统的`/mnt`目录下
