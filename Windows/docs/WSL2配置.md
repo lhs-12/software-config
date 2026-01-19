@@ -200,17 +200,13 @@ echo "All windows have been processed"
 1. Windows 下的 VSCode 添加环境变量即可(别在 linux 里面装 VSCode)
 2. 在 VSCode 内通过 WSL 插件访问目录, 或在 linux 目录执行`code .`启动
 
-# 自制 WSL 发行版
+# 构建ArchWSL
 
 以 ArchLinux 为例
 
-- 去 github 下载 `LxRunOffline.exe` 放到 C 盘 system32 目录中
-- 去国内的源下载 `archlinux-bootstrap-yyyy.MM.dd-x86_64.tar.gz`
-- 安装发行版 `LxRunOffline i -n ArchLinux -f E:\archlinux-bootstrap-yyyy.MM.dd-x86_64.tar.gz -d E:\ArchLinux  -r root.x86_64`
-- 设置 wsl 版本 `wsl --set-version ArchLinux 2`
-- 删除网络配置 `wsl -d ArchLinux`, `rm /etc/resolv.conf`, `exit`
-- 重启 `wsl --shutdown ArchLinux`, `wsl -d ArchLinux`
-- 修改下载源
+> https://github.com/yuk7/ArchWSL/
+
+- 下载ArchWSL，然后安装 Arch.exe
 
 ```
 cd /etc/
@@ -244,3 +240,31 @@ vim /etc/sudoers
 ```
 
 - 获取用户 id`id -u <用户名>`, `exit`退出 Linux, 执行`lxrunoffline su -n ArchLinux -v <用户id>`
+
+# 备份WSL
+
+使用官方 wsl --export。这个命令会自动停止 Arch WSL，然后把整个 WSL 文件系统打包成一个 tar 文件。包含了所有的配置文件、已安装的软件、用户的设置等。虽然有一些 socket 文件的警告（比如 gnupg 的 socket），但这些都是运行时文件，不影响备份完整性。
+
+```bash
+wsl --export [wsl名称] "D:/arch-wsl-backup.tar"
+```
+
+恢复过程：
+使用 wsl --import 命令进行恢复测试。命令是：
+
+```bash
+wsl --import [wsl名称] "D:/WSL_Test" "D:/arch-wsl-backup.tar" --version 2
+```
+
+这个命令做了几件事：
+1. 创建一个指定名称的 WSL 发行版
+2. 把备份文件解压到指定目录 "D:/WSL_Test"
+3. 设置为 WSL2 模式（--version 2）
+
+
+# 卸载wsl
+
+```bash
+wsl --unregister [wsl名称]
+```
+
