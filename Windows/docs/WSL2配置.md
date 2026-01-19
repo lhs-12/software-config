@@ -82,6 +82,14 @@ alias unproxy='
 '
 ```
 
+WSL 启动时是登录 shell（login shell），它默认读取 ~/.bash_profile，而不是 ~/.bashrc。
+
+```bash
+if [ -f ~/.bashrc ]; then
+    source ~/.bashrc
+fi
+```
+
 验证代理情况:
 
 - `env | grep -E 'hostip|hostport|HTTP_PROXY|HTTPS_PROXY|ALL_PROXY'`
