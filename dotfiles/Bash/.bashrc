@@ -12,8 +12,6 @@ PS1='[\u@\h \W]\$ '
 export LANG=en_US.UTF-8
 export LANGUAGE=en_US
 
-# system update
-alias sysup='bash ~/.config/my_scripts/sysup.sh'
 
 # ---------- proxy ----------
 proxy_on() {
@@ -231,5 +229,6 @@ eval "$(batman --export-env)"
 eval "$(zoxide init bash)"
 eval "$(mise activate bash)"
 
+export PATH="$HOME/.config/my_scripts:$PATH" # chmod +x ~/.config/my_scripts/*
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/.opencode/bin:$PATH"
