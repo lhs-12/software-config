@@ -1,8 +1,16 @@
 #!/bin/bash
 
-# ===========================================================================
-# Arch Linux 系统清理助手脚本
-# ===========================================================================
+# ===============================================================
+# Arch Linux 系统清理助手
+# ===============================================================
+# 【功能说明】
+# 1. 移除孤儿软件包 (Orphans)
+# 2. 清理 Pacman 软件包缓存 (保留安装包，删除旧版本)
+# 3. 清理残留的下载目录 (download-*)
+# 4. 清理 Systemd 日志 (只保留最近 2 周)
+# 5. 清空用户回收站 (Trash) 和缩略图缓存 (Thumbnails)
+# 6. 移除未使用的 Flatpak 运行时
+# ===============================================================
 
 set -euo pipefail
 # ------------------------------
@@ -16,15 +24,12 @@ UI_LANG=$([[ ${LC_ALL:-${LC_MESSAGES:-${LANG}}} == zh* ]] && echo zh || echo en)
 # ------------------------------
 usage() {
     cat <<EOF
-Usage: archclean [options]
+Usage: $(basename "$0") [options]
 
 Options:
   --ui-lang zh|en    UI language (default: auto)
   --yes, -y          Skip confirmation prompt (non-interactive mode)
   --help, -h         Show this help and exit
-
-Description:
-  A safe and automated cleanup utility for Arch Linux.
 EOF
 }
 while [[ $# -gt 0 ]]; do
@@ -177,8 +182,7 @@ TARGET_DIR="/var/cache/pacman/pkg"
 if [ -d "$TARGET_DIR" ]; then
     found=0
     while IFS= read -r -d '' dir; do
-        [ "$found" -eq 0 ] && _info "$MSG_STEP_BROKEN"
-        found=1
+        [ "$found" -eq 0 ] && _info "$MSG_STEP_BROKEN" && found=1
         sudo rm -rf -- "$dir"
         printf "  Removed: %s\n" "$dir"
     done < <(find "$TARGET_DIR" -maxdepth 1 -type d -name "download-*" -print0 2>/dev/null)
@@ -212,5 +216,5 @@ if command -v flatpak >/dev/null 2>&1; then
     _success "$MSG_FLATPAK_DONE"
 fi
 
-printf "%s\n" "----------------------------------------"
+printf "\n"
 _success "$MSG_DONE"
