@@ -158,7 +158,8 @@ _info "$(printf "$MSG_HELPER_USE" "$AUR_HELPER")"
 
 # Keep Sudo Alive
 sudo -v
-( while true; do sudo -n true 2>/dev/null || exit; sleep 60 || exit; done ) & SUDO_PID=$!
+( while true; do sudo -n true 2>/dev/null || exit; sleep 60 || exit; done ) &
+SUDO_PID=$!
 trap 'kill -- -$SUDO_PID 2>/dev/null || true' EXIT INT TERM
 
 # [Step 1] Orphans
