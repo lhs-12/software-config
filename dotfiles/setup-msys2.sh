@@ -1,5 +1,5 @@
 #!/usr/bin/bash
-set -euo pipefail
+set -Eeuo pipefail
 
 # ensure running in MSYS2 UCRT64 environment
 if [[ -z "${MSYSTEM:-}" || "${MSYSTEM}" != "UCRT64" ]]; then

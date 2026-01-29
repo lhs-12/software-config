@@ -16,7 +16,7 @@
 
 ```bash
 #!/bin/bash
-set -euo pipefail
+set -Eeuo pipefail
 
 # ===================== config ======================
 declare -a PARTITIONS=(

@@ -1,5 +1,5 @@
 #!/bin/bash
-set -euo pipefail
+set -Eeuo pipefail
 cd "$(dirname "$0")"
 
 FOLD_PACKAGES=(

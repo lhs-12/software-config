@@ -1,5 +1,5 @@
 #!/bin/bash
-set -euo pipefail
+set -Eeuo pipefail
 
 TAG="${1-}"
 sudo -p "Password for %p: " true || exit 1

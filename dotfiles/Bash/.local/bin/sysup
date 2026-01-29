@@ -21,7 +21,8 @@
 # --help, -h                  显示帮助信息
 # ===============================================================
 
-set -euo pipefail
+set -Eeuo pipefail
+trap 'echo "ERROR at line $LINENO: $BASH_COMMAND" >&2' ERR
 # ------------------------------
 # 1. Default parameters
 # ------------------------------
@@ -131,9 +132,8 @@ if ! sudo -v; then
     _error "$MSG_SUDO_FAIL"
 fi
 # Keep sudo alive in background
-while true; do sudo -n true; sleep 60; done &
-SUDO_PID=$!
-trap 'kill $SUDO_PID 2>/dev/null' EXIT
+( while true; do sudo -n true 2>/dev/null || exit; sleep 60 || exit; done ) & SUDO_PID=$!
+trap 'kill -- -$SUDO_PID 2>/dev/null || true' EXIT INT TERM
 
 # ------------------------------
 # 6. Check AUR Helper

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # whatsmyip - Get internal and external IP addresses
 
-set -o pipefail
+set -Eeuo pipefail
 
 # ---------- helpers ----------
 have() { command -v "$1" >/dev/null 2>&1; }
