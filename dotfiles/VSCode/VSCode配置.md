@@ -19,6 +19,7 @@ code \
 --install-extension ms-vsliveshare.vsliveshare \                      # Live Share                          实时共享
 --install-extension mark-wiemer.vscode-autohotkey-plus-plus \         # AutoHotkey Plus Plus                AutoHotkey支持
 --install-extension johnnymorganz.stylua \                            # StyLua                              Lua支持
+--install-extension redhat.vscode-xml \                               # XML                                 XML支持
 --install-extension tamasfe.even-better-toml \                        # Even Better TOML                    TOML支持
 --install-extension redis.redis-for-vscode \                          # Redis for VS Code                   Redis
 
