@@ -1,0 +1,78 @@
+version: "3"
+services:
+  cluster-creator:
+    image: redis:7.2.4-alpine3.19
+    command: 
+      - sh
+      - -c
+      - redis-cli
+        --cluster create ${HOST}:7001 ${HOST}:7002 ${HOST}:7003 ${HOST}:7004 ${HOST}:7005 ${HOST}:7006
+        --cluster-replicas 1
+        --cluster-yes
+    depends_on:
+      - redis-1
+      - redis-2
+      - redis-3
+      - redis-4
+      - redis-5
+      - redis-6
+
+  redis-1:
+    image: redis:7.2.4-alpine3.19
+    ports:
+      - 7001:7001
+      - 17001:17001
+    volumes:
+      - "./redis.conf:/etc/redis.conf"
+      - "./data/data-7001:/data"
+    command: redis-server /etc/redis.conf --port 7001
+
+  redis-2:
+    image: redis:7.2.4-alpine3.19
+    ports:
+      - 7002:7002
+      - 17002:17002
+    volumes:
+      - "./redis.conf:/etc/redis.conf"
+      - "./data/data-7002:/data"
+    command: redis-server /etc/redis.conf --port 7002
+
+  redis-3:
+    image: redis:7.2.4-alpine3.19
+    ports:
+      - 7003:7003
+      - 17003:17003
+    volumes:
+      - "./redis.conf:/etc/redis.conf"
+      - "./data/data-7003:/data"
+    command: redis-server /etc/redis.conf --port 7003
+
+  redis-4:
+    image: redis:7.2.4-alpine3.19
+    ports:
+      - 7004:7004
+      - 17004:17004
+    volumes:
+      - "./redis.conf:/etc/redis.conf"
+      - "./data/data-7004:/data"
+    command: redis-server /etc/redis.conf --port 7004
+
+  redis-5:
+    image: redis:7.2.4-alpine3.19
+    ports:
+      - 7005:7005
+      - 17005:17005
+    volumes:
+      - "./redis.conf:/etc/redis.conf"
+      - "./data/data-7005:/data"
+    command: redis-server /etc/redis.conf --port 7005
+
+  redis-6:
+    image: redis:7.2.4-alpine3.19
+    ports:
+      - 7006:7006
+      - 17006:17006
+    volumes:
+      - "./redis.conf:/etc/redis.conf"
+      - "./data/data-7006:/data"
+    command: redis-server /etc/redis.conf --port 7006
