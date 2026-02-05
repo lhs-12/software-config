@@ -9,8 +9,8 @@ Switch to Next Keyboard Layout=none,Meta+Alt+K,切换到下一个键盘布局
 _k_friendly_name=键盘布局切换器
 
 [kaccess]
-Toggle Screen Reader On and Off=Meta+Alt+S,Meta+Alt+S,Toggle Screen Reader On and Off
-_k_friendly_name=Accessibility
+Toggle Screen Reader On and Off=Meta+Alt+S,Meta+Alt+S,切换屏幕阅读器开关
+_k_friendly_name=无障碍辅助
 
 [kmix]
 _k_friendly_name=音量

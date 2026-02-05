@@ -2,7 +2,7 @@
 abbr vi 'nvim --clean'
 abbr vim nvim
 abbr svi 'sudo nvim'
-abbr code 'code --enable-features=UseOzonePlatform --ozone-platform=wayland --enable-wayland-ime'
+abbr code 'code --ozone-platform=wayland'
 
 # Directory listing (lsd)
 abbr ls lsd
