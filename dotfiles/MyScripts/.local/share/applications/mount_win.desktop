@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Win挂载
+Comment=交互式挂载或卸载 Windows NTFS 分区
+Exec=bash ~/.local/bin/mount_win
+Icon=drive-harddisk
+Terminal=true
+Categories=Utility;

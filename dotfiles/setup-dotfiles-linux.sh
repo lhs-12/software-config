@@ -8,7 +8,7 @@ FOLD_PACKAGES=(
 )
 
 NO_FOLD_PACKAGES=(
-    "KDE" "Rime" "VSCode" "Xremap"
+    "KDE" "Rime" "VSCode" "Xremap" "MyScripts"
 )
 
 auto=false; [[ ${1:-} == --auto ]] && auto=true # --auto : apply all packages without prompting

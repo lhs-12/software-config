@@ -138,7 +138,7 @@ Window One Screen Down=none,,移动窗口到下方屏幕
 Window One Screen Up=none,,移动窗口到上方屏幕
 Window One Screen to the Left=none,,移动窗口到左侧屏幕
 Window One Screen to the Right=none,,移动窗口到右侧屏幕
-Window Operations Menu=Alt+F3,Alt+F3,窗口菜单
+Window Operations Menu=none,Alt+F3,窗口菜单
 Window Pack Down=none,,下移窗口
 Window Pack Left=none,,左移窗口
 Window Pack Right=none,,右移窗口
@@ -316,9 +316,6 @@ switch to next activity=none,,切换到下一个活动
 switch to previous activity=none,,切换到上一个活动
 toggle do not disturb=none,,切换勿扰模式
 
-[services][net.local.screenshot-kde.desktop]
-_launch=F1
-
 [services][org.kde.konsole.desktop]
 _launch=none
 
@@ -336,3 +333,9 @@ RecordWindow=none
 RectangularRegionScreenShot=none
 WindowUnderCursorScreenShot=none
 _launch=Print
+
+[services][pinpic-clipboard.desktop]
+_launch=F3
+
+[services][pinpic-screenshot.desktop]
+_launch=F1
