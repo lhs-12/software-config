@@ -7,6 +7,7 @@
 #   - 支持图片 / 图片文件 / 普通文本 / 富文本（HTML）
 #   - 文本与富文本通过 Qt WebEngine 渲染为图片
 #   - 使用 mpv 作为显示窗口，并配合 Lua 脚本实现贴图交互
+#   - GIF 链接可完整贴图, 优化复制GIF内容只有单帧的体验
 #
 # 使用方式:
 #   pinpic --screenshot    # 截图贴图  （对应 Snipaste F1）
@@ -84,7 +85,8 @@ pin_from_clipboard() {
         while IFS= read -r uri; do
             [[ "$uri" =~ ^file:// ]] || continue
             path="${uri#file://}"
-
+            # 不可见字符导致出问题时, echo "$path" | od -c 测试一下
+            path="$(echo "$path" | tr -d '\r\n')" # 去掉不可见字符
             if is_image_file "$path"; then
                 cp "$path" "$TMP_IMG"
                 show_with_mpv "$TMP_IMG"
@@ -102,9 +104,17 @@ pin_from_clipboard() {
         show_with_mpv "$TMP_IMG"
         return
     fi
-
     if echo "$types" | has_type '^text/plain'; then
-        wl-paste --type text/plain | "$PY_RENDER" --text - --out "$TMP_IMG"
+        text="$(wl-paste --type text/plain | tr -d '\r\n')"
+        # ---- GIF 链接特殊处理(支持http/https + gif结尾) ----
+        if [[ "$text" =~ ^https?://.+\.gif([?#].*)?$ ]]; then
+            tmp_gif="$TMP_DIR/pin.gif"
+            curl -L "$text" -o "$tmp_gif" > /dev/null 2>&1
+            show_with_mpv "$tmp_gif"
+            return
+        fi
+        # ---- 普通文本处理 ----
+        printf '%s' "$text" | "$PY_RENDER" --text - --out "$TMP_IMG"
         show_with_mpv "$TMP_IMG"
         return
     fi
