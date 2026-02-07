@@ -4,7 +4,7 @@ cd "$(dirname "$0")"
 
 FOLD_PACKAGES=(
     "Bash" "Fish" "OhMyPosh" "Yazi" "WezTerm" "Pictures" "FontConfig" "Fcitx5"
-    "LazyVim" "Mise" "Ruff" "Jetbrains" "Flameshot"
+    "LazyVim" "Mise" "Ruff" "Jetbrains" "Flameshot" "MPV"
 )
 
 NO_FOLD_PACKAGES=(

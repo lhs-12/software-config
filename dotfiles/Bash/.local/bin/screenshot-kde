@@ -1,74 +1,16 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# 创建临时文件
-tmp_base=$(mktemp -u)
-tmp_pic="${tmp_base}.png"
-mpv_conf="${tmp_base}.conf"
-mpv_lua="${tmp_base}.lua"
-trap 'rm -f "$tmp_pic" "$mpv_conf" "$mpv_lua"' EXIT
+# 临时文件
+tmp_pic=$(mktemp --suffix=.png)
+trap 'rm -f "$tmp_pic"' EXIT
 
-# mpv 双击关闭窗口
-echo 'MOUSE_BTN0_DBL quit' > "$mpv_conf"
-# mpv Lua 脚本: s 保存 ; c 复制到剪贴板 ; 滚轮缩放 ; a/d 旋转
-cat > "$mpv_lua" << 'EOF'
-local function save_to_clipboard()
-    local path = mp.get_property('path')
-    if not path then return end
-    mp.commandv('run', 'sh', '-c', 'wl-copy < "' .. path .. '" &')
-    mp.osd_message('已保存到剪贴板', 1)
-end
-local function save_to_file()
-    local path = mp.get_property('path')
-    if not path then return end
-    local save_dir = os.getenv('XDG_PICTURES_DIR') or (os.getenv('HOME') .. '/Desktop')
-    local timestamp = os.date('%Y%m%d_%H%M%S')
-    local dest = save_dir .. '/screenshot_' .. timestamp .. '.png'
-    mp.commandv('run', 'cp', path, dest)
-    mp.osd_message('已保存: ' .. dest, 2)
-end
-local function zoom_in()
-    local scale = mp.get_property_number('window-scale') or 1
-    if scale < 5 then
-        mp.set_property('window-scale', scale + 0.1)
-        mp.osd_message('放大: ' .. string.format('%.1fx', scale + 0.1), 0.5)
-    end
-end
-local function zoom_out()
-    local scale = mp.get_property_number('window-scale') or 1
-    if scale > 0.2 then
-        mp.set_property('window-scale', scale - 0.1)
-        mp.osd_message('缩放: ' .. string.format('%.1fx', scale - 0.1), 0.5)
-    end
-end
-local function rotate_cw()
-    local angle = mp.get_property_number('video-rotate') or 0
-    local new_angle = (angle + 90) % 360
-    mp.set_property('video-rotate', new_angle)
-    mp.osd_message('旋转: ' .. new_angle .. '°', 0.5)
-end
-local function rotate_ccw()
-    local angle = mp.get_property_number('video-rotate') or 0
-    local new_angle = (angle - 90) % 360
-    if new_angle < 0 then new_angle = new_angle + 360 end
-    mp.set_property('video-rotate', new_angle)
-    mp.osd_message('旋转: ' .. new_angle .. '°', 0.5)
-end
-mp.add_key_binding('c', 'save-to-clipboard', save_to_clipboard)
-mp.add_key_binding('s', 'save-to-file', save_to_file)
-mp.add_key_binding('WHEEL_UP', 'zoom-in', zoom_in)
-mp.add_key_binding('WHEEL_DOWN', 'zoom-out', zoom_out)
-mp.add_key_binding('d', 'rotate-cw', rotate_cw)
-mp.add_key_binding('a', 'rotate-ccw', rotate_ccw)
-EOF
+# spectacle 截图
+spectacle -b -n -r -o "$tmp_pic" > /dev/null 2>&1
 
-# spectacle 截图, 保存到临时文件
-spectacle -b -r -o "$tmp_pic" -n > /dev/null 2>&1
-
-# mpv 显示图片 (KDE需要额外添加KWin规则保持窗口置顶)
+# mpv 贴图 (KDE需要添加KWin规则保持窗口置顶: MPV_Pinned)
 mpv "$tmp_pic" \
-    --script="$mpv_lua" --input-conf="$mpv_conf" --title="MPV_Pinned_${tmp_base##*/}" \
-    --ontop --border=no --window-dragging \
-    --title-bar=no --osc=no --image-display-duration=inf \
-    --autoload-files=no --no-config --no-input-builtin-bindings \
-    --no-audio --vd=no --hwdec=no --no-auto-window-resize > /dev/null 2>&1
+    --title="MPV_Pinned_${tmp_pic##*/}" \
+    --script="$HOME/.config/mpv/scripts/pin_image.lua" \
+    --no-config --no-input-builtin-bindings > /dev/null 2>&1
+
