@@ -1,9 +1,6 @@
 #!/bin/bash
 # Windows 硬盘挂载
 #
-# !!! 认真检查修改本脚本信息: 硬盘挂载信息, 读写权限, desktop 文件的路径 !!!
-# !!! 本脚本操作和路径参数在 Arch Linux KDE 中测试过 !!!
-#
 # 起因:
 # 双系统 NTFS 互写的情况下很容易丢失数据, 尤其当 Windows 开启了 "快速启动" 功能.
 # 不想修改 `/etc/fstab` 使开机时默认挂载 Windows 硬盘, 于是改为脚本手动挂载.
@@ -12,73 +9,135 @@
 
 set -euo pipefail
 
-# ===================== config ======================
+# ====================== Config ======================
+# !!! 认真检查修改本脚本信息: 硬盘挂载信息, 读写权限, desktop 文件的路径 !!!
 declare -a PARTITIONS=(
   "/dev/nvme0n1p4|/mnt/d"
   "/dev/nvme0n1p5|/mnt/e"
 )
 # 默认设置为 "只读"(ro), 根据需要修改为"读写"(rw)
 MOUNT_OPTS="uid=1000,gid=1000,umask=022,ro"
-# ===================================================
 
+# ====================== UI language ======================
+UI_LANG=$([[ ${LC_ALL:-${LC_MESSAGES:-${LANG}}} == zh* ]] && echo zh || echo en)
+LANG_TABLE='
+TAG_INFO    | [INFO]  | [消息]
+TAG_SUCCESS | [OK]    | [成功]
+TAG_WARN    | [WARN]  | [注意]
+TAG_ERROR   | [ERROR] | [错误]
+
+TXT_DEVICE      | Device        | 设备
+TXT_MOUNTPOINT  | Mount Point   | 挂载点
+TXT_STATUS      | Status        | 状态
+TXT_MOUNTED     | mounted       | 已挂载
+TXT_UNMOUNTED   | unmounted     | 未挂载
+
+TXT_STATE_ALL   | Overall state       | 当前整体状态
+TXT_DO_MOUNT    | Mount               | 挂载
+TXT_DO_UMOUNT   | Unmount             | 卸载
+TXT_CONFIRM     | Execute             | 是否执行
+TXT_CANCEL      | Operation cancelled | 操作取消
+TXT_MOUNTED_ELSEWHERE | already mounted elsewhere, skip | 已挂载到其他位置，跳过
+
+TXT_START_MOUNT | Start mounting Windows NTFS partitions...   | 开始挂载 Windows NTFS 分区...
+TXT_START_UMOUNT| Start unmounting Windows NTFS partitions... | 开始卸载 Windows NTFS 分区...
+TXT_DONE        | All operations completed                    | 所有操作完成
+TXT_PRESS_KEY   | Press any key to exit...                    | 按任意键退出...
+'
+while IFS='|' read -r v e c; do
+    v=$(printf "%s" "$v" | sed 's/^ *//;s/ *$//')
+    e=$(printf "%s" "$e" | sed 's/^ *//;s/ *$//')
+    c=$(printf "%s" "$c" | sed 's/^ *//;s/ *$//')
+    [ -z "$v" ] && continue
+    case "$v" in \#*) continue ;; esac
+    [ "$UI_LANG" = "zh" ] && eval "$v=\$c" || eval "$v=\$e"
+done <<EOF
+$LANG_TABLE
+EOF
+
+# ====================== Functions ======================
 # 挂载单个分区
 mount_partition() {
   local dev="$1"
   local mnt="$2"
-  if grep -qs " $mnt " /proc/mounts; then
-    echo "[$mnt] 已经挂载，跳过"
+  if findmnt -n -M "$mnt" >/dev/null 2>&1; then
+    echo "$TAG_INFO [$mnt] $TXT_MOUNTED"
     return
   fi
   if grep -qs " $dev " /proc/mounts; then
-    echo "[$dev] 已被挂载到其他位置，跳过 $mnt"
+    echo "$TAG_WARN [$dev] $TXT_MOUNTED_ELSEWHERE $mnt"
     return
   fi
   mkdir -p "$mnt"
   sudo mount -t ntfs-3g "$dev" "$mnt" -o "$MOUNT_OPTS"
-  echo "[$mnt] 挂载成功"
+  echo "$TAG_SUCCESS [$mnt] $TXT_DO_MOUNT"
 }
 
 # 卸载单个分区
 umount_partition() {
   local mnt="$1"
-  if grep -qs " $mnt " /proc/mounts; then
+  if findmnt -n -M "$mnt" >/dev/null 2>&1; then
     sudo umount "$mnt"
-    echo "[$mnt] 已卸载"
+    echo "$TAG_SUCCESS [$mnt] $TXT_DO_UMOUNT"
   else
-    echo "[$mnt] 未挂载，无需操作"
+    echo "$TAG_INFO [$mnt] $TXT_UNMOUNTED"
   fi
 }
 
-# ======== 交互式输入 ========
-while true; do
-  read -rp "请输入操作 [1=挂载, 2=卸载]: " ACTION
-  if [[ "$ACTION" == "1" || "$ACTION" == "2" ]]; then
-    break
+# ====================== Interactive prompt ======================
+
+CURRENT_STATE="$TXT_UNMOUNTED"
+
+printf "\n%-20s %-15s %-10s\n" "$TXT_DEVICE" "$TXT_MOUNTPOINT" "$TXT_STATUS"
+
+for entry in "${PARTITIONS[@]}"; do
+  IFS='|' read -r dev mnt <<<"$entry"
+  if findmnt -n -M "$mnt" >/dev/null 2>&1; then
+    state="$TXT_MOUNTED"
+    CURRENT_STATE="$TXT_MOUNTED"
   else
-    echo "输入无效，请输入 1 或 2"
+    state="$TXT_UNMOUNTED"
   fi
+  printf "%-20s %-15s %-10s\n" "$dev" "$mnt" "$state"
 done
+echo
+
+if [[ "$CURRENT_STATE" == "$TXT_MOUNTED" ]]; then
+  NEXT_ACTION="$TXT_DO_UMOUNT"
+  ACTION="2"
+else
+  NEXT_ACTION="$TXT_DO_MOUNT"
+  ACTION="1"
+fi
+
+read -rp "$TXT_STATE_ALL: 【$CURRENT_STATE】, $TXT_CONFIRM【$NEXT_ACTION】? [Y/n]: " CONFIRM
+CONFIRM="${CONFIRM:-y}"
+if [[ ! "$CONFIRM" =~ ^[Yy]$ ]]; then
+  echo "$TAG_WARN $TXT_CANCEL"
+  echo
+  read -n1 -rsp "$TXT_PRESS_KEY"$'\n'
+  exit 0
+fi
+
+# ====================== Execute ======================
 
 case "$ACTION" in
 1)
-  echo "开始挂载 Windows NTFS 分区..."
+  echo "$TAG_INFO $TXT_START_MOUNT"
   for entry in "${PARTITIONS[@]}"; do
-    [[ -n "$entry" ]] || continue
     IFS='|' read -r dev mnt <<<"$entry"
     mount_partition "$dev" "$mnt"
   done
   ;;
 2)
-  echo "开始卸载 Windows NTFS 分区..."
+  echo "$TAG_INFO $TXT_START_UMOUNT"
   for ((i = ${#PARTITIONS[@]} - 1; i >= 0; i--)); do
-    entry="${PARTITIONS[i]}"
-    [[ -n "$entry" ]] || continue
-    IFS='|' read -r dev mnt <<<"$entry"
+    IFS='|' read -r dev mnt <<<"${PARTITIONS[i]}"
     umount_partition "$mnt"
   done
   ;;
 esac
 
-echo "所有操作完成"
+echo "$TAG_SUCCESS $TXT_DONE"
 echo
-read -n1 -rsp $'操作完成，按任意键退出...\n'
+read -n1 -rsp "$TXT_PRESS_KEY"$'\n'
