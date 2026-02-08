@@ -13,6 +13,7 @@ code \
 --install-extension asvetliakov.vscode-neovim \                       # VSCode Neovim                       NeoVim合成扩展
 --install-extension alefragnani.bookmarks \                           # Bookmarks                           书签
 --install-extension donjayamanne.githistory \                         # Git History                         Git历史
+--install-extension lirentech.git-line-author \                       # Git Line Author                     Git查看行作者
 --install-extension james-yu.latex-workshop \                         # LaTeX Workshop                      LaTeX与PDF支持
 --install-extension fabiospampinato.vscode-open-in-application \      # Open in Application                 默认程序打开文件
 --install-extension ms-vscode-remote.vscode-remote-extensionpack \    # Remote Development                  远程开发套件(WSL/容器/SSH...)
