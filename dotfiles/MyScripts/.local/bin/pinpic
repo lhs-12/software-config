@@ -28,7 +28,7 @@ MODE="${1:-}"
 
 # ========= 配置 =========
 PY_RENDER="text_to_img"
-MPV_LUA="$HOME/.config/mpv/scripts/pin_image.lua"
+MPV_LUA="$HOME/.config/mpv/lua/pin_image.lua"
 
 TMP_DIR="$(mktemp -d)"
 trap 'rm -rf "$TMP_DIR"' EXIT
