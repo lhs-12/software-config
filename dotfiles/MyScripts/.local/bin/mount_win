@@ -60,11 +60,12 @@ EOF
 mount_partition() {
   local dev="$1"
   local mnt="$2"
+  # 用 findmnt 代替 grep -qs " $dev " /proc/mounts , 更好
   if findmnt -n -M "$mnt" >/dev/null 2>&1; then
     echo "$TAG_INFO [$mnt] $TXT_MOUNTED"
     return
   fi
-  if grep -qs " $dev " /proc/mounts; then
+  if findmnt -n --source "$dev" >/dev/null 2>&1; then
     echo "$TAG_WARN [$dev] $TXT_MOUNTED_ELSEWHERE $mnt"
     return
   fi
