@@ -1,0 +1,57 @@
+patch:
+  __include: rime_ice_suggestion:/  # used in Arch Linux only
+
+  schema_list:
+    - schema: double_pinyin_flypy # 小鹤双拼
+    - schema: rime_ice            # 雾凇拼音(全拼)
+
+  menu/page_size: 9 # 候选词个数
+
+  switcher/hotkeys:
+    - Control+grave # 触发选单只保留 ctrl + ` 快捷键
+
+  ascii_composer:
+    good_old_caps_lock: true # CapsLock切换英文
+    switch_key:
+      Caps_Lock: clear # 清除未上屏内容，然后切换到英文
+      Shift_L: noop
+      Shift_R: noop
+      Control_L: commit_code # 上屏原始的编码，然后切换到英文
+      Control_R: noop
+
+  # 快捷键
+  key_binder:
+    # Lua 配置: 以词定字
+    select_first_character: "comma" # ,
+    select_last_character: "period" # .
+    bindings:
+      # 翻页 [ ]
+      - { when: paging  , accept: bracketleft , send: Page_Up }
+      - { when: has_menu, accept: bracketright, send: Page_Down }
+      # Tab / Shift+Tab 切换光标至下/上一个拼音
+      - { when: composing, accept: Shift+Tab, send: Shift+Left }
+      - { when: composing, accept: Tab      , send: Shift+Right }
+      # 模式切换
+      - { when: always, toggle: ascii_punct, accept: Control+Shift+3 }              # 切换中英标点
+      - { when: always, toggle: ascii_punct, accept: Control+Shift+numbersign }     # 切换中英标点
+      - { when: always, toggle: traditionalization, accept: Control+Shift+4 }       # 切换简繁
+      - { when: always, toggle: traditionalization, accept: Control+Shift+dollar }  # 切换简繁
+      # - { when: always, toggle: full_shape, accept: Control+Shift+5 }             # 切换全半角
+      # - { when: always, toggle: full_shape, accept: Control+Shift+percent }       # 切换全半角
+      # 将小键盘 0~9 . 映射到主键盘，数字金额大写的 Lua 如 R1234.5678 可使用小键盘输入
+      - { accept: KP_0, send: 0, when: composing }
+      - { accept: KP_1, send: 1, when: composing }
+      - { accept: KP_2, send: 2, when: composing }
+      - { accept: KP_3, send: 3, when: composing }
+      - { accept: KP_4, send: 4, when: composing }
+      - { accept: KP_5, send: 5, when: composing }
+      - { accept: KP_6, send: 6, when: composing }
+      - { accept: KP_7, send: 7, when: composing }
+      - { accept: KP_8, send: 8, when: composing }
+      - { accept: KP_9, send: 9, when: composing }
+      - { accept: KP_Decimal, send: period, when: composing }
+      # 将小键盘 + - * / 映射到主键盘，使计算器 如 1+2-3*4 可使用小键盘输入
+      - { accept: KP_Multiply, send: asterisk, when: composing }
+      - { accept: KP_Add     , send: plus    , when: composing }
+      - { accept: KP_Subtract, send: minus   , when: composing }
+      - { accept: KP_Divide  , send: slash   , when: composing }

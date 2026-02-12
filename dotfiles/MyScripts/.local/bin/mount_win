@@ -1,0 +1,189 @@
+#!/bin/bash
+# Windows 硬盘挂载
+#
+# 起因:
+# 双系统 NTFS 互写的情况下很容易丢失数据, 尤其当 Windows 开启了 "快速启动" 功能.
+# 不想修改 `/etc/fstab` 使开机时默认挂载 Windows 硬盘, 于是改为脚本手动挂载.
+#
+# 需要安装依赖: pacman -S ntfs-3g
+
+set -euo pipefail
+
+# ====================== Config ======================
+# !!! 认真检查修改本脚本信息: 硬盘挂载信息, 读写权限, desktop 文件的路径 !!!
+declare -a PARTITIONS=(
+  "/dev/nvme0n1p4|/mnt/d"
+  "/dev/nvme0n1p5|/mnt/e"
+)
+# 默认设置为 "只读"(ro), 根据需要修改为"读写"(rw)
+MOUNT_OPTS="uid=1000,gid=1000,umask=022,ro"
+
+# ====================== UI language ======================
+UI_LANG=$([[ ${LC_ALL:-${LC_MESSAGES:-${LANG}}} == zh* ]] && echo zh || echo en)
+LANG_TABLE='
+TAG_INFO    | [INFO]  | [消息]
+TAG_SUCCESS | [OK]    | [成功]
+TAG_WARN    | [WARN]  | [注意]
+TAG_ERROR   | [ERROR] | [错误]
+
+TXT_DEVICE      | Device        | 设备
+TXT_MOUNTPOINT  | Mount Point   | 挂载点
+TXT_STATUS      | Status        | 状态
+
+TXT_MOUNTED_HERE      | mounted (configured) | 已按配置挂载
+TXT_MOUNTED_ELSEWHERE | mounted elsewhere    | 已挂载到其他位置
+TXT_UNMOUNTED         | unmounted            | 未挂载
+
+TXT_STATE_ALL   | Overall state       | 当前整体状态
+TXT_DO_MOUNT    | Mount               | 挂载
+TXT_DO_UMOUNT   | Unmount             | 卸载
+TXT_CONFIRM     | Execute             | 是否执行
+TXT_CANCEL      | Operation cancelled | 操作取消
+
+TXT_SUGGEST_UMOUNT | Suggested unmount command | 建议的卸载命令
+
+TXT_STATE_MIXED       | mixed state                | 混合状态
+TXT_DO_MOUNT_REMAIN   | Mount remaining partitions | 挂载未挂载的分区
+TXT_DO_UMOUNT_MOUNTED | Unmount mounted partitions | 卸载已挂载的分区
+TXT_SELECT            | Select                     | 选择
+
+TXT_START_MOUNT | Start mounting Windows NTFS partitions...   | 开始挂载 Windows NTFS 分区...
+TXT_START_UMOUNT| Start unmounting Windows NTFS partitions... | 开始卸载 Windows NTFS 分区...
+TXT_DONE        | All operations completed                    | 所有操作完成
+TXT_PRESS_KEY   | Press any key to exit...                    | 按任意键退出...
+'
+while IFS='|' read -r v e c; do
+  v=$(sed 's/^ *//;s/ *$//' <<<"$v")
+  e=$(sed 's/^ *//;s/ *$//' <<<"$e")
+  c=$(sed 's/^ *//;s/ *$//' <<<"$c")
+  [ -z "$v" ] && continue
+  [[ "$v" == \#* ]] && continue
+  [ "$UI_LANG" = "zh" ] && eval "$v=\$c" || eval "$v=\$e"
+done <<<"$LANG_TABLE"
+
+# ====================== Functions ======================
+get_state() {
+  local dev="$1" mnt="$2"
+  if findmnt -n --source "$dev" --target "$mnt" >/dev/null 2>&1; then
+    echo here
+  elif findmnt -n --source "$dev" >/dev/null 2>&1; then
+    echo elsewhere
+  else
+    echo unmounted
+  fi
+}
+# 挂载单个分区
+mount_partition() {
+  local dev="$1" mnt="$2"
+  local state=$(get_state "$dev" "$mnt")
+  case "$state" in
+    here)
+      echo "$TAG_INFO [$mnt] $TXT_MOUNTED_HERE"
+      ;;
+    elsewhere)
+      echo "$TAG_WARN [$dev] $TXT_MOUNTED_ELSEWHERE"
+      ;;
+    unmounted)
+      mkdir -p "$mnt"
+      sudo mount -t ntfs-3g "$dev" "$mnt" -o "$MOUNT_OPTS"
+      echo "$TAG_SUCCESS [$mnt] $TXT_DO_MOUNT"
+      ;;
+  esac
+}
+# 卸载单个分区
+umount_partition() {
+  local dev="$1" mnt="$2"
+  if findmnt -n --source "$dev" --target "$mnt" >/dev/null 2>&1; then
+    sudo umount "$mnt"
+    echo "$TAG_SUCCESS [$mnt] $TXT_DO_UMOUNT"
+  else
+    echo "$TAG_INFO [$dev]|[$mnt] $TXT_UNMOUNTED"
+  fi
+}
+
+# ====================== State Scan ======================
+mounted_here=()
+mounted_elsewhere=()
+unmounted=()
+
+printf "\n%-20s %-15s %-22s\n" "$TXT_DEVICE" "$TXT_MOUNTPOINT" "$TXT_STATUS"
+
+for entry in "${PARTITIONS[@]}"; do
+  IFS='|' read -r dev mnt <<<"$entry"
+  state=$(get_state "$dev" "$mnt")
+  case "$state" in
+    here)
+      mounted_here+=("$entry")
+      label="$TXT_MOUNTED_HERE"
+      ;;
+    elsewhere)
+      mounted_elsewhere+=("$dev")
+      label="$TXT_MOUNTED_ELSEWHERE"
+      ;;
+    unmounted)
+      unmounted+=("$entry")
+      label="$TXT_UNMOUNTED"
+      ;;
+  esac
+  printf "%-20s %-15s %-22s\n" "$dev" "$mnt" "$label"
+done
+echo
+
+# ====================== Decision ======================
+if ((${#mounted_elsewhere[@]} > 0)); then
+  echo "$TAG_WARN $TXT_MOUNTED_ELSEWHERE:"
+  for dev in "${mounted_elsewhere[@]}"; do
+    findmnt -n -o TARGET --source "$dev" | while read -r mp; do
+      echo "  $TXT_SUGGEST_UMOUNT: sudo umount $mp"
+    done
+  done
+  echo
+  read -n1 -rsp "$TXT_PRESS_KEY"$'\n'
+  exit 0
+fi
+
+if ((${#mounted_here[@]} == 0 && ${#unmounted[@]} > 0)); then
+  ACTION="mount"
+elif ((${#mounted_here[@]} == ${#PARTITIONS[@]})); then
+  ACTION="umount"
+else
+  echo "$TXT_STATE_ALL: $TXT_STATE_MIXED"
+  echo "1) $TXT_DO_MOUNT_REMAIN"
+  echo "2) $TXT_DO_UMOUNT_MOUNTED"
+  read -rp "$TXT_SELECT [1/2]: " sel
+  case "$sel" in
+    1) ACTION="mount" ;;
+    2) ACTION="umount" ;;
+    *) echo "$TAG_WARN $TXT_CANCEL"; exit 0 ;;
+  esac
+fi
+
+read -rp "$TXT_CONFIRM [$ACTION]? [Y/n]: " CONFIRM
+CONFIRM="${CONFIRM:-y}"
+[[ ! "$CONFIRM" =~ ^[Yy]$ ]] && {
+  echo "$TAG_WARN $TXT_CANCEL"
+  read -n1 -rsp "$TXT_PRESS_KEY"$'\n'
+  exit 0
+}
+
+# ====================== Execute ======================
+case "$ACTION" in
+  mount)
+    echo "$TAG_INFO $TXT_START_MOUNT"
+    for entry in "${unmounted[@]}"; do
+      IFS='|' read -r dev mnt <<<"$entry"
+      mount_partition "$dev" "$mnt"
+    done
+    ;;
+  umount)
+    echo "$TAG_INFO $TXT_START_UMOUNT"
+    for entry in "${mounted_here[@]}"; do
+      IFS='|' read -r dev mnt <<<"$entry"
+      umount_partition "$dev" "$mnt"
+    done
+    ;;
+esac
+
+echo "$TAG_SUCCESS $TXT_DONE"
+echo
+read -n1 -rsp "$TXT_PRESS_KEY"$'\n'

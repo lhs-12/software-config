@@ -1,0 +1,193 @@
+#!/usr/bin/env python3
+# ------------------------------------------------------------
+# text_to_img - 用于将剪贴板中的文本 / 富文本（HTML）转换为图片
+#
+# 使用方式:
+#   读取文本文件:
+#     text_to_img.py --text input.txt --out output.png
+#   从标准输入读取文本:
+#     echo "hello world" | text_to_img.py --text - --out output.png
+#   读取 HTML 文件:
+#     text_to_img.py --html input.html --out output.png
+#   从标准输入读取 HTML:
+#     cat input.html | text_to_img.py --html - --out output.png
+#
+# 运行环境:
+#   - 已测试: Arch Linux + KDE Plasma Wayland
+# 系统依赖:
+#   - python, qt6-webengine, python-pyqt6-webengine
+# ------------------------------------------------------------
+
+import argparse
+import sys
+from pathlib import Path
+
+from PyQt6.QtCore import QSize, Qt, QTimer, QUrl
+from PyQt6.QtWebEngineWidgets import QWebEngineView
+from PyQt6.QtWidgets import QApplication
+
+# ============================================================
+# Template Renderers
+# ============================================================
+
+
+def render_html_template(input_html: str) -> str:
+    return f"""<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+html, body {{
+    margin: 0;
+    padding: 0;
+    background: #1f1f1f;
+    color: #d4d4d4;
+    overflow: hidden;
+}}
+body {{
+    display: inline-block;
+}}
+#container {{
+    display: inline-block;
+    max-width: 120ch;
+    padding: 12px;
+}}
+* {{
+    scrollbar-width: none;
+}}
+*::-webkit-scrollbar {{
+    display: none;
+}}
+pre {{
+    margin: 0;
+    overflow: visible;
+}}
+</style>
+</head>
+<body>
+  <div id="container">
+{input_html}
+  </div>
+</body>
+</html>
+"""
+
+
+def render_text_template(text: str) -> str:
+    return f"""<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+html, body {{
+    margin: 0;
+    padding: 0;
+    background: #1f1f1f;
+    overflow: hidden;
+}}
+body {{
+    display: inline-block;
+}}
+pre {{
+    margin: 0;
+    padding: 12px;
+    max-width: 120ch;
+    color: #d4d4d4;
+    font-family: monospace;
+    font-size: 16px;
+    line-height: 18px;
+    white-space: pre-wrap;
+    word-break: break-word;
+}}
+* {{
+    scrollbar-width: none;
+}}
+*::-webkit-scrollbar {{
+    display: none;
+}}
+</style>
+</head>
+<body>
+<pre>{text}</pre>
+</body>
+</html>
+"""
+
+
+# ============================================================
+# Core: Render HTML to Image
+# ============================================================
+
+
+def render_to_image(html: str, output_path: Path) -> None:
+    app = QApplication(sys.argv)
+    view = QWebEngineView()
+    view.setZoomFactor(1 / view.devicePixelRatioF() * 1.25)
+    view.setAttribute(Qt.WidgetAttribute.WA_DontShowOnScreen, True)
+    view.setHtml(html, QUrl("about:blank"))
+
+    def capture():
+        page = view.page()
+
+        def after_js(size):
+            width, height = size
+            zf = view.zoomFactor()
+            view.resize(QSize(int(width * zf), int(height * zf)))
+            QTimer.singleShot(50, save_image)
+
+        page.runJavaScript(
+            """
+            (function () {
+                const el = document.body;
+                return [el.scrollWidth, el.scrollHeight];
+            })();
+            """,
+            after_js,
+        )
+
+    def save_image():
+        pixmap = view.grab()
+        pixmap.save(str(output_path))
+        app.quit()
+
+    view.loadFinished.connect(lambda _: QTimer.singleShot(100, capture))
+    view.show()
+
+    sys.exit(app.exec())
+
+
+# ============================================================
+# CLI
+# ============================================================
+
+
+def read_stdin() -> str:
+    return sys.stdin.read()
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description="Render text / html to image")
+
+    src = parser.add_mutually_exclusive_group(required=True)
+    src.add_argument("--html", type=Path, help="HTML file path")
+    src.add_argument("--text", type=Path, help="Text file path, use '-' for stdin")
+
+    parser.add_argument("--out", type=Path, required=True, help="Output image path (png)")
+
+    args = parser.parse_args()
+
+    # ---------- HTML ----------
+    if args.html:
+        html_raw = read_stdin() if args.html.name == "-" else args.html.read_text(encoding="utf-8", errors="ignore")
+        html = render_html_template(html_raw)
+
+    # ---------- TEXT ----------
+    else:
+        text = read_stdin() if args.text.name == "-" else args.text.read_text(encoding="utf-8", errors="ignore")
+        html = render_text_template(text)
+
+    render_to_image(html, args.out)
+
+
+if __name__ == "__main__":
+    main()

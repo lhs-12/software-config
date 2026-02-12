@@ -1,0 +1,29 @@
+version: "3"
+services:
+  redis-master:
+    image: redis:7.2.4-alpine3.19
+    ports:
+      - "6379:6379"
+    volumes:
+      - "./redis.conf:/etc/redis.conf"
+    command: redis-server /etc/redis.conf
+
+  redis-slave1: 
+    image: redis:7.2.4-alpine3.19
+    ports:
+      - "6380:6379"
+    volumes:
+      - "./redis.conf:/etc/redis.conf"
+    command: redis-server /etc/redis.conf --slaveof redis-master 6379
+    depends_on:
+      - redis-master
+
+  redis-slave2: 
+    image: redis:7.2.4-alpine3.19
+    ports:
+      - "6381:6379"
+    volumes:
+      - "./redis.conf:/etc/redis.conf"
+    command: redis-server /etc/redis.conf --slaveof redis-master 6379
+    depends_on:
+      - redis-master

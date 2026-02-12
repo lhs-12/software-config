@@ -1,0 +1,19 @@
+<svg viewBox="-102 -102 204 204" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <linearGradient id="modernMetal" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#434343"/>
+            <stop offset="100%" stop-color="#000000"/>
+        </linearGradient>
+    </defs>
+
+    <circle r="100" fill="white" />
+
+    <path d="M 0 -100 A 100 100 0 0 1 0 100 A 50 50 0 0 1 0 0 A 50 50 0 0 0 0 -100" fill="url(#modernMetal)"/>
+
+    <circle cy="50" r="15" fill="white"/>
+    <circle cy="-50" r="15" fill="url(#modernMetal)"/>
+
+
+    <circle r="100.5" fill="none" stroke="#cccccc" stroke-width="1"/>
+
+</svg>

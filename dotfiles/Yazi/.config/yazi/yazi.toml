@@ -1,0 +1,40 @@
+[open]
+prepend_rules = [
+  # 文件夹: open 优先
+  { url = "*/", use = [ "open", "edit", "reveal" ] },
+  # 压缩文件: reveal优先
+  { mime = "application/{zip,rar,7z*,tar,gzip,xz,zstd,bzip*,lzma,compress,archive,cpio,arj,xar,ms-cab*}", use = [ "reveal", "open", "extract" ] },
+  # 无法识别的流媒体文件, file --mime-type xxx.mp4/mp3 会输出 application/octet-stream
+  { mime = "application/octet-stream", use = [ "open", "play", "reveal" ] },
+]
+
+[opener]
+edit = [
+  { desc = "NeoVim", block  = true, run = 'nvim %s' },
+  { desc = "VSCode", orphan = true, run = 'code %s' },
+]
+play = [
+  { desc = "PotPlayer Play"     , for = "windows", orphan = true, run = 'powershell -NoProfile -Command "& { & \"C:\Program Files\DAUM\PotPlayer\PotPlayerMini64.exe\" ($args -replace \"/\",\"\\\") }" %*' },
+  { desc = "PotPlayer Add List" , for = "windows", orphan = true, run = 'powershell -NoProfile -Command "& { & \"C:\Program Files\DAUM\PotPlayer\PotPlayerMini64.exe\" ($args -replace \"/\",\"\\\") /ADD }" %*' },
+  { desc = "Play"               , for = "linux"  , orphan = true, run = 'xdg-open %s1' },
+  { desc = "Show media info"    , for = "windows", block  = true, run = "mediainfo %s1 & pause" },
+  { desc = "Show media info"    , for = "unix"   , block  = true, run = "mediainfo %s1; echo 'Press enter to exit'; read _" },
+]
+
+[plugin]
+prepend_preloaders = [
+  { mime = "{audio,video,image}/*"   , run = "mediainfo" },
+  { mime = "application/subrip"      , run = "mediainfo" },
+  { mime = "application/postscript"  , run = "mediainfo" },
+  { mime = "application/octet-stream", run = "mediainfo" },
+]
+prepend_previewers = [
+  { mime = "{audio,video,image}/*"   , run = "mediainfo" },
+  { mime = "application/subrip"      , run = "mediainfo" },
+  { mime = "application/postscript"  , run = "mediainfo" },
+  { mime = "application/octet-stream", run = "mediainfo" },
+  { mime = "application/{*zip,tar,bzip2,7z*,rar,xz,zstd,java-archive}", run = "ouch" },
+]
+
+[tasks]
+image_alloc = 1073741824 # = 1024*1024*1024 = 1024MB

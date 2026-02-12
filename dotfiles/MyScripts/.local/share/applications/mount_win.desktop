@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Win挂载
+Comment=交互式挂载或卸载 Windows NTFS 分区
+Exec=kitty -o initial_window_width=50c -o initial_window_height=20c bash -c "~/.local/bin/mount_win"
+Icon=drive-harddisk
+Terminal=false
+Categories=Utility;
