@@ -6,21 +6,17 @@ Arch Linux 配置步骤
 # 1. 安装启动 cloudflare-warp
 yay -S cloudflare-warp-bin
 warp-cli --version
-sudo systemctl start warp-svc
-# sudo systemctl enable --now warp-svc
-sudo systemctl status warp-svc
+sudo systemctl start warp-svc # or enable --now
 
 # 2. 注册设备, 连接
 warp-cli registration new # 初次执行: 生成设备id, 绑定到Cloudflare
-warp-cli connect
-warp-cli status
 
 # 3. 开启代理
-warp-cli mode proxy
+warp-cli mode proxy # 可选: 视情况切换模式(warp/proxy/...)
 warp-cli connect
 warp-cli status
-sudo ss -lntp | grep warp-svc # 查看warp-svc占用端口
-curl --socks5 127.0.0.1:1080 https://ipinfo.io # 查看ip信息
+sudo ss -lntp | grep warp-svc # 查看warp-svc占用端口, 默认40000
+curl --socks5 127.0.0.1:40000 https://ipinfo.io # 查看ip信息
 # 后续可以考虑固定warp的启用端口
 
 # 4. 安装 sing-box
@@ -37,18 +33,17 @@ sing-box check -c /etc/sing-box/config.json # 测试配置正确
 sudo sing-box run -c /etc/sing-box/config.json # 配置启动
 # sudo systemctl enable --now sing-box # 启用 sing-box 服务
 
-# 注: 如果安装了 v2rayN, 在/opt/v2rayn-bin/bin/sing_box下面就有sing-box, 可以临时用
+# 如果安装了 v2rayN, 在/opt/v2rayn-bin/bin/sing_box下面就有sing-box, 可以临时用
+# 右下角图标禁用: systemctl --user disable --now warp-taskbar.service
 ```
 
 sing-box 配置文件 `config.json`  
-基于 TUN 的透明代理 + Cloudflare WARP 出站 + 国内直连分流 + DNS 走远程DoH + 自建 Trojan 入站
-
-> 注: 待测试: 可删除 trojan 入站配置
+基于 TUN 的透明代理 + Cloudflare WARP 出站 + 国内直连分流 + DNS 走远程DoH
 
 ```json5
 {
   "log": {
-    "level": "debug", // 可改 info
+    "level": "debug",
     "timestamp": true
   },
   "dns": {
@@ -63,7 +58,7 @@ sing-box 配置文件 `config.json`
     "servers": [
       {
         "type": "https",
-        "server": "208.67.222.222",
+        "server": "8.8.8.8",
         "detour": "warp-local",
         "tag": "remote"
       },
@@ -100,26 +95,14 @@ sing-box 配置文件 `config.json`
         "172.17.0.0/16",
         "172.19.0.0/12",
         "fc00::/7",
-        "172.18.0.1/30"
+        "172.18.0.1/30",
+        "162.159.197.0/24",
+        "2606:4700:102::/48"
       ],
       "auto_route": true,
       "auto_redirect": true,
       "strict_route": true,
       "type": "tun"
-    },
-    {
-      "type": "trojan",
-      "tag": "trojan-in",
-      "listen": "0.0.0.0",
-      "listen_port": 2087,
-      "users": [
-        {
-          "name": "hongchen",
-          "password": "12345678"
-        }
-      ],
-      "multiplex": {},
-      "transport": {}
     }
   ],
   "outbounds": [
@@ -155,22 +138,6 @@ sing-box 配置文件 `config.json`
         "outbound": "direct"
       },
       {
-        "ip_cidr": [
-          "162.159.197.0/24",
-          "2606:4700:102::/48"
-        ],
-        "port": [
-          443,
-          500,
-          1701,
-          4500,
-          4443,
-          8443,
-          8095
-        ],
-        "outbound": "direct"
-      },
-      {
         "rule_set": [
           "geosite-cn",
           "geoip-cn"
@@ -183,7 +150,7 @@ sing-box 配置文件 `config.json`
       },
       {
         "process_path": [
-          "/usr/bin/warp-svc",
+          // "/usr/bin/warp-svc",
           "/usr/bin/cloudflared"
         ],
         "outbound": "direct"
