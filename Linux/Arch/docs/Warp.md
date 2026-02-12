@@ -11,7 +11,7 @@ sudo systemctl start warp-svc
 sudo systemctl status warp-svc
 
 # 2. 注册设备, 连接
-warp-cli registration new # 生成设备id, 绑定到Cloudflare
+warp-cli registration new # 初次执行: 生成设备id, 绑定到Cloudflare
 warp-cli connect
 warp-cli status
 
