@@ -76,6 +76,9 @@ sing-box 配置文件 `config.json`
 # 需要将162.159.197.0/24 2606:4700:102::/48的443 500 1701 4500 4443 8443 8095端口使用本机流量代理
 # 另外要排除 zero-trust-client.cloudflareclient.com 和 notifications.cloudflareclient.com 域
 # 网址中#client-orchestration-api这一章节有讲述其作用
+
+# NetworkManager会定期查网络(/usr/lib/NetworkManager/conf.d/20-connectivity.conf), 会因此显示警告信息
+# 可能需要加些规则比如: { "process_name": ["NetworkManager"], "outbound": "direct" }
 ```
 
 ```json
@@ -132,8 +135,13 @@ sing-box 配置文件 `config.json`
         "172.19.0.0/12",
         "fc00::/7",
         "172.18.0.1/30",
+        "162.159.192.0/24",
+        "162.159.193.0/24",
+        "2606:4700:100::/48",
         "162.159.197.0/24",
-        "2606:4700:102::/48"
+        "2606:4700:102::/48",
+        "162.159.239.0/24",
+        "2606:4700:105::/48"
       ],
       "auto_route": true,
       "auto_redirect": true,
