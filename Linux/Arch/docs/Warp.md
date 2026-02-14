@@ -12,26 +12,25 @@ sudo systemctl start warp-svc # or enable --now
 warp-cli registration new # 初次执行: 生成设备id, 绑定到Cloudflare
 
 # 3. 开启代理
-warp-cli mode proxy # 可选: 视情况切换模式(warp/proxy/...)
+warp-cli mode proxy # 可选: 视情况切换模式(warp+doh/proxy), warp模式无需singbox
 warp-cli connect
 warp-cli status
-sudo ss -lntp | grep warp-svc # 查看warp-svc占用端口, 默认40000
+sudo ss -lntp | grep warp-svc # proxy模式: 查看warp-svc占用端口, 默认40000
 curl --socks5 127.0.0.1:40000 https://ipinfo.io # 查看ip信息
-# 后续可以考虑固定warp的启用端口
 
-# 4. 安装 sing-box
+# 4. 安装配置 sing-box
 sudo pacman -S sing-box
 sing-box version
 lsmod | grep tun # 确认允许 TUN
 sudo modprobe tun # 如果没有 TUN, 开启
-
-# 5. 放置配置文件
-# /etc/sing-box/config.json
+# 放置配置文件: /etc/sing-box/config.json
 # 修改里面端口 "server_port" 为前面的查到的warp-svc端口
-# 6. 启动 sing-box
 sing-box check -c /etc/sing-box/config.json # 测试配置正确
-sudo sing-box run -c /etc/sing-box/config.json # 配置启动
+sudo sing-box run -c /etc/sing-box/config.json # 启动singbox配置
 # sudo systemctl enable --now sing-box # 启用 sing-box 服务
+
+# 屏蔽自启动的 /etc/xdg/autostart/com.cloudflare.WarpTaskbar.desktop , 取消: unmark
+systemctl --user mask warp-taskbar
 
 # 如果安装了 v2rayN, 在/opt/v2rayn-bin/bin/sing_box下面就有sing-box, 可以临时用
 # 右下角图标禁用: systemctl --user disable --now warp-taskbar.service
@@ -110,7 +109,7 @@ sing-box 配置文件 `config.json`
       "type": "socks",
       "tag": "warp-local",
       "server": "127.0.0.1",
-      "server_port": 1080,
+      "server_port": 40000,
       "udp_over_tcp": false
     },
     {

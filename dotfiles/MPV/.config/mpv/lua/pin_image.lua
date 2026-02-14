@@ -30,7 +30,10 @@ mp.set_property("hwdec", "no")                   -- --hwdec=no: 关闭硬件解�
 local function copy_to_clipboard()
     local path = mp.get_property('path')
     if not path then return end
+    -- 能复制粘贴但KDE剪贴板不显示: wl-copy < /tmp/01.jpg 或 wl-copy -t image/png < /tmp/01.jpg
     mp.commandv('run', 'sh', '-c', 'wl-copy < "' .. path .. '"')
+    -- KDE剪贴板能显示, 但若文件没了, 粘贴会变路径文本: wl-copy -t text/uri-list file:///tmp/01.jpg
+    -- mp.commandv( 'run', 'wl-copy', '-t', 'text/uri-list', "file://" .. path)
     mp.osd_message('已复制到剪贴板', 1)
 end
 local function save_to_file()
