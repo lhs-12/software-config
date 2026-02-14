@@ -78,7 +78,7 @@ sing-box 配置文件 `config.json`
 # 网址中#client-orchestration-api这一章节有讲述其作用
 
 # NetworkManager会定期查网络(/usr/lib/NetworkManager/conf.d/20-connectivity.conf), 会因此显示警告信息
-# 可能需要加些规则比如: { "process_name": ["NetworkManager"], "outbound": "direct" }
+# 需要加些规则排除, 暂时不管
 ```
 
 ```json
