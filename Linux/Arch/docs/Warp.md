@@ -35,22 +35,58 @@ sudo sing-box run -c /etc/sing-box/config.json # 启动singbox配置
 # 屏蔽自启动的 /etc/xdg/autostart/com.cloudflare.WarpTaskbar.desktop , 用 unmark
 systemctl --user mask warp-taskbar
 systemctl --user disable --now warp-taskbar.service # 如果只是临时关闭
+
+# Cloudflare Zero Trust
+# 好处: 功能更多, 可自己修改设置, 没有流量带宽限制, 可改设置增加隐私性
+#
+# 执行 warp-cli registration new <你的Zero Trust组织名>
+# 浏览器会打开https://<你的组织名>.cloudflareaccess.com/warp, 登录.
+# 
+# 如果没有桌面环境, 要用另一台电脑打开网址, 找源代码
+# 复制 com.cloudflare.warp://<你的组织名>.cloudflareaccess.com/auth?token=xxx 中的 xxx
+# warp-cli registration token "com.cloudflare.warp://<你的组织名>.cloudflareaccess.com/auth?token=<token>"
+
+# 建议确认隧道协议为 MASQUE
+# 网页端账号设置也检查一下相关配置: MASQUE; 代理模式; 打开自动连接
+# warp-cli settings |grep --color=auto tunnel
+# warp-cli tunnel protocol set MASQUE
+
+# 注:
+# warp 默认warp模式, tun模式全局代理访问国内网址偏慢.
+# 改用proxy模式(socks端口) + singbox分流可改善.
+# 但偶尔proxy模式的线路可能慢, 所以最好用singbox分流到warp的docker容器开warp模式.
+#
+# 建议使用docker镜像caomingjun/warp
+# 里面docker-compose.yml设置长一点, 比如5
+# 容器里也支持Zero Trust, 具体看文档
+# 如果开机启动, 注意先开docker再开singbox, 建议singbox依赖docker, 且启动加5秒延时
+
+# 偶尔cloudflare warp的DNS会连接超时, SSL证书验证失败. 所以singbox分流时建议改DNS配置, 可用DOH.
+# 火狐要关闭安全DNS保护, 代理模式也要选对.
+# 开启warp的时候, 不能再打开cloudflared将本机的服务代理到其他地方.
 ```
 
 sing-box 配置文件 `config.json`  
 基于 TUN 的透明代理 + Cloudflare WARP 出站 + 国内直连分流 + DNS 走远程DoH
 
-```json5
+```bash
+# proxy模式中, 为了防止cloudflare自身的健康检测机制的请求和singbox分流形成回环, 需要排除掉cloudflare自身请求
+# 具体可查 https://developers.cloudflare.com/cloudflare-one/team-and-resources/devices/warp/deployment/firewall/
+# 由于使用了MASQUE协议, 所以查#masque那一章节, 比如查到
+# 需要将162.159.197.0/24 2606:4700:102::/48的443 500 1701 4500 4443 8443 8095端口使用本机流量代理
+# 另外要排除 zero-trust-client.cloudflareclient.com 和 notifications.cloudflareclient.com 域
+# 网址中#client-orchestration-api这一章节有讲述其作用
+```
+
+```json
 {
-  "log": {
-    "level": "debug",
-    "timestamp": true
-  },
+  "log": { "level": "debug", "timestamp": true },
   "dns": {
     "rules": [
       {
         "rule_set": [
-          "geosite-cn"
+          "geosite-cn",
+          "geoip-cn"
         ],
         "server": "local"
       }
@@ -58,7 +94,7 @@ sing-box 配置文件 `config.json`
     "servers": [
       {
         "type": "https",
-        "server": "8.8.8.8",
+        "server": "208.67.222.222",
         "detour": "warp-local",
         "tag": "remote"
       },
@@ -123,13 +159,8 @@ sing-box 配置文件 `config.json`
     "auto_detect_interface": true,
     "default_domain_resolver": "remote",
     "rules": [
-      {
-        "action": "sniff"
-      },
-      {
-        "protocol": "dns",
-        "action": "hijack-dns"
-      },
+      { "action": "sniff" },
+      { "protocol": "dns", "action": "hijack-dns" },
       {
         "domain": [
           "zero-trust-client.cloudflareclient.com",
@@ -150,7 +181,7 @@ sing-box 配置文件 `config.json`
       },
       {
         "process_path": [
-          // "/usr/bin/warp-svc",
+          "/usr/bin/warp-svc",
           "/usr/bin/cloudflared"
         ],
         "outbound": "direct"
