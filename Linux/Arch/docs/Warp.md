@@ -218,6 +218,7 @@ ping 8.8.8.8 # 如果能 ping IP 但不能 ping 域名 -> DNS问题
 # 查看谁在修改 resolv.conf
 sudo lsof /etc/resolv.conf # 查看DNS文件持有者
 journalctl -u NetworkManager # NetworkManager 服务日志
+journalctl -u systemd-resolved # systemd-resolved 日志
 journalctl -u sing-box # singbox 服务日志
 
 # 清理DNS
