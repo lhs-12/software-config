@@ -179,3 +179,57 @@ sing-box 配置文件 `config.json`
   }
 }
 ```
+
+## DNS 常用命令速查
+
+```bash
+# 查看DNS管理者
+# 指向 `/run/systemd/...` → systemd-resolved
+# 普通文件 → NetworkManager 直接写
+# 127.0.0.1 → 本地代理接管（sing-box / dnsmasq）
+ls -l /etc/resolv.conf
+# 查看当前DNS服务器
+cat /etc/resolv.conf
+
+# 查看 NetworkManager 当前连接 DNS
+nmcli dev show | grep DNS
+
+# 查看 sing-box 是否在监听 DNS
+ss -lpnt | grep :53 # 有输出就是接管了
+
+# 查看几个相关服务的状态
+systemctl status sing-box
+systemctl status systemd-resolved
+systemctl status NetworkManager
+
+# 重启 NetworkManager(清理 DNS)
+sudo systemctl restart NetworkManager
+
+# 测试DNS解析
+dig google.com # 需要pacman -S bind
+# 测试真实路径
+getent hosts google.com
+# 测试DNS污染
+dig google.com @8.8.8.8
+dig google.com @127.0.0.1
+# 测试IP
+ping 8.8.8.8 # 如果能 ping IP 但不能 ping 域名 -> DNS问题
+
+# 查看谁在修改 resolv.conf
+sudo lsof /etc/resolv.conf # 查看DNS文件持有者
+journalctl -u NetworkManager # NetworkManager 服务日志
+journalctl -u sing-box # singbox 服务日志
+
+# 清理DNS
+#   浏览器DNS缓存
+# chrome: 打开 chrome://net-internals/#dns 清理
+# firefox: 打开 about:networking#dns 清理
+#   如果用NetworkManager, 重启
+sudo systemctl restart NetworkManager
+#   如果用systemd-resolved
+systemctl status systemd-resolved
+resolvectl flush-caches # 清理
+resolvectl statistics # 查看缓存状态
+#   可能还需要重启singbox
+sudo systemctl restart sing-box
+```
