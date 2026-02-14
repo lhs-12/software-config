@@ -29,11 +29,12 @@ sing-box check -c /etc/sing-box/config.json # 测试配置正确
 sudo sing-box run -c /etc/sing-box/config.json # 启动singbox配置
 # sudo systemctl enable --now sing-box # 启用 sing-box 服务
 
-# 屏蔽自启动的 /etc/xdg/autostart/com.cloudflare.WarpTaskbar.desktop , 取消: unmark
-systemctl --user mask warp-taskbar
-
 # 如果安装了 v2rayN, 在/opt/v2rayn-bin/bin/sing_box下面就有sing-box, 可以临时用
-# 右下角图标禁用: systemctl --user disable --now warp-taskbar.service
+
+# 右下角图标禁用
+# 屏蔽自启动的 /etc/xdg/autostart/com.cloudflare.WarpTaskbar.desktop , 用 unmark
+systemctl --user mask warp-taskbar
+systemctl --user disable --now warp-taskbar.service # 如果只是临时关闭
 ```
 
 sing-box 配置文件 `config.json`  
