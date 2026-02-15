@@ -106,7 +106,7 @@ mounted_here=()
 mounted_elsewhere=()
 unmounted=()
 
-printf "\n%-20s %-15s %-22s\n" "$TXT_DEVICE" "$TXT_MOUNTPOINT" "$TXT_STATUS"
+output_table="$(printf "%s\t\t%s\t\t%s\n" "$TXT_DEVICE" "$TXT_MOUNTPOINT" "$TXT_STATUS")"
 
 for entry in "${PARTITIONS[@]}"; do
   IFS='|' read -r dev mnt <<<"$entry"
@@ -125,8 +125,9 @@ for entry in "${PARTITIONS[@]}"; do
       label="$TXT_UNMOUNTED"
       ;;
   esac
-  printf "%-20s %-15s %-22s\n" "$dev" "$mnt" "$label"
+  output_table+=$'\n'"$(printf "%s\t\t%s\t\t%s" "$dev" "$mnt" "$label")"
 done
+echo "$output_table" | column -t -s $'\t'
 echo
 
 # ====================== Decision ======================

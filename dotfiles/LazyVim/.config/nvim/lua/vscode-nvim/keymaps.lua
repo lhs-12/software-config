@@ -2,6 +2,9 @@ local vscode = require("vscode")
 local m = vim.keymap.set
 local opts = { noremap = true, silent = true }
 m("n", "<esc>", "<cmd>noh<cr><esc>", opts)
+m({ "n", "v" }, "<leader>y", [["+y]], opts)
+m("n", "<leader>p", [["+p]], opts)
+m("n", "<leader>P", [["+P]], opts)
 m("n", "x", '"_x', opts)
 m("n", "X", '"_X', opts)
 m("n", "<C-q>", "<C-x>", opts)
