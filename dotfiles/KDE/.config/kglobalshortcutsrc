@@ -111,7 +111,7 @@ Walk Through Windows of Current Application=Meta+`\tAlt+`,Meta+`\tAlt+`,遍历�
 Walk Through Windows of Current Application (Reverse)=Meta+~\tAlt+~,Meta+~\tAlt+~,遍历当前应用程序窗口 (反向)
 Walk Through Windows of Current Application Alternative=none,none,遍历当前应用程序窗口交替
 Walk Through Windows of Current Application Alternative (Reverse)=none,none,遍历当前应用程序窗口交替 (反向)
-Window Above Other Windows=Alt+F12,,窗口置顶
+Window Above Other Windows=Meta+T,,窗口置顶
 Window Below Other Windows=none,,窗口置底
 Window Close=Alt+F4,Alt+F4,关闭窗口
 Window Custom Quick Tile Bottom=none,,自定义快速铺放窗口到下方
@@ -315,9 +315,6 @@ show-on-mouse-pos=Meta+V,Meta+V,在鼠标位置显示剪贴板项目
 switch to next activity=none,,切换到下一个活动
 switch to previous activity=none,,切换到上一个活动
 toggle do not disturb=none,,切换勿扰模式
-
-[services][kitty.desktop]
-_launch=Meta+T
 
 [services][org.kde.konsole.desktop]
 _launch=none
