@@ -47,6 +47,7 @@ ExposeClassCurrentDesktop=none,none,显示/隐藏窗口平铺 (当前桌面的�
 Grid View=Meta+G,Meta+G,切换网格视图
 Increase Opacity=none,,提高活动窗口不透明度 5%
 Kill Window=Meta+Ctrl+Esc,Meta+Ctrl+Esc,强制终止窗口
+MinimizeAll=none,none,MinimizeAll
 Move Tablet to Next Output=none,none,移动数位板到下一个输出设备
 MoveMouseToCenter=Meta+F6,Meta+F6,移动鼠标到中央
 MoveMouseToFocus=Meta+F5,Meta+F5,移动鼠标到焦点

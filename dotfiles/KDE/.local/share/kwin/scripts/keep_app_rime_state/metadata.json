@@ -1,0 +1,14 @@
+{
+  "KPlugin": {
+    "Id": "keep_app_rime_state",
+    "Name": "Keep App Rime State",
+    "Description": "Monitor focused windows and keep app Rime state",
+    "Icon": "preferences-system-windows",
+    "Version": "1.0",
+    "License": "MIT",
+    "EnabledByDefault": false
+  },
+  "X-Plasma-API": "javascript",
+  "X-Plasma-MainScript": "contents/code/main.js",
+  "KPackageStructure": "KWin/Script"
+}

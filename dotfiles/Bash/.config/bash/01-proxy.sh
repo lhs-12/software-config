@@ -40,7 +40,7 @@ proxycfg() {
       printf '%-12s %s\n' NO_PROXY "${NO_PROXY:-(not set)}"
       printf '%-12s %s\n' git_http "${git_http:-(not set)}"
       printf '%-12s %s\n' git_https "${git_https:-(not set)}"
-      echo "==&lt;==================="
+      echo "===================="
       ;;
     *)
       echo "Usage: proxy {on|off|status}"
