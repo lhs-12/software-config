@@ -10,13 +10,11 @@
 set -euo pipefail
 
 # ====================== Config ======================
-# !!! 认真检查修改本脚本信息: 硬盘挂载信息, 读写权限, desktop 文件的路径 !!!
+# 修改配置: 硬盘挂载信息
 declare -a PARTITIONS=(
   "/dev/nvme0n1p4|/mnt/d"
   "/dev/nvme0n1p5|/mnt/e"
 )
-# 默认设置为 "只读"(ro), 根据需要修改为"读写"(rw)
-MOUNT_OPTS="uid=1000,gid=1000,umask=022,ro"
 
 # ====================== UI language ======================
 UI_LANG=$([[ ${LC_ALL:-${LC_MESSAGES:-${LANG}}} == zh* ]] && echo zh || echo en)
@@ -46,6 +44,10 @@ TXT_STATE_MIXED       | mixed state                | 混合状态
 TXT_DO_MOUNT_REMAIN   | Mount remaining partitions | 挂载未挂载的分区
 TXT_DO_UMOUNT_MOUNTED | Unmount mounted partitions | 卸载已挂载的分区
 TXT_SELECT            | Select                     | 选择
+
+TXT_MODE_PROMPT | Select mount mode              | 选择挂载模式
+TXT_MODE_RO     | Read-only(default)             | 只读(缺省)
+TXT_MODE_RW     | Read-write                     | 读写
 
 TXT_START_MOUNT | Start mounting Windows NTFS partitions...   | 开始挂载 Windows NTFS 分区...
 TXT_START_UMOUNT| Start unmounting Windows NTFS partitions... | 开始卸载 Windows NTFS 分区...
@@ -159,13 +161,35 @@ else
   esac
 fi
 
-read -rp "$TXT_CONFIRM [$ACTION]? [Y/n]: " CONFIRM
-CONFIRM="${CONFIRM:-y}"
-[[ ! "$CONFIRM" =~ ^[Yy]$ ]] && {
-  echo "$TAG_WARN $TXT_CANCEL"
-  read -n1 -rsp "$TXT_PRESS_KEY"$'\n'
-  exit 0
-}
+# ====================== Mount Mode ======================
+MOUNT_OPTS_BASE="uid=1000,gid=1000,umask=022"
+DEFAULT_MOUNT_MODE="ro"
+if [[ "$ACTION" == "mount" ]]; then
+  echo "$TXT_MODE_PROMPT:"
+  echo "  ro) $TXT_MODE_RO"
+  echo "  rw) $TXT_MODE_RW"
+  read -rp "[ro/rw/n]: " MODE
+
+  MODE="${MODE:-$DEFAULT_MOUNT_MODE}"
+  case "$MODE" in
+    ro|rw)
+      MOUNT_OPTS="$MOUNT_OPTS_BASE,$MODE"
+      ;;
+    *)
+      echo "$TAG_WARN $TXT_CANCEL"
+      read -n1 -rsp "$TXT_PRESS_KEY"$'\n'
+      exit 0
+      ;;
+  esac
+else
+  read -rp "$TXT_CONFIRM [$ACTION]? [y/n]: " CONFIRM
+  CONFIRM="${CONFIRM:-y}"
+  [[ ! "$CONFIRM" =~ ^[Yy]$ ]] && {
+    echo "$TAG_WARN $TXT_CANCEL"
+    read -n1 -rsp "$TXT_PRESS_KEY"$'\n'
+    exit 0
+  }
+fi
 
 # ====================== Execute ======================
 case "$ACTION" in
