@@ -45,6 +45,9 @@
     "a", "b", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "o", "p", "q", "r", "t", "u", "v", "w", "y",
     "up", "right", "left", "down", "backspace", "delete", "]",
   ],
+  "github.copilot.enable": {
+    "*": false, "plaintext": false, "markdown": false, "scminput": false,
+  },
   "claudeCode.preferredLocation": "panel",
-  "diffEditor.hideUnchangedRegions.enabled": true
+  "diffEditor.hideUnchangedRegions.enabled": true,
 }

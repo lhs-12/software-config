@@ -74,6 +74,17 @@ get_state() {
     echo unmounted
   fi
 }
+get_mount_mode() {
+  local mnt="$1"
+  local opts=$(findmnt -n -o OPTIONS --target "$mnt" 2>/dev/null || true)
+  if [[ "$opts" =~ (^|,)rw(,|$) ]]; then
+    echo rw
+  elif [[ "$opts" =~ (^|,)ro(,|$) ]]; then
+    echo ro
+  else
+    echo ""
+  fi
+}
 # 挂载单个分区
 mount_partition() {
   local dev="$1" mnt="$2"
@@ -116,7 +127,8 @@ for entry in "${PARTITIONS[@]}"; do
   case "$state" in
     here)
       mounted_here+=("$entry")
-      label="$TXT_MOUNTED_HERE"
+      mode=$(get_mount_mode "$mnt")
+      label="$TXT_MOUNTED_HERE${mode:+($mode)}"
       ;;
     elsewhere)
       mounted_elsewhere+=("$dev")
