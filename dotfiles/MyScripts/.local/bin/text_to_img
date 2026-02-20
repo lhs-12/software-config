@@ -159,33 +159,21 @@ def render_to_image(html: str, output_path: Path) -> None:
 # ============================================================
 # CLI
 # ============================================================
-
-
-def read_stdin() -> str:
-    return sys.stdin.read()
-
-
 def main() -> None:
     parser = argparse.ArgumentParser(description="Render text / html to image")
-
     src = parser.add_mutually_exclusive_group(required=True)
     src.add_argument("--html", type=Path, help="HTML file path")
     src.add_argument("--text", type=Path, help="Text file path, use '-' for stdin")
-
     parser.add_argument("--out", type=Path, required=True, help="Output image path (png)")
-
     args = parser.parse_args()
-
-    # ---------- HTML ----------
+    # HTML
     if args.html:
-        html_raw = read_stdin() if args.html.name == "-" else args.html.read_text(encoding="utf-8", errors="ignore")
+        html_raw = sys.stdin.read() if args.html.name == "-" else args.html.read_text(encoding="utf-8", errors="ignore")
         html = render_html_template(html_raw)
-
-    # ---------- TEXT ----------
+    # TEXT
     else:
-        text = read_stdin() if args.text.name == "-" else args.text.read_text(encoding="utf-8", errors="ignore")
+        text = sys.stdin.read() if args.text.name == "-" else args.text.read_text(encoding="utf-8", errors="ignore")
         html = render_text_template(text)
-
     render_to_image(html, args.out)
 
 
