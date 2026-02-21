@@ -85,6 +85,14 @@ echo "Appending managed msys2 block to $RC"
 cat >> "$RC" <<'EOF' # verify PATH command: echo $PATH | tr ':' '\n'
 # >>> script-managed-bashrc-start >>>
 if [ -n "$MSYSTEM" ] && [ "$MSYSTEM" = "UCRT64" ]; then
+    export HISTFILE="$HOME/.bash_history"
+    export HISTSIZE=10000
+    export HISTFILESIZE=20000
+    export HISTCONTROL=ignoreboth:erasedups
+    export HISTTIMEFORMAT="%Y-%m-%d %H:%M:%S  "
+    shopt -s histappend
+    export PROMPT_COMMAND='history -a; history -c; history -r'
+    export HISTIGNORE="ls:ll:cd:pwd:exit:clear:history"
     export PATH="/d/Program Files/tools:$PATH"
     export PATH="$(cygpath -u "$(uv tool dir --bin)"):$PATH"
     export PATH="$HOME/.local/share/fnm:$PATH"
