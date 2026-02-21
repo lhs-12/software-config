@@ -24,11 +24,12 @@ bind "set completion-ignore-case on"
 bind "set show-all-if-ambiguous On"
 
 # History settings
-export HISTFILESIZE=5000
-export HISTSIZE=500
-export HISTTIMEFORMAT="%F %T" # add timestamp
+export HISTFILE="$HOME/.bash_history"
+export HISTFILESIZE=4000
+export HISTSIZE=2000
+export HISTTIMEFORMAT="%F %T " # add timestamp
 # Don't put duplicate lines in the history and do not add lines that start with a space
-export HISTCONTROL=erasedups:ignoredups:ignorespace
+export HISTCONTROL=ignoreboth:erasedups
 
 # Shell options
 # Check the window size after each command and, if necessary, update the values of LINES and COLUMNS
@@ -36,4 +37,5 @@ shopt -s checkwinsize
 # Causes bash to append to history instead of overwriting it
 # so if you start a new terminal, you have old session history
 shopt -s histappend
-PROMPT_COMMAND='history -a'
+export PROMPT_COMMAND="history -a" # history -a; history -c; history -r
+export HISTIGNORE="ls:ll:la:cd:pwd:exit:clear:history"

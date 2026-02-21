@@ -89,9 +89,9 @@ if [ -n "$MSYSTEM" ] && [ "$MSYSTEM" = "UCRT64" ]; then
     export HISTSIZE=10000
     export HISTFILESIZE=20000
     export HISTCONTROL=ignoreboth:erasedups
-    export HISTTIMEFORMAT="%Y-%m-%d %H:%M:%S  "
+    export HISTTIMEFORMAT="%F %T "
     shopt -s histappend
-    export PROMPT_COMMAND='history -a; history -c; history -r'
+    export PROMPT_COMMAND="history -a"
     export HISTIGNORE="ls:ll:cd:pwd:exit:clear:history"
     export PATH="/d/Program Files/tools:$PATH"
     export PATH="$(cygpath -u "$(uv tool dir --bin)"):$PATH"
