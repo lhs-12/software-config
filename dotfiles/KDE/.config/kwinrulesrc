@@ -20,7 +20,6 @@ wmclassmatch=1
 Description=MPV_Pinned
 above=true
 aboverule=2
-noborderrule=2
 skippager=true
 skippagerrule=2
 skipswitcher=true
