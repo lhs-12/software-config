@@ -17,10 +17,10 @@ pacman -Syu --noconfirm
 pacman -S --needed --noconfirm --disable-download-timeout base-devel mingw-w64-ucrt-x86_64-toolchain
 pacman -S --needed --noconfirm mingw-w64-ucrt-x86_64-ca-certificates && update-ca-trust
 pacman -S --needed --noconfirm --disable-download-timeout \
-  stow fish zip unzip \
-  mingw-w64-ucrt-x86_64-{neovim,tree-sitter,lsd,bat,zoxide,dust,python-tldr} \
-  mingw-w64-ucrt-x86_64-{yazi,ffmpeg,jq,imagemagick,mdbook} \
-  mingw-w64-ucrt-x86_64-{fzf,fd,ripgrep,bottom}
+  stow fish tmux zip unzip \
+  mingw-w64-ucrt-x86_64-{neovim,tree-sitter,lsd,bat,zoxide,dust,tldr} \
+  mingw-w64-ucrt-x86_64-{yazi,ffmpeg,jq,imagemagick,poppler,mediainfo,mdbook} \
+  mingw-w64-ucrt-x86_64-{fzf,fd,ripgrep}
 
 # install win32yank
 curl -L -o win32yank-x64.zip $(curl -s https://api.github.com/repos/equalsraf/win32yank/releases/latest | \
