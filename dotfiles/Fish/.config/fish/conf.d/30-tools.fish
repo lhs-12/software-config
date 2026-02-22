@@ -1,5 +1,6 @@
-# ========== Interactive shell settings ==========
-# If not running interactively, don't do anything beyond this point
+# Tools settings
+
+# Exit if not an interactive shell
 if not status is-interactive
 	exit
 end

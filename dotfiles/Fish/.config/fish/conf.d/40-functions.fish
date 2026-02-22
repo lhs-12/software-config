@@ -1,3 +1,10 @@
+# Common functions
+
+# Exit if not an interactive shell
+if not status is-interactive
+	exit
+end
+
 # Open with default app (Windows Style)
 function start --description "Open files with the default application"
 	env LANGUAGE=zh_CN.UTF-8 nohup xdg-open $argv </dev/null >/dev/null 2>&1 &

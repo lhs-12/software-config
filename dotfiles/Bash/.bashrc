@@ -3,6 +3,7 @@
 BASH_CONFIG_DIR="$HOME/.config/bash"
 
 # Non-interactive shell settings
+# 桌面环境父进程可能调用bash持续影响子进程. 审慎使用
 for config in "$BASH_CONFIG_DIR"/0[0-9]-*.sh; do # 00-09
   [[ -r $config ]] && source "$config"
 done

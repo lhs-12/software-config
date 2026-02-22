@@ -1,3 +1,10 @@
+# Abbreviations
+
+# Exit if not an interactive shell
+if not status is-interactive
+	exit
+end
+
 # Editor aliases
 abbr vi 'nvim --clean'
 abbr vim nvim
