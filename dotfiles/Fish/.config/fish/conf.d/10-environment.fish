@@ -1,9 +1,6 @@
 # Basic environment settings
 
-# Exit if not an interactive shell
-if not status is-interactive
-	exit
-end
+if not status is-interactive; exit; end # Skip non-interactive shells
 
 # Language
 set -gx LANG en_US.UTF-8 # zh_CN.UTF-8

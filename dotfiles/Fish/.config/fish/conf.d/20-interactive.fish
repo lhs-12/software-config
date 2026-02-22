@@ -1,9 +1,6 @@
 # Interactive shell settings
 
-# Exit if not an interactive shell
-if not status is-interactive
-	exit
-end
+if not status is-interactive; exit; end # Skip non-interactive shells
 
 # Multilevel cd ( .. ... .... , etc)
 function multicd

@@ -1,9 +1,6 @@
 # Common functions
 
-# Exit if not an interactive shell
-if not status is-interactive
-	exit
-end
+if not status is-interactive; exit; end # Skip non-interactive shells
 
 # Open with default app (Windows Style)
 function start --description "Open files with the default application"

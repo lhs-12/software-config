@@ -1,9 +1,6 @@
 # Tools settings
 
-# Exit if not an interactive shell
-if not status is-interactive
-	exit
-end
+if not status is-interactive; exit; end # Skip non-interactive shells
 
 # Bat (cat/less replacement)
 abbr less bat

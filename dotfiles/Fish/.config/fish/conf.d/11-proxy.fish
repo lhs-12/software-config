@@ -1,9 +1,6 @@
 # Proxy configuration
 
-# Exit if not an interactive shell
-if not status is-interactive
-	exit
-end
+if not status is-interactive; exit; end # Skip non-interactive shells
 
 # v2rayN 开启系统代理时, gsettings 命令输出 "manual", 此时开启 proxycfg
 command -v gsettings >/dev/null 2>&1 || exit 0
