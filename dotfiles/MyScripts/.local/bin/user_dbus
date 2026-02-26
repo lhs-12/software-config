@@ -1,0 +1,53 @@
+#!/usr/bin/env python3
+# 私人 D-Bus 服务
+# 依赖: pacman -S python-dbus-next
+import asyncio
+import contextlib
+import shlex
+import subprocess
+
+from dbus_next.aio import MessageBus
+from dbus_next.service import ServiceInterface, method
+
+# busctl --user call {service} {object_path} {interface} {method} {input_type} {input_params}
+SERVICE_NAME = "org.user.services"
+OBJECT_PATH_YDOTOOL = "/org/user/services/ydotool"
+
+
+# ydotool: 键盘模拟
+class YdotoolInterface(ServiceInterface):
+    def __init__(self):
+        super().__init__("org.user.services.ydotool")  # interface name
+
+    @method()
+    def Key(self, sequence: "s") -> "b":  # type: ignore # noqa: F821,UP037
+        """执行 ydotool key 命令"""
+        try:
+            # shlex.split 安全拆分参数
+            cmd = ["ydotool", "key"] + shlex.split(sequence)
+            subprocess.run(cmd, check=True)
+            return True
+        except Exception:
+            return False
+
+    @method()
+    def Type(self, text: "s") -> "b":  # type: ignore # noqa: F821,UP037
+        """执行 ydotool type 命令"""
+        try:
+            subprocess.run(["ydotool", "type", text], check=True)
+            return True
+        except Exception:
+            return False
+
+
+async def main():
+    bus = await MessageBus().connect()
+    bus.export(OBJECT_PATH_YDOTOOL, YdotoolInterface())
+    await bus.request_name(SERVICE_NAME)
+    print(f"DBus Service is now active: {SERVICE_NAME}")
+    await asyncio.get_event_loop().create_future()
+
+
+if __name__ == "__main__":
+    with contextlib.suppress(KeyboardInterrupt):
+        asyncio.run(main())

@@ -1,0 +1,139 @@
+#!/usr/bin/env bash
+# ------------------------------------------------------------
+# pinpic - Wayland 下的图片 / 文本贴图工具
+#
+# 功能说明:
+#   - 将截图、剪贴板中的内容以“置顶贴图”的方式显示在桌面
+#   - 支持图片 / 图片文件 / 普通文本 / 富文本（HTML）
+#   - 文本与富文本通过 Qt WebEngine 渲染为图片
+#   - 使用 mpv 作为显示窗口，并配合 Lua 脚本实现贴图交互
+#   - GIF 链接可完整贴图, 优化复制GIF内容只有单帧的体验
+#
+# 使用方式:
+#   pinpic --screenshot    # 截图贴图  （对应 Snipaste F1）
+#   pinpic --clipboard     # 剪贴板贴图（对应 Snipaste F3）
+#
+# 运行环境:
+#   - Arch KDE Plasma Wayland
+# 系统依赖:
+#   - spectacle (KDE)
+#   - mpv (需要使用mpv脚本 pin_image.lua)
+#   - wl-clipboard
+#   - qt6-webengine 和 python-pyqt6-webengine
+# ------------------------------------------------------------
+
+set -euo pipefail
+
+MODE="${1:-}"
+
+# ========= 配置 =========
+PY_RENDER="text_to_img"
+MPV_LUA="$HOME/.config/mpv/lua/pin_image.lua"
+
+TMP_DIR="$(mktemp -d)"
+trap 'rm -rf "$TMP_DIR"' EXIT
+
+TMP_IMG="$TMP_DIR/pin.png"
+TMP_HTML="$TMP_DIR/input.html"
+
+# ========= 工具函数 =========
+
+has_type() {
+    grep -qE "$1"
+}
+
+is_image_file() {
+    local f="$1"
+    file --mime-type -b "$f" | grep -q '^image/'
+}
+
+show_with_mpv() {
+    mpv "$1" \
+        --title="MPV_Pinned_$(basename "$1")" \
+        --script="$MPV_LUA" \
+        --no-config --no-input-builtin-bindings \
+        > /dev/null 2>&1
+}
+
+# ========= F1: 截图贴图 =========
+
+pin_from_screenshot() {
+    spectacle -b -n -r -o "$TMP_IMG" > /dev/null 2>&1
+    show_with_mpv "$TMP_IMG"
+}
+
+# ========= F3: 剪贴板贴图 =========
+
+pin_from_clipboard() {
+    local types
+    types="$(wl-paste --list-types)"
+
+    # ---- 1. 图片（最高优先级） ----
+    if echo "$types" | has_type '^image/'; then
+        # 优先取 png，失败再兜底
+        if echo "$types" | has_type '^image/png$'; then
+            wl-paste --type image/png > "$TMP_IMG"
+        else
+            wl-paste --type "$(echo "$types" | grep '^image/' | head -n1)" > "$TMP_IMG"
+        fi
+        show_with_mpv "$TMP_IMG"
+        return
+    fi
+
+    # ---- 2. 文件（text/uri-list）----
+    if echo "$types" | has_type '^text/uri-list$'; then
+        while IFS= read -r uri; do
+            [[ "$uri" =~ ^file:// ]] || continue
+            path="${uri#file://}"
+            # 不可见字符导致出问题时, echo "$path" | od -c 测试一下
+            path="$(echo "$path" | tr -d '\r')" # 去掉不可见字符
+            if is_image_file "$path"; then
+                cp "$path" "$TMP_IMG"
+                show_with_mpv "$TMP_IMG"
+                return
+            fi
+        done < <(wl-paste --type text/uri-list)
+        # 没有图片文件就直接退出
+        return
+    fi
+
+    # ---- 3. 文本（HTML / plain）----
+    if echo "$types" | has_type '^text/html'; then
+        wl-paste --type text/html > "$TMP_HTML"
+        "$PY_RENDER" --html "$TMP_HTML" --out "$TMP_IMG"
+        show_with_mpv "$TMP_IMG"
+        return
+    fi
+    if echo "$types" | has_type '^text/plain'; then
+        text="$(wl-paste --type text/plain | tr -d '\r')"
+        # ---- GIF 链接特殊处理(支持http/https + gif结尾) ----
+        if [[ "$text" =~ ^https?://.+\.gif([?#].*)?$ ]]; then
+            tmp_gif="$TMP_DIR/pin.gif"
+            curl -L "$text" -o "$tmp_gif" > /dev/null 2>&1
+            show_with_mpv "$tmp_gif"
+            return
+        fi
+        # ---- 普通文本处理 ----
+        printf '%s' "$text" | "$PY_RENDER" --text - --out "$TMP_IMG"
+        show_with_mpv "$TMP_IMG"
+        return
+    fi
+
+    # ---- 4. 其他类型: 忽略 ----
+    return
+}
+
+# ========= 主入口 =========
+
+case "$MODE" in
+    --screenshot)
+        pin_from_screenshot
+        ;;
+    --clipboard)
+        pin_from_clipboard
+        ;;
+    *)
+        echo "Usage: $0 {--screenshot|--clipboard}" >&2
+        exit 1
+        ;;
+esac

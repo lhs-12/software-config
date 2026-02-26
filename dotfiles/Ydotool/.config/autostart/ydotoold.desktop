@@ -1,0 +1,5 @@
+[Desktop Entry]
+Name=Ydotoold
+Type=Application
+Exec=systemctl --user start ydotoold
+Terminal=false

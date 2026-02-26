@@ -1,0 +1,5 @@
+[Desktop Entry]
+Name=User DBus
+Type=Application
+Exec=systemctl --user start user_dbus.service
+Terminal=false

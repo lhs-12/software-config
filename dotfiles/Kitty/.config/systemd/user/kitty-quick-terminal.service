@@ -1,0 +1,11 @@
+[Unit]
+Description=Kitty Quick Access Terminal
+After=graphical-session.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/kitten quick_access_terminal
+Restart=on-failure
+
+[Install]
+WantedBy=default.target
