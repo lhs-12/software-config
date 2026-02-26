@@ -93,7 +93,7 @@ pre {{
     padding: 12px;
     max-width: 120ch;
     color: #d4d4d4;
-    font-family: monospace;
+    font-family: monospace, "Symbols Nerd Font Mono";
     font-size: 16px;
     line-height: 18px;
     white-space: pre-wrap;
