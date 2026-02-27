@@ -30,13 +30,13 @@ cd "$(dirname "$0")"
 FOLD_PACKAGES=($(get_list "FOLD"))
 NO_FOLD_PACKAGES=($(get_list "NO_FOLD"))
 # 同步配置
-[[ ${#FOLD_PACKAGES[@]} -gt 0 ]] && {
-    echo "====== Stowing folding configs ======"
-    stow_packages "" "${FOLD_PACKAGES[@]}"
-}
 [[ ${#NO_FOLD_PACKAGES[@]} -gt 0 ]] && {
     echo "====== Stowing no-folding configs ======"
     stow_packages "--no-folding" "${NO_FOLD_PACKAGES[@]}"
+}
+[[ ${#FOLD_PACKAGES[@]} -gt 0 ]] && {
+    echo "====== Stowing folding configs ======"
+    stow_packages "" "${FOLD_PACKAGES[@]}"
 }
 echo -e "\nDone."
 exit 0
