@@ -30,9 +30,9 @@ const rimeService = "org.fcitx.Fcitx5";
 const rimePath = "/rime";
 const rimeInterface = "org.fcitx.Fcitx.Rime1";
 
-const ydotoolService = "com.dbus.ydotool.service";
-const ydotoolPath = "/com/dbus/ydotool";
-const ydotoolInterface = "com.dbus.ydotool.interface";
+const ydotoolService = "org.user.services";
+const ydotoolPath = "/org/user/services/ydotool";
+const ydotoolInterface = "org.user.services.ydotool";
 
 // journalctl --user -f | grep kwin_debug
 function log(msg) {
