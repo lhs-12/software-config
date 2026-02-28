@@ -28,35 +28,29 @@ usage() {
 Usage: $(basename "$0") [options]
 
 Options:
-  --ui-lang zh|en    UI language (default: auto)
-  --yes, -y          Skip confirmation prompt (non-interactive mode)
+  --ui-lang zh|en    Force UI language (default: auto)
+  --yes, -y          Skip confirmation prompt (non-interactive)
   --help, -h         Show this help and exit
 EOF
 }
+
 while [[ $# -gt 0 ]]; do
     case "$1" in
         --ui-lang)
-            case "$2" in
-                zh|en) UI_LANG="$2"; shift 2 ;;
-                *) printf "Error: --ui-lang requires zh or en.\n" >&2; exit 1 ;;
-            esac
+            [[ "$2" =~ ^(zh|en)$ ]] && UI_LANG="$2" shift 2 || { echo "Error: --ui-lang requires zh or en."; exit 1; }
             ;;
         --yes|-y)
             SKIP_CONFIRM=true
             shift
             ;;
         --help|-h)
-            usage
-            exit 0
+            usage; exit 0
             ;;
         *)
-            printf "Unknown option: %s\n" "$1" >&2
-            usage
-            exit 1
+            echo "Unknown option: $1"; usage; exit 1
             ;;
     esac
 done
-
 
 # ------------------------------
 # 3. Localization Logic

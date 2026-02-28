@@ -47,22 +47,19 @@ Options:
   --help, -h                 Show this help and exit
 EOF
 }
-while [ $# -gt 0 ]; do
+while [[ $# -gt 0 ]]; do
     case "$1" in
-        --ui-lang)
-            [ -n "$2" ] && UI_LANG="$2" shift 2 || { echo "Error: Missing arg for --ui-lang"; exit 1; }
-            ;;
-        --news-source)
-            [ -n "$2" ] && NEWS_SOURCE="$2" shift 2 || { echo "Error: Missing arg for --news-source"; exit 1; }
-            ;;
-        --count)
-            [ -n "$2" ] && COUNT_LIMIT="$2" shift 2 || { echo "Error: Missing arg for --count"; exit 1; }
-            ;;
-        --help|-h)
-            usage; exit 0
+        --ui-lang)     [[ -n "${2:-}" ]] && UI_LANG="$2"     && shift 2 || exit 1 ;;
+        --news-source) [[ -n "${2:-}" ]] && NEWS_SOURCE="$2" && shift 2 || exit 1 ;;
+        --count)       [[ -n "${2:-}" ]] && COUNT_LIMIT="$2" && shift 2 || exit 1 ;;
+        --help | -h)
+            usage
+            exit 0
             ;;
         *)
-            printf "Unknown option: %s\n" "$1"; usage; exit 1
+            printf "Unknown option: %s\n" "$1"
+            usage
+            exit 1
             ;;
     esac
 done
@@ -217,7 +214,7 @@ EOF
 
 # Fetch news and pipe to python for processing
 NEWS_URL="https://archlinux.org/feeds/news/"
-[ "$NEWS_SOURCE" = "cn" ] && NEWS_URL="https://www.archlinuxcn.org/category/news/feed/"
+[ "$NEWS_SOURCE" == "cn" ] && NEWS_URL="https://www.archlinuxcn.org/category/news/feed/"
 
 if curl -sS -L --connect-timeout 15 -A "Mozilla/5.0" "$NEWS_URL" \
     | python -c "$PYTHON_SCRIPT" "$COUNT_LIMIT" "$MSG_NEWS_HEADER"; then
