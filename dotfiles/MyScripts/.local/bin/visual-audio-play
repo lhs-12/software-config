@@ -28,6 +28,9 @@ FILE="$1"
 #
 mpv \
   --no-config \
+  --profile=sw-fast \
+  --vo-kitty-use-shm=yes \
+  --really-quiet \
   --vo=kitty \
   --lavfi-complex="[aid1]asplit[a][b];[a]showfreqs=s=1280x720:mode=bar:fscale=log:ascale=sqrt:win_size=4096:win_func=blackman:colors=${COLORS}[vo];[b]anull[ao]" \
   "$FILE"
