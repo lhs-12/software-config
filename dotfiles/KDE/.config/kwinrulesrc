@@ -1,3 +1,10 @@
+[1dbe3d8f-e799-4954-9be2-3505165a0f04]
+Description=Ghostty
+position=410,206
+positionrule=3
+wmclass=com.mitchellh.ghostty
+wmclassmatch=1
+
 [76d475dc-3e43-4742-8b50-8b68e257e74e]
 Description=Flameshot
 above=true
@@ -5,16 +12,9 @@ aboverule=2
 wmclass=flameshot
 wmclassmatch=1
 
-[deada39d-b124-4d34-a844-2eda8b78477a]
-Description=v2rayN
-skippager=true
-skippagerrule=2
-skipswitcher=true
-skipswitcherrule=2
-skiptaskbar=true
-skiptaskbarrule=2
-wmclass=v2rayN
-wmclassmatch=1
+[General]
+count=4
+rules=76d475dc-3e43-4742-8b50-8b68e257e74e,deada39d-b124-4d34-a844-2eda8b78477a,a03cd815-9ebe-4f91-947d-9663b8ba925f,1dbe3d8f-e799-4954-9be2-3505165a0f04
 
 [a03cd815-9ebe-4f91-947d-9663b8ba925f]
 Description=MPV_Pinned
@@ -31,6 +31,13 @@ titlematch=2
 wmclass=mpv
 wmclassmatch=1
 
-[General]
-count=3
-rules=76d475dc-3e43-4742-8b50-8b68e257e74e,deada39d-b124-4d34-a844-2eda8b78477a,a03cd815-9ebe-4f91-947d-9663b8ba925f
+[deada39d-b124-4d34-a844-2eda8b78477a]
+Description=v2rayN
+skippager=true
+skippagerrule=2
+skipswitcher=true
+skipswitcherrule=2
+skiptaskbar=true
+skiptaskbarrule=2
+wmclass=v2rayN
+wmclassmatch=1

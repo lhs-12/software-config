@@ -17,6 +17,7 @@ confirm-close-surface = false
 command = /usr/bin/fish
 shell-integration = none
 
+#kde初始位置用kwin规则配置(代替window-position-x/y)
 window-width = 120
 window-height = 36
 #window-width = 150
