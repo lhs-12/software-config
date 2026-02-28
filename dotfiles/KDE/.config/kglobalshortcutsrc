@@ -228,10 +228,14 @@ seekforwardmedialong=,,媒体播放向前时移 30 秒
 stopmedia=Media Stop,Media Stop,停止媒体播放
 
 [org.chromium.Chromium]
+3D07C133B595025DD56D02E3703CDEA5-Ctrl+Shift+Down=,none,Electron shortcut Ctrl+Shift+Down
+3E8EA47A8325834AF170EFA8F8F504DE-Ctrl+Shift+Space=,none,Electron shortcut Ctrl+Shift+Space
 53551334AF28243EC59132BC553B1163-open-dashboard=none,none,Open dashboard
 53551334AF28243EC59132BC553B1163-open-dashboard-with-running-scripts=none,none,Open dashboard with the current tab's URL used as filter
 53551334AF28243EC59132BC553B1163-open-new-script=none,none,Open new script tab
 53551334AF28243EC59132BC553B1163-toggle-enable=none,none,Toggle enable state
+53F7FDE0F89AF3FE460B34FDAC0FBE6E-Ctrl+Shift+Left=,none,Electron shortcut Ctrl+Shift+Left
+62264387C480FFD28F332FCBA61D8D78-Ctrl+Shift+Right=,none,Electron shortcut Ctrl+Shift+Right
 82036A85C80FCDB7B10B9879C4FA4B75-hoverTranslate=none,none,鼠标悬浮取词
 82036A85C80FCDB7B10B9879C4FA4B75-page=none,none,网页全文翻译
 82036A85C80FCDB7B10B9879C4FA4B75-pageSwitchMode=none,none,切换双语 / 原文 / 译文
@@ -249,6 +253,7 @@ stopmedia=Media Stop,Media Stop,停止媒体播放
 99825D9843446CDA2CDE0699DA663280-reloadTab=none,none,刷新整个页面
 99825D9843446CDA2CDE0699DA663280-userCustomized1=none,none,自定义快捷键 1
 99825D9843446CDA2CDE0699DA663280-userCustomized2=none,none,自定义快捷键 2
+9BE8B60BB3B62BCEBDE5299ADEEB5742-Ctrl+Shift+D=,none,Electron shortcut Ctrl+Shift+D
 BF7CACEEF6EA1B15732114E5F552B604-choose_credential_fields=none,none,选择自定义登录字段
 BF7CACEEF6EA1B15732114E5F552B604-fill_password=none,none,仅填充密码
 BF7CACEEF6EA1B15732114E5F552B604-fill_totp=none,none,填充一次性密码（TOTP）
@@ -280,6 +285,7 @@ DE6ACA416CB3B1447B9B628C18EAE6F5-translateWithGemini=none,none,临时使用 Gemi
 DE6ACA416CB3B1447B9B628C18EAE6F5-translateWithGoogle=none,none,临时使用 Google 翻译当前页面
 DE6ACA416CB3B1447B9B628C18EAE6F5-translateWithOpenAI=none,none,临时使用 OpenAI 翻译当前页面
 DE6ACA416CB3B1447B9B628C18EAE6F5-translateWithTransmart=none,none,临时使用腾讯翻译当前页面
+EC4854F64184E127E9987B83FD0B7C00-Ctrl+Shift+Up=,none,Electron shortcut Ctrl+Shift+Up
 _k_friendly_name=org.chromium.Chromium
 
 [org_kde_powerdevil]
@@ -313,8 +319,8 @@ activate task manager entry 7=Meta+7,Meta+7,激活任务管理器条目 7
 activate task manager entry 8=Meta+8,Meta+8,激活任务管理器条目 8
 activate task manager entry 9=Meta+9,Meta+9,激活任务管理器条目 9
 activate widget 30=none,none,激活 最小化所有窗口 小部件
-activate widget 31=none,none,激活 图标任务管理器 小部件
 activate widget 35=none,none,激活 活动切换器 小部件
+activate widget 39=,none,激活 图标任务管理器 小部件
 clear-history=none,,清除剪贴板历史(L)
 clipboard_action=Meta+Ctrl+X,Meta+Ctrl+X,自动弹出操作菜单
 cycle-panels=Meta+Alt+P,Meta+Alt+P,在面板之间移动键盘焦点
