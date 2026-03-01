@@ -4,8 +4,11 @@ prepend_rules = [
   { url = "*/", use = [ "open", "edit", "reveal" ] },
   # 压缩文件: reveal优先
   { mime = "application/{zip,rar,7z*,tar,gzip,xz,zstd,bzip*,lzma,compress,archive,cpio,arj,xar,ms-cab*}", use = [ "reveal", "open", "extract" ] },
-  # 无法识别的流媒体文件, file --mime-type xxx.mp4/mp3 会输出 application/octet-stream
-  { mime = "application/octet-stream", use = [ "open", "play", "reveal" ] },
+  # 音频优先在终端播放(kew)
+  { mime = "audio/*", use = [ "audio", "open", "reveal" ] },
+  # 无法识别的流媒体文件, file --mime-type xxx.mp3/mp4 会输出 application/octet-stream
+  { mime = "application/octet-stream", name = "*.{mp3,flac,ogg,m4a,aac,wav,opus,wma,ape}", use = [ "audio", "open", "reveal" ] },
+  { mime = "application/octet-stream", use = [ "open", "play", "reveal" ] }, # 补上play
 ]
 
 [opener]
@@ -17,10 +20,13 @@ play = [
   { desc = "PotPlayer Play"    , for = "windows", orphan = true, run = 'powershell -NoProfile -Command "& { & \"C:\Program Files\DAUM\PotPlayer\PotPlayerMini64.exe\" ($args -replace \"/\",\"\\\") }" %*' },
   { desc = "PotPlayer Add List", for = "windows", orphan = true, run = 'powershell -NoProfile -Command "& { & \"C:\Program Files\DAUM\PotPlayer\PotPlayerMini64.exe\" ($args -replace \"/\",\"\\\") /ADD }" %*' },
   { desc = "Show media info"   , for = "windows", block  = true, run = "mediainfo %s1 & pause" },
-  { desc = "Play"                       , for = "linux", orphan = true, run = 'xdg-open %s1' },
-  { desc = "Play In Terminal(mpv)"      , for = "linux", block  = true, run = 'mpv --vo=kitty --profile=sw-fast --vo-kitty-use-shm=yes --really-quiet %s1' },
-  { desc = "Play Audio In Terminal(kew)", for = "linux", block  = true, run = 'kew_playlist $@' },
-  { desc = "Show media info"            , for = "linux", block  = true, run = "mediainfo %s1; echo 'Press enter to exit'; read _" },
+  { desc = "Play"            , for = "linux", orphan = true, run = 'xdg-open %s1' },
+  { desc = "Play In Terminal", for = "linux", block  = true, run = 'mpv --vo=kitty --profile=sw-fast --vo-kitty-use-shm=yes --really-quiet %s1' },
+  { desc = "Show media info" , for = "linux", block  = true, run = "mediainfo %s1; echo 'Press enter to exit'; read _" },
+]
+audio = [
+  { desc = "Play"           , for = "linux", block  = true, run = 'kew_playlist $@' },
+  { desc = "Show media info", for = "linux", block  = true, run = "mediainfo %s1; echo 'Press enter to exit'; read _" },
 ]
 
 [plugin]
