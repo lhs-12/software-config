@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # kew wrapper: 支持单文件播放和多文件临时播放
+# 注: kew官方暂不支持kew play临时多文件, 等后面支持了可删除本脚本, 并修改yazi相应配置
 set -euo pipefail
 
 LIBRARY_DIR="$HOME/Music"
