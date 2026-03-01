@@ -14,12 +14,13 @@ edit = [
   { desc = "VSCode", orphan = true, run = 'code %s' },
 ]
 play = [
-  { desc = "PotPlayer Play"     , for = "windows", orphan = true, run = 'powershell -NoProfile -Command "& { & \"C:\Program Files\DAUM\PotPlayer\PotPlayerMini64.exe\" ($args -replace \"/\",\"\\\") }" %*' },
-  { desc = "PotPlayer Add List" , for = "windows", orphan = true, run = 'powershell -NoProfile -Command "& { & \"C:\Program Files\DAUM\PotPlayer\PotPlayerMini64.exe\" ($args -replace \"/\",\"\\\") /ADD }" %*' },
-  { desc = "Play"               , for = "linux"  , orphan = true, run = 'xdg-open %s1' },
-  { desc = "Play In Terminal"   , for = "linux"  , block  = true, run = 'mpv --vo=kitty --profile=sw-fast --vo-kitty-use-shm=yes --really-quiet %s1' },
-  { desc = "Show media info"    , for = "windows", block  = true, run = "mediainfo %s1 & pause" },
-  { desc = "Show media info"    , for = "unix"   , block  = true, run = "mediainfo %s1; echo 'Press enter to exit'; read _" },
+  { desc = "PotPlayer Play"    , for = "windows", orphan = true, run = 'powershell -NoProfile -Command "& { & \"C:\Program Files\DAUM\PotPlayer\PotPlayerMini64.exe\" ($args -replace \"/\",\"\\\") }" %*' },
+  { desc = "PotPlayer Add List", for = "windows", orphan = true, run = 'powershell -NoProfile -Command "& { & \"C:\Program Files\DAUM\PotPlayer\PotPlayerMini64.exe\" ($args -replace \"/\",\"\\\") /ADD }" %*' },
+  { desc = "Show media info"   , for = "windows", block  = true, run = "mediainfo %s1 & pause" },
+  { desc = "Play"                       , for = "linux", orphan = true, run = 'xdg-open %s1' },
+  { desc = "Play In Terminal(mpv)"      , for = "linux", block  = true, run = 'mpv --vo=kitty --profile=sw-fast --vo-kitty-use-shm=yes --really-quiet %s1' },
+  { desc = "Play Audio In Terminal(kew)", for = "linux", block  = true, run = 'kew_playlist $@' },
+  { desc = "Show media info"            , for = "linux", block  = true, run = "mediainfo %s1; echo 'Press enter to exit'; read _" },
 ]
 
 [plugin]
