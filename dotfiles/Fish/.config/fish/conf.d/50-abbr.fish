@@ -32,7 +32,7 @@ abbr rgu 'rg -uu'         # Unrestricted: ignore .gitignore and search hidden
 abbr rgp 'rg --sort path' # Sort output by file path
 
 # History search
-abbr h 'history | grep'
+abbr h 'history -r | grep'
 
 # Process search
 abbr p 'ps aux | grep'
