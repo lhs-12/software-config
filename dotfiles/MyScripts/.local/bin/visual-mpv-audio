@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # 终端音频频谱可视化播放(MPV+Kitty)
+# GPU占用较高, 仅供娱乐
 
 COLORS="0x1F3A33|0x28524A|0x3E7A6E" # Deep Forest
 # COLORS="0x512DA8|0x673AB7|0x9575CD" # Deep Purple
