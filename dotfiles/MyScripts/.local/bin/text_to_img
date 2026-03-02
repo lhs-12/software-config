@@ -19,6 +19,8 @@
 # ------------------------------------------------------------
 
 import argparse
+import codecs
+import contextlib
 import sys
 from pathlib import Path
 
@@ -173,6 +175,9 @@ def main() -> None:
     # TEXT
     else:
         text = sys.stdin.read() if args.text.name == "-" else args.text.read_text(encoding="utf-8", errors="ignore")
+        with contextlib.suppress(Exception):
+            # 将\u转义为中文, 会误伤真显示为\u的内容, 但忽略这种情况
+            text = codecs.decode(text, "unicode_escape")
         html = render_text_template(text)
     render_to_image(html, args.out)
 
