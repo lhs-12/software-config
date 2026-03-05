@@ -321,6 +321,7 @@ activate task manager entry 9=Meta+9,Meta+9,激活任务管理器条目 9
 activate widget 30=none,none,激活 最小化所有窗口 小部件
 activate widget 35=none,none,激活 活动切换器 小部件
 activate widget 39=,none,激活 图标任务管理器 小部件
+activate widget 61=,none,激活 数字时钟 小部件
 clear-history=none,,清除剪贴板历史(L)
 clipboard_action=Meta+Ctrl+X,Meta+Ctrl+X,自动弹出操作菜单
 cycle-panels=Meta+Alt+P,Meta+Alt+P,在面板之间移动键盘焦点
@@ -355,6 +356,8 @@ _launch=Search\tAlt+F2
 _launch=Meta+.
 
 [services][org.kde.spectacle.desktop]
+CurrentMonitorScreenShot=
+OpenWithoutScreenshot=
 RecordRegion=none
 RecordScreen=none
 RecordWindow=none
