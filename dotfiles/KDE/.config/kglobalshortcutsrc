@@ -349,14 +349,12 @@ _launch=none
 
 [services][org.kde.krunner.desktop]
 RunClipboard=none
-_launch=Search
+_launch=Search\tAlt+F2
 
 [services][org.kde.plasma.emojier.desktop]
 _launch=Meta+.
 
 [services][org.kde.spectacle.desktop]
-CurrentMonitorScreenShot=
-OpenWithoutScreenshot=
 RecordRegion=none
 RecordScreen=none
 RecordWindow=none
