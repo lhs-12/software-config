@@ -49,7 +49,7 @@ proxycfg() {
   esac
 }
 
-# v2rayN 开启系统代理时, gsettings 命令输出 "manual", 此时开启 proxycfg
-command -v gsettings &> /dev/null || exit 0
+# v2rayN 开启系统代理时, gsettings 命令输出 "manual", 此时开启 proxycfg, 否则关闭
+command -v gsettings >/dev/null 2>&1 || exit 0
 mode=$(gsettings get org.gnome.system.proxy mode 2>/dev/null)
-[ "$mode" = "'manual'" ] && proxycfg on >/dev/null 2>&1
+[ "$mode" = "'manual'" ] && proxycfg on >/dev/null 2>&1 || proxycfg off >/dev/null 2>&1

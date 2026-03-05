@@ -13,7 +13,7 @@ fish_add_path -g ~/.opencode/bin
 mise activate fish | source
 
 # Proxy configuration
-# v2rayN 开启系统代理时, gsettings 命令输出 "manual", 此时开启 proxycfg
-command -v gsettings >/dev/null 2>&1 || exit 0
+# v2rayN 开启系统代理时, gsettings 命令输出 "manual", 此时开启 proxycfg, 否则关闭
+command -v gsettings >/dev/null 2>&1; or exit 0
 set mode (gsettings get org.gnome.system.proxy mode 2>/dev/null)
-test "$mode" = "'manual'" && proxycfg on >/dev/null 2>&1
+test "$mode" = "'manual'"; and proxycfg on >/dev/null 2>&1; or proxycfg off >/dev/null 2>&1
