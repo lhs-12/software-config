@@ -19,14 +19,21 @@
 # ------------------------------------------------------------
 
 import argparse
-import codecs
-import contextlib
+import re
 import sys
 from pathlib import Path
 
 from PyQt6.QtCore import QSize, Qt, QTimer, QUrl
 from PyQt6.QtWebEngineWidgets import QWebEngineView
 from PyQt6.QtWidgets import QApplication
+
+RE_UNICODE_ESCAPE = re.compile(r"\\u([0-9a-fA-F]{4})")
+
+
+# 将文本中的 \uXXXX Unicode 转义序列转换为实际字符
+def decode_unicode_escape(text: str) -> str:
+    return RE_UNICODE_ESCAPE.sub(lambda m: chr(int(m.group(1), 16)), text)
+
 
 # ============================================================
 # Template Renderers
@@ -175,9 +182,7 @@ def main() -> None:
     # TEXT
     else:
         text = sys.stdin.read() if args.text.name == "-" else args.text.read_text(encoding="utf-8", errors="ignore")
-        with contextlib.suppress(Exception):
-            # 将\u转义为中文, 会误伤真显示为\u的内容, 但忽略这种情况
-            text = codecs.decode(text, "unicode_escape")
+        text = decode_unicode_escape(text)
         html = render_text_template(text)
     render_to_image(html, args.out)
 
