@@ -73,7 +73,8 @@ code \
 使用`settings.json`和`keybindings.json`
 
 Windows 环境在`settings.json`额外增加配置,  
-还有 Markdown Preview Enhanced: Customize CSS(Global) 的配置
+还有 Markdown Preview Enhanced: Customize CSS(Global) 的配置,  
+去掉Linux下Mise相关的配置
 ```json
 {
   // Terminal

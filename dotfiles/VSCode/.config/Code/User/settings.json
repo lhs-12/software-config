@@ -38,6 +38,7 @@
   "[lua]": { "editor.defaultFormatter": "JohnnyMorganz.stylua" },
   "[java]": { "editor.defaultFormatter": "redhat.java" },
   "[python]": { "editor.defaultFormatter": "charliermarsh.ruff", "editor.formatOnSave": true },
+  "ruff.path": ["${env:HOME}/.local/share/mise/shims/ruff"], // mise shim ruff
   // NeoVim
   "extensions.experimental.affinity": { "asvetliakov.vscode-neovim": 1 },
   "vscode-neovim.ctrlKeysForInsertMode": ["d", "o", "r", "t", "u", "w"],
