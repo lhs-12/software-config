@@ -1,0 +1,23 @@
+{
+  "telemetry": { "diagnostics": false, "metrics": false },
+  "session": { "trust_all_worktrees": true },
+  "theme": "Ayu Dark",
+  "base_keymap": "JetBrains",
+  "vim_mode": true,
+  "ui_font_size": 16,
+  "buffer_font_size": 14,
+  "buffer_font_family": "Iosevka Term",
+  "semantic_tokens": "off",
+  "languages": {
+    "Python": {
+      "language_servers": ["ty", "ruff"],
+      "code_actions_on_format": {
+        "source.organizeImports.ruff": true,
+        "source.fixAll.ruff": true,
+      },
+    },
+  },
+  "lsp": {
+    "ty": { "settings": { "diagnosticMode": "workspace" } },
+  },
+}
