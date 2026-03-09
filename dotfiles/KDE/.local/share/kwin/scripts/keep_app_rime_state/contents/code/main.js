@@ -93,7 +93,7 @@ workspace.windowActivated.connect(function (client) {
   if (appState.hasOwnProperty(newApp)) {
     setAsciiMode(appState[newApp]);
   } else {
-    setAsciiMode(true);
+    delay(50, () => setAsciiMode(true));
   }
   if (isElectronApp(newApp) && isProblematicSource(lastApp)) {
     fixElectronIM(client);
@@ -110,7 +110,7 @@ workspace.windowRemoved.connect(function (window) {
   });
   if (!isAppStillActive) {
     // 延时删, 保证晚于windowActivated的dbus保存旧状态
-    delay(100, () => delete appState[appName]);
+    delay(150, () => delete appState[appName]);
     if (lastApp === appName) {
       lastApp = null;
       lastId = null;
