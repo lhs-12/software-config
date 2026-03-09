@@ -25,6 +25,8 @@ var lastId = null;
 
 // 使用本脚本处理的 Electron 应用
 var electronApps = ["code"];
+// 可能导致 Chromium/Electron IME 丢失的来源应用
+var problematicSources = ["org.wezfurlong.wezterm"];
 
 const rimeService = "org.fcitx.Fcitx5";
 const rimePath = "/rime";
@@ -55,6 +57,10 @@ function normalizeBool(result) {
 
 function isElectronApp(appName) {
   return electronApps.indexOf(appName) !== -1;
+}
+
+function isProblematicSource(appName) {
+  return problematicSources.indexOf(appName) !== -1;
 }
 
 function queryAsciiModeAndSave(appName) {
@@ -89,11 +95,10 @@ workspace.windowActivated.connect(function (client) {
   } else {
     setAsciiMode(true);
   }
-  lastApp = newApp;
-
-  if (isElectronApp(newApp)) {
+  if (isElectronApp(newApp) && isProblematicSource(lastApp)) {
     fixElectronIM(client);
   }
+  lastApp = newApp;
 });
 
 workspace.windowRemoved.connect(function (window) {
