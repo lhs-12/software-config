@@ -1,6 +1,6 @@
 [Hotkey]
 # 切换输入法
-TriggerKeys=
+TriggerKeys=Alt+Super+space
 # 按住切换键的修饰键时进行轮换切换
 EnumerateWithTriggerKeys=False
 # 激活输入法
