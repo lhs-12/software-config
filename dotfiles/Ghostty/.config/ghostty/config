@@ -11,12 +11,13 @@ cursor-color = cccccc
 cursor-style-blink = false
 custom-shader = "~/.config/ghostty/shaders/cursor_blaze.glsl"
 font-family = monospace
+font-feature = -calt, -liga, -dlig
 font-size = 12
 scrollback-limit = 80000
 mouse-hide-while-typing = true
 confirm-close-surface = false
 command = /usr/bin/fish
-shell-integration = none
+shell-integration-features = no-cursor
 
 #kde初始位置用kwin规则配置(代替window-position-x/y)
 window-width = 120
