@@ -59,7 +59,7 @@ wezterm.on("format-tab-title", function(tab, tabs)
 	local pane = tab.active_pane
 	local index = ""
 	if #tabs > 1 then
-		index = string.format("%d: ", tab.tab_index + 1)
+		index = string.format("%d:", tab.tab_index + 1)
 	end
 	local process = string.gsub(pane.foreground_process_name, "(.*[/\\])(.*)", "%2")
 	return { { Text = " " .. index .. process .. " " } }

@@ -105,7 +105,8 @@ pin_from_clipboard() {
         return
     fi
     if echo "$types" | has_type '^text/plain'; then
-        text="$(wl-paste --type text/plain | tr -d '\r')"
+        text_type=$(printf '%s\n' "$types" | grep -m1 '^text/plain')
+        text="$(wl-paste --type "$text_type" | tr -d '\r')"
         # ---- GIF 链接特殊处理(支持http/https + gif结尾) ----
         if [[ "$text" =~ ^https?://.+\.gif([?#].*)?$ ]]; then
             tmp_gif="$TMP_DIR/pin.gif"
