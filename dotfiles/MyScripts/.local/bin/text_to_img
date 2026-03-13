@@ -72,6 +72,18 @@ pre {{
     overflow: visible;
 }}
 </style>
+<script>
+function patchFonts() {{
+  const nerdName = "Symbols Nerd Font Mono";
+  const nerd = `"${{nerdName}}"`;
+  document.querySelectorAll("*").forEach(el => {{
+    const ff = getComputedStyle(el).fontFamily;
+    if (!ff || ff.includes(nerdName)) return;
+    el.style.fontFamily = ff + ", " + nerd;
+  }});
+}}
+window.addEventListener("DOMContentLoaded", patchFonts);
+</script>
 </head>
 <body>
   <div id="container">
