@@ -1,5 +1,7 @@
 window-decoration = none
 window-theme = ghostty
+window-width = 120
+window-height = 36
 gtk-titlebar-style = tabs
 gtk-toolbar-style = flat
 gtk-wide-tabs = false
@@ -19,12 +21,8 @@ confirm-close-surface = false
 command = /usr/bin/fish
 shell-integration-features = no-cursor
 
-#kde初始位置用kwin规则配置(代替window-position-x/y)
-window-width = 120
-window-height = 36
-#window-width = 150
-
 #keybind = global:super+t=toggle_quick_terminal
+#window-width = 150
 #initial-window = false
 #quick-terminal-autohide = true
 #quit-after-last-window-closed=false
