@@ -79,7 +79,7 @@ function patchFonts() {{
   document.querySelectorAll("*").forEach(el => {{
     const ff = getComputedStyle(el).fontFamily;
     if (!ff || ff.includes(nerdName)) return;
-    el.style.fontFamily = ff + ", " + nerd;
+    el.style.fontFamily = ff + "," + nerd;
   }});
 }}
 window.addEventListener("DOMContentLoaded", patchFonts);
