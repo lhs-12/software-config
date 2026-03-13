@@ -4,17 +4,11 @@ Name=默认
 # Layout
 Default Layout=us
 # Default Input Method
-DefaultIM=vinput
+DefaultIM=rime
 
 [Groups/0/Items/0]
 # Name
 Name=rime
-# Layout
-Layout=
-
-[Groups/0/Items/1]
-# Name
-Name=vinput
 # Layout
 Layout=
 
