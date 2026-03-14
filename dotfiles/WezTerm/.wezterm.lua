@@ -33,7 +33,7 @@ if wezterm.target_triple:find("linux") then
 	}
 end
 -- Win Config
-if wezterm.target_triple:find("windows-msvc") then
+if wezterm.target_triple == "x86_64-pc-windows-msvc" then
 	-- local msys2 = { "cmd.exe", "/k", "C:\\msys64\\msys2_shell.cmd -defterm -here -no-start -ucrt64 -shell bash", "-l", "-i" }
 	local msys2 = { "C:\\msys64\\msys2_shell.cmd", "-defterm", "-here", "-no-start", "-ucrt64" }
 	config.default_prog = msys2
@@ -54,7 +54,6 @@ if wezterm.target_triple:find("windows-msvc") then
 end
 -- Tab Bar
 config.enable_tab_bar = true
-config.use_fancy_tab_bar = false
 wezterm.on("format-tab-title", function(tab, tabs)
 	local pane = tab.active_pane
 	local index = ""
@@ -75,6 +74,7 @@ if wezterm.target_triple:find("linux") then -- fix linux
 	config.window_decorations = "NONE"
 	config.hide_tab_bar_if_only_one_tab = true
 	config.tab_bar_at_bottom = true
+	config.use_fancy_tab_bar = false
 end
 config.enable_scroll_bar = true
 config.initial_cols = 120
