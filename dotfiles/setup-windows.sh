@@ -6,8 +6,10 @@ cd "$(dirname "$0")"
 # Setup MSYS2
 ./setup-msys2.sh
 
-# AutoHotkey
-cp ./AutoHotkey/CapsLock+.ahk "$APPDATA/Microsoft/Windows/Start Menu/Programs/Startup/"
+# AutoHotkey(废弃, 使用Kanata替代)
+# cp ./AutoHotkey/CapsLock+.ahk "$APPDATA/Microsoft/Windows/Start Menu/Programs/Startup/"
+# Kanata 手动进行配置, 不在脚本操作
+
 # Rime
 mkdir -p $APPDATA/Rime && cp -r ./Rime/.local/share/fcitx5/rime/* $APPDATA/Rime
 # WezTerm
