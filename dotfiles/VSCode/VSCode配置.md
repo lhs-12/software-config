@@ -18,7 +18,6 @@ code \
 --install-extension fabiospampinato.vscode-open-in-application \      # Open in Application                 默认程序打开文件
 --install-extension ms-vscode-remote.vscode-remote-extensionpack \    # Remote Development                  远程开发套件(WSL/容器/SSH...)
 --install-extension ms-vsliveshare.vsliveshare \                      # Live Share                          实时共享
---install-extension mark-wiemer.vscode-autohotkey-plus-plus \         # AutoHotkey Plus Plus                AutoHotkey支持
 --install-extension johnnymorganz.stylua \                            # StyLua                              Lua支持
 --install-extension redhat.vscode-xml \                               # XML                                 XML支持
 --install-extension tamasfe.even-better-toml \                        # Even Better TOML                    TOML支持
