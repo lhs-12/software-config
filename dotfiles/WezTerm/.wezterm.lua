@@ -93,8 +93,6 @@ if wezterm.target_triple == "x86_64-pc-windows-msvc" then
 		local tab, pane, window = wezterm.mux.spawn_window(cmd or {})
 		window:gui_window():set_position(520, 250)
 	end)
-	config.window_decorations = "NONE"
-	config.use_fancy_tab_bar = false
 end
 -- Keys
 config.disable_default_key_bindings = true
