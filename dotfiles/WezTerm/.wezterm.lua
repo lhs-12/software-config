@@ -132,15 +132,15 @@ config.keys = {
 			end),
 		}),
 	},
-	{ mods = 'CTRL|SHIFT', key = '1', action = act.ActivateTab(0) }, -- 切换标签页(按顺序1~9)
-	{ mods = 'CTRL|SHIFT', key = '2', action = act.ActivateTab(1) },
-	{ mods = 'CTRL|SHIFT', key = '3', action = act.ActivateTab(2) },
-	{ mods = 'CTRL|SHIFT', key = '4', action = act.ActivateTab(3) },
-	{ mods = 'CTRL|SHIFT', key = '5', action = act.ActivateTab(4) },
-	{ mods = 'CTRL|SHIFT', key = '6', action = act.ActivateTab(5) },
-	{ mods = 'CTRL|SHIFT', key = '7', action = act.ActivateTab(6) },
-	{ mods = 'CTRL|SHIFT', key = '8', action = act.ActivateTab(7) },
-	{ mods = 'CTRL|SHIFT', key = '9', action = act.ActivateTab(8) },
+	{ mods = 'CTRL|ALT', key = '1', action = act.ActivateTab(0) }, -- 切换标签页(按顺序1~9)
+	{ mods = 'CTRL|ALT', key = '2', action = act.ActivateTab(1) },
+	{ mods = 'CTRL|ALT', key = '3', action = act.ActivateTab(2) },
+	{ mods = 'CTRL|ALT', key = '4', action = act.ActivateTab(3) },
+	{ mods = 'CTRL|ALT', key = '5', action = act.ActivateTab(4) },
+	{ mods = 'CTRL|ALT', key = '6', action = act.ActivateTab(5) },
+	{ mods = 'CTRL|ALT', key = '7', action = act.ActivateTab(6) },
+	{ mods = 'CTRL|ALT', key = '8', action = act.ActivateTab(7) },
+	{ mods = 'CTRL|ALT', key = '9', action = act.ActivateTab(8) },
 	-- ===== Pane(分屏) =====
 	{ mods = "CTRL|SHIFT|ALT", key = "Enter", action = act.SplitHorizontal({ domain = "CurrentPaneDomain" }) }, -- 水平分屏（左右）
 	{ mods = "CTRL|SHIFT"    , key = "Enter", action = act.SplitVertical({ domain = "CurrentPaneDomain" })   }, -- 垂直分屏（上下）
