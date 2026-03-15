@@ -3,7 +3,6 @@ local config = {}
 if wezterm.config_builder then
 	config = wezterm.config_builder()
 end
-config.front_end = "WebGpu"
 -- Tab Bar
 config.enable_tab_bar = true
 wezterm.on("format-tab-title", function(tab, tabs)
@@ -64,6 +63,7 @@ if wezterm.target_triple == "x86_64-unknown-linux-gnu" then
 			alt_screen = false,
 		},
 	}
+	config.front_end = "WebGpu"
 	-- Fix Linux window
 	config.window_decorations = "NONE"
 	config.hide_tab_bar_if_only_one_tab = true
