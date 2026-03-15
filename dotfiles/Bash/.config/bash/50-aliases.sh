@@ -39,3 +39,6 @@ alias topmem="/bin/ps -eo pmem,pid,user,args | sort -k 1 -r | head -10"
 
 # SHA1
 alias sha1='openssl sha1'
+
+# fcitx5-vinput model change
+alias vinput-model='vinput model list | fzf --header-lines=1 | awk "{print \$1}" | xargs -r vinput model use'
