@@ -99,6 +99,7 @@ config.disable_default_key_bindings = true
 config.use_dead_keys = false
 local act = wezterm.action
 -- stylua: ignore
+-- 可使用 wezterm show-keys --lua 检查完整快捷键配置
 config.keys = {
 	-- ===== 命令面板 =====
 	{ mods = "CTRL|SHIFT", key = "p", action = act.ActivateCommandPalette }, -- 打开命令面板
