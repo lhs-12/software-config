@@ -4,6 +4,39 @@ if wezterm.config_builder then
 	config = wezterm.config_builder()
 end
 config.front_end = "WebGpu"
+-- Tab Bar
+config.enable_tab_bar = true
+wezterm.on("format-tab-title", function(tab, tabs)
+	local pane = tab.active_pane
+	local title = (tab.tab_title ~= "" and tab.tab_title) or pane.foreground_process_name:match("([^/\\]+)$")
+	local index = (#tabs > 1 and (tab.tab_index + 1) .. ":") or ""
+	return { { Text = " " .. index .. title .. " " } }
+end)
+-- Window
+config.window_close_confirmation = "NeverPrompt"
+config.window_decorations = "INTEGRATED_BUTTONS|RESIZE"
+config.enable_scroll_bar = true
+config.initial_cols = 120
+config.initial_rows = 35
+config.window_padding = { left = 4, right = 12, top = 1, bottom = 1 }
+local my_scheme = wezterm.color.get_builtin_schemes()["3024 (base16)"]
+my_scheme.ansi[5] = "#33bcff"
+config.color_schemes = { ["my_scheme"] = my_scheme }
+config.color_scheme = "my_scheme"
+config.colors = { scrollbar_thumb = "#404040" }
+-- Font
+config.font_size = 12.0
+config.adjust_window_size_when_changing_font_size = false
+config.default_cursor_style = "SteadyUnderline"
+config.font = wezterm.font_with_fallback({
+	-- "Maple Mono NF CN",
+	-- "Maple Mono Normal NL NF CN",
+	"Iosevka Term",
+	"MiSans",
+	{ family = "Symbols Nerd Font Mono", scale = 0.9 },
+	"MiSans L3",
+	"Noto Color Emoji",
+})
 -- Linux Config
 if wezterm.target_triple == "x86_64-unknown-linux-gnu" then
 	config.background = {
@@ -31,6 +64,11 @@ if wezterm.target_triple == "x86_64-unknown-linux-gnu" then
 			alt_screen = false,
 		},
 	}
+	-- Fix Linux window
+	config.window_decorations = "NONE"
+	config.hide_tab_bar_if_only_one_tab = true
+	config.tab_bar_at_bottom = true
+	config.use_fancy_tab_bar = false
 end
 -- Microsoft Windows Config
 if wezterm.target_triple == "x86_64-pc-windows-msvc" then
@@ -53,48 +91,11 @@ if wezterm.target_triple == "x86_64-pc-windows-msvc" then
 	}
 	wezterm.on("gui-startup", function(cmd)
 		local tab, pane, window = wezterm.mux.spawn_window(cmd or {})
-		window:gui_window():set_position(400, 200)
+		window:gui_window():set_position(520, 250)
 	end)
-end
--- Tab Bar
-config.enable_tab_bar = true
-wezterm.on("format-tab-title", function(tab, tabs)
-	local pane = tab.active_pane
-	local title = (tab.tab_title ~= "" and tab.tab_title) or pane.foreground_process_name:match("([^/\\]+)$")
-	local index = (#tabs > 1 and (tab.tab_index + 1) .. ":") or ""
-	return { { Text = " " .. index .. title .. " " } }
-end)
--- Window
-config.window_close_confirmation = "NeverPrompt"
-config.window_decorations = "INTEGRATED_BUTTONS|RESIZE"
-if wezterm.target_triple == "x86_64-unknown-linux-gnu" then -- Fix Linux Bug
 	config.window_decorations = "NONE"
-	config.hide_tab_bar_if_only_one_tab = true
-	config.tab_bar_at_bottom = true
 	config.use_fancy_tab_bar = false
 end
-config.enable_scroll_bar = true
-config.initial_cols = 120
-config.initial_rows = 35
-config.window_padding = { left = 4, right = 12, top = 1, bottom = 1 }
-local my_scheme = wezterm.color.get_builtin_schemes()["3024 (base16)"]
-my_scheme.ansi[5] = "#33bcff"
-config.color_schemes = { ["my_scheme"] = my_scheme }
-config.color_scheme = "my_scheme"
-config.colors = { scrollbar_thumb = "#404040" }
--- Font
-config.font_size = 12.0
-config.adjust_window_size_when_changing_font_size = false
-config.default_cursor_style = "SteadyUnderline"
-config.font = wezterm.font_with_fallback({
-	-- "Maple Mono NF CN",
-	-- "Maple Mono Normal NL NF CN",
-	"Iosevka Term",
-	"MiSans",
-	{ family = "Symbols Nerd Font Mono", scale = 0.9 },
-	"MiSans L3",
-	"Noto Color Emoji",
-})
 -- Keys
 config.disable_default_key_bindings = true
 config.use_dead_keys = false
@@ -145,7 +146,7 @@ config.keys = {
 	{ mods = "CTRL|SHIFT|ALT", key = "Enter", action = act.SplitHorizontal({ domain = "CurrentPaneDomain" }) }, -- 水平分屏（左右）
 	{ mods = "CTRL|SHIFT"    , key = "Enter", action = act.SplitVertical({ domain = "CurrentPaneDomain" })   }, -- 垂直分屏（上下）
 	{ mods = "CTRL|SHIFT", key = "z", action = act.TogglePaneZoomState }, -- 当前 pane 最大化/还原
-	{ mods = "CTRL|SHIFT", key = "w", action = act.CloseCurrentPane({ confirm = true }) }, -- 关闭当前 pane
+	{ mods = "CTRL|SHIFT", key = "w", action = act.CloseCurrentPane({ confirm = false }) }, -- 关闭当前 pane
 	{ mods = "CTRL|SHIFT", key = "j", action = act.ActivatePaneDirection("Down")  }, -- 切换到下方 pane
 	{ mods = "CTRL|SHIFT", key = "k", action = act.ActivatePaneDirection("Up")    }, -- 切换到上方 pane
 	{ mods = "CTRL|SHIFT", key = "h", action = act.ActivatePaneDirection("Left")  }, -- 切换到左侧 pane
