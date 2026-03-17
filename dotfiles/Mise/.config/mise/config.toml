@@ -1,0 +1,24 @@
+[tools]
+java = "25"
+maven = "3"
+node = "{{ env['NODE_VERSION'] | default(value='lts') }}"
+
+# CLI utilities
+usage = "latest" # mise命令补全 (注:包管理器别重复装usage)
+uv = "latest"
+ruff = "latest"
+
+# AI CLI tools
+"npm:opencode-ai" = "latest"
+"npm:@openai/codex" = "latest"
+"npm:snow-ai" = "latest"
+"npm:@iflow-ai/iflow-cli" = "latest"
+
+[tasks.claude-install]
+description = "Install/upgrade Claude Code via native installer"
+run = "curl -fsSL https://claude.ai/install.sh | bash -s latest"
+
+# mise run upgrade-all
+[tasks.upgrade-all]
+description = "Upgrade all tools"
+run = ["mise upgrade", "mise run claude-install"]

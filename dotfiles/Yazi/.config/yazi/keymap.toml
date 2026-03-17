@@ -1,0 +1,9 @@
+[[mgr.prepend_keymap]]
+on   = ["C"]
+run  = "plugin ouch"
+desc = "Compress with ouch"
+
+[[mgr.prepend_keymap]]
+on   = ["<C-y>"]
+run  = "plugin wl-copy"
+desc = "Copy by wl-copy"

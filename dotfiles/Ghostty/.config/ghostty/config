@@ -1,0 +1,28 @@
+window-decoration = none
+window-theme = ghostty
+window-width = 120
+window-height = 36
+gtk-titlebar-style = tabs
+gtk-toolbar-style = flat
+gtk-wide-tabs = false
+theme = 3024 Night
+background-opacity = 0.65
+background-blur = true
+cursor-style = underline
+cursor-color = cccccc
+cursor-style-blink = false
+custom-shader = "~/.config/ghostty/shaders/cursor_blaze.glsl"
+font-family = monospace
+font-feature = -calt, -liga, -dlig
+font-size = 12
+scrollback-limit = 25000000
+mouse-hide-while-typing = true
+confirm-close-surface = false
+command = /usr/bin/fish
+shell-integration-features = no-cursor
+
+#keybind = global:super+t=toggle_quick_terminal
+#window-width = 150
+#initial-window = false
+#quick-terminal-autohide = true
+#quit-after-last-window-closed=false

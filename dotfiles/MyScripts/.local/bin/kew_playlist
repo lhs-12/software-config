@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+# kew wrapper: 支持单文件播放和多文件临时播放
+# 注: kew官方暂不支持kew play临时多文件, 等后面支持了可删除本脚本, 并修改yazi相应配置
+set -euo pipefail
+
+LIBRARY_DIR="$HOME/Music"
+
+# 没参数直接退出
+[ "$#" -eq 0 ] && exit 0
+
+# 单文件模式
+if [ "$#" -eq 1 ]; then
+    exec kew play "$1" # exec改单文件kew进程
+fi
+
+# 多文件模式
+PLAYLIST_NAME="tmp_playlist_$(uuidgen | cut -c1-8)"
+PLAYLIST_PATH="$LIBRARY_DIR/${PLAYLIST_NAME}.m3u"
+
+trap 'rm -f "$PLAYLIST_PATH"' EXIT
+
+# m3u写入多文件绝对路径
+for file in "$@"; do
+    realpath "$file" >> "$PLAYLIST_PATH"
+done
+
+# kew 加载播放列表
+kew list "$PLAYLIST_NAME"

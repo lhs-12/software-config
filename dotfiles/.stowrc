@@ -1,0 +1,6 @@
+--ignore='^setup-.*\.sh$'
+--ignore='^dotfiles-.*\.conf$'
+--ignore='^vscode-ext-compare\.sh$'
+--ignore='\.md$'
+--ignore='\.icls$'
+--ignore='cached_layouts'

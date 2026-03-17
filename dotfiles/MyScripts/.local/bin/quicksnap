@@ -1,0 +1,10 @@
+#!/bin/bash
+set -Eeuo pipefail
+
+TAG="${1-}"
+sudo -p "Password for %p: " true || exit 1
+sudo snapper -c root cleanup number
+sudo snapper -c home cleanup number
+sudo snapper -c root create --description "qs-root${TAG:+-$TAG}" --cleanup-algorithm number
+sudo snapper -c home create --description "qs-home${TAG:+-$TAG}" --cleanup-algorithm number
+notify-send "Quick Snapshot${TAG:+ $TAG}" "$(date '+%F %T')"
