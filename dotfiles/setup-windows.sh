@@ -11,7 +11,7 @@ cd "$(dirname "$0")"
 # Kanata 手动进行配置, 不在脚本操作
 
 # Rime
-mkdir -p $APPDATA/Rime && cp -r ./Rime/.local/share/fcitx5/rime/* $APPDATA/Rime
+mkdir -p $APPDATA/Rime && cp -r ./Rime-Ice/.local/share/fcitx5/rime/* $APPDATA/Rime
 # WezTerm
 cp ./WezTerm/.wezterm.lua $USERPROFILE
 # Pictures
