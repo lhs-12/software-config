@@ -41,21 +41,21 @@ zoxide init fish | source
 # Yazi
 abbr yz yazi
 function yy --description "Yazi with cd"
-	set tmp (mktemp -t "yazi-cwd.XXXXXX")
-	command yazi $argv --cwd-file="$tmp"
-	if read -z raw_cwd < "$tmp"
-		set cwd (cygpath -u "$raw_cwd")
-		if [ "$cwd" != "$PWD" ]; and test -d "$cwd"
-			builtin cd -- "$cwd"
-		end
-	end
-	rm -f -- "$tmp"
+    set tmp (mktemp -t "yazi-cwd.XXXXXX")
+    command yazi $argv --cwd-file="$tmp"
+    if read -z raw_cwd < "$tmp"
+        set cwd (cygpath -u "$raw_cwd")
+        if [ "$cwd" != "$PWD" ]; and test -d "$cwd"
+            builtin cd -- "$cwd"
+        end
+    end
+    rm -f -- "$tmp"
 end
 
 # cd into fzf directory
 function cdg --description "Change directory with fzf"
-	set dir (fd -td "$argv[1]" "." | fzf)
-	test -n "$dir" && cd "$dir"
+    set dir (fd -td "$argv[1]" "." | fzf)
+    test -n "$dir" && cd "$dir"
 end
 
 # === Abbreviations ===
