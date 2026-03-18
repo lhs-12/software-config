@@ -43,8 +43,11 @@ abbr yz yazi
 function yy --description "Yazi with cd"
 	set tmp (mktemp -t "yazi-cwd.XXXXXX")
 	command yazi $argv --cwd-file="$tmp"
-	if read -z cwd < "$tmp"; and [ "$cwd" != "$PWD" ]; and test -d "$cwd"
-		builtin cd -- "$cwd"
+	if read -z raw_cwd < "$tmp"
+		set cwd (cygpath -u "$raw_cwd")
+		if [ "$cwd" != "$PWD" ]; and test -d "$cwd"
+			builtin cd -- "$cwd"
+		end
 	end
 	rm -f -- "$tmp"
 end
