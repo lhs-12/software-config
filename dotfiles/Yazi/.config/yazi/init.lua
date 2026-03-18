@@ -1,2 +1,2 @@
 require("full-border"):setup()
-require("omp"):setup({ config = "~/.omp.json" })
+require("omp"):setup({ config = os.getenv("HOME") .. "/.omp.json" })

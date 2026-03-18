@@ -18,7 +18,7 @@ pacman -S --needed --noconfirm --disable-download-timeout base-devel mingw-w64-u
 pacman -S --needed --noconfirm mingw-w64-ucrt-x86_64-ca-certificates && update-ca-trust
 pacman -S --needed --noconfirm --disable-download-timeout \
   stow fish tmux zip unzip \
-  mingw-w64-ucrt-x86_64-{neovim,tree-sitter,lsd,bat,zoxide,dust,tldr} \
+  mingw-w64-ucrt-x86_64-{neovim,tree-sitter,lsd,bat,zoxide,dust,tldr,oh-my-posh,fastfetch} \
   mingw-w64-ucrt-x86_64-{yazi,ffmpeg,jq,imagemagick,poppler,mediainfo,mdbook} \
   mingw-w64-ucrt-x86_64-{fzf,fd,ripgrep}
 
@@ -67,64 +67,5 @@ curl -fsSL https://fnm.vercel.app/install | bash -s -- --skip-shell
 export PATH="$HOME/.local/share/fnm:$PATH"
 fnm install --lts
 
-# edit ~/.bashrc
-echo "Edit ~/.bashrc"
-RC="$HOME/.bashrc"
-START_MARK="# >>> script-managed-bashrc-start >>>"
-END_MARK="# <<< script-managed-bashrc-end <<<"
-if grep -qF "$START_MARK" "$RC" 2>/dev/null; then
-  echo "Removing previous managed block in $RC"
-  awk -v start="$START_MARK" -v end="$END_MARK" '
-    BEGIN { p=1 }
-    p==1 && index($0, start)==1 { p=0; next }
-    p==0 && index($0, end)==1 { p=1; next }
-    p==1 { print }
-  ' "$RC" > "$RC.tmp" && mv "$RC.tmp" "$RC"
-fi
-echo "Appending managed msys2 block to $RC"
-cat >> "$RC" <<'EOF' # verify PATH command: echo $PATH | tr ':' '\n'
-# >>> script-managed-bashrc-start >>>
-if [ -n "$MSYSTEM" ] && [ "$MSYSTEM" = "UCRT64" ]; then
-    export HISTFILE="$HOME/.bash_history"
-    export HISTSIZE=10000
-    export HISTFILESIZE=20000
-    export HISTCONTROL=ignoreboth:erasedups
-    export HISTTIMEFORMAT="%F %T "
-    shopt -s histappend
-    export PROMPT_COMMAND="history -a"
-    export HISTIGNORE="ls:ll:cd:pwd:exit:clear:history"
-    export PATH="/d/Program Files/tools:$PATH"
-    export PATH="$(cygpath -u "$(uv tool dir --bin)"):$PATH"
-    export PATH="$HOME/.local/share/fnm:$PATH"
-    export PATH="$(cygpath -u "$LOCALAPPDATA/Programs/Microsoft VS Code/bin"):$PATH"
-    eval "$(fnm env)"
-    eval "$(zoxide init bash)"
-    alias ls='lsd'
-    alias la='lsd -a'
-    alias ll='lsd --long --header'
-    alias lla='ll -a'
-    alias lr='lsd --tree'
-    alias lf='lsd -l | grep -v "^d"'
-    alias ldir='lsd -l | grep "^d"'
-    alias las='lsd -a | grep "^\."'
-    alias less='bat'
-    alias cat='bat -pp'
-    alias vi='nvim --clean'
-    alias vim='nvim'
-    alias cdg='cd_g() { local d=$(fd -td "${1:-}" "${2:-.}" | fzf); [ -n "$d" ] && cd "$d"; }; cd_g'
-    alias fdns='ipconfig -flushdns'
-    alias sva='source .venv/Scripts/activate'
-    alias yz='yazi'
-    function yy() {
-        local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
-        yazi "$@" --cwd-file="$tmp"
-        IFS= read -r -d '' cwd < "$tmp"
-        [ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && builtin cd -- "$cwd"
-        rm -f -- "$tmp"
-    }
-fi
-# <<< script-managed-bashrc-end <<<
-EOF
-
-echo "MSYS2 Setup Done. Please execute 'source ~/.bashrc'"
+echo "MSYS2 Setup Done."
 exit 0

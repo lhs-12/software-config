@@ -6,6 +6,9 @@ cd "$(dirname "$0")"
 # Setup MSYS2
 ./setup-msys2.sh
 
+# Bash (执行 source ~/.bashrc 生效)
+cp ./Bash-MSYS2/.bash* $HOME
+
 # AutoHotkey(废弃, 使用Kanata替代)
 # cp ./AutoHotkey/CapsLock+.ahk "$APPDATA/Microsoft/Windows/Start Menu/Programs/Startup/"
 # Kanata 手动进行配置, 不在脚本操作
@@ -14,6 +17,10 @@ cd "$(dirname "$0")"
 mkdir -p $APPDATA/Rime && cp -r ./Rime-Ice/.local/share/fcitx5/rime/* $APPDATA/Rime
 # WezTerm
 cp ./WezTerm/.wezterm.lua $USERPROFILE
+# OhMyPosh
+cp ./OhMyPosh/.omp.json ~
+# FastFetch
+cp -r ./FastFetch/.config/fastfetch ~/.config
 # Pictures
 cp ./Pictures/Pictures/* "$USERPROFILE/Pictures/Camera Roll"
 # Jetbrains
