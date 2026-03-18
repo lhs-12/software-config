@@ -8,6 +8,8 @@ cd "$(dirname "$0")"
 
 # Bash (执行 source ~/.bashrc 生效)
 cp ./Bash-MSYS2/.bash* $HOME
+# Fish
+cp -r ./Fish-MSYS2/.config/fish $HOME/.config/
 
 # AutoHotkey(废弃, 使用Kanata替代)
 # cp ./AutoHotkey/CapsLock+.ahk "$APPDATA/Microsoft/Windows/Start Menu/Programs/Startup/"
@@ -20,7 +22,7 @@ cp ./WezTerm/.wezterm.lua $USERPROFILE
 # OhMyPosh
 cp ./OhMyPosh/.omp.json ~
 # FastFetch
-cp -r ./FastFetch/.config/fastfetch ~/.config
+cp -r ./FastFetch/.config/fastfetch $HOME/.config
 # Pictures
 cp ./Pictures/Pictures/* "$USERPROFILE/Pictures/Camera Roll"
 # Jetbrains

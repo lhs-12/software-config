@@ -16,12 +16,22 @@ export HISTIGNORE="ls:ll:la:cd:pwd:exit:clear:history"
 
 # UCRT64 Config
 if [ -n "$MSYSTEM" ] && [ "$MSYSTEM" = "UCRT64" ]; then
-  # PATH. verify command: echo $PATH | tr ':' '\n'
-  append_path(){ case ":$PATH:" in *:"$1":*) ;; *) PATH="${PATH:+$PATH:}$1" ;; esac; }
+  # add PATH
+  # echo $PATH | tr ':' '\n'
+  # append path if exist
+  append_path() {
+    local p="$1"
+    [ -d "$p" ] || return
+    case ":$PATH:" in
+      *:"$p":*) ;; 
+      *) PATH="${PATH:+$PATH:}$p" ;;
+    esac
+  }
   append_path "/d/Program Files/tools"
+  append_path "/c/Program Files/Docker/Docker/resources/bin"
+  append_path "$(cygpath -u "$LOCALAPPDATA/Programs/Microsoft VS Code/bin")"
   append_path "$(cygpath -u "$(uv tool dir --bin)")"
   append_path "$HOME/.local/share/fnm"
-  append_path "$(cygpath -u "$LOCALAPPDATA/Programs/Microsoft VS Code/bin")"
   # Tools
   if [[ "$TERM_PROGRAM" != "vscode" ]]; then
     eval "$(oh-my-posh init bash --config ~/.omp.json)"
