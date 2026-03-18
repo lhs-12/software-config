@@ -23,7 +23,9 @@ if [ -n "$MSYSTEM" ] && [ "$MSYSTEM" = "UCRT64" ]; then
   append_path "$HOME/.local/share/fnm"
   append_path "$(cygpath -u "$LOCALAPPDATA/Programs/Microsoft VS Code/bin")"
   # Tools
-  eval "$(oh-my-posh init bash --config ~/.omp.json)"
+  if [[ "$TERM_PROGRAM" != "vscode" ]]; then
+    eval "$(oh-my-posh init bash --config ~/.omp.json)"
+  fi
   eval "$(fnm env)"
   eval "$(zoxide init bash)"
   # Aliases

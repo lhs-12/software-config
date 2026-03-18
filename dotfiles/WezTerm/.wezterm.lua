@@ -72,11 +72,13 @@ if wezterm.target_triple == "x86_64-unknown-linux-gnu" then
 end
 -- Microsoft Windows Config
 if wezterm.target_triple == "x86_64-pc-windows-msvc" then
-	-- local msys2 = { "cmd.exe", "/k", "C:\\msys64\\msys2_shell.cmd -defterm -here -no-start -ucrt64 -shell bash", "-l", "-i" }
-	local msys2 = { "C:\\msys64\\msys2_shell.cmd", "-defterm", "-here", "-no-start", "-ucrt64" }
-	config.default_prog = msys2
+	-- local msys2_bash = { "cmd.exe", "/k", "C:\\msys64\\msys2_shell.cmd -defterm -here -no-start -ucrt64 -shell bash", "-l", "-i" }
+	local msys2_bash = { "C:\\msys64\\msys2_shell.cmd", "-defterm", "-here", "-no-start", "-ucrt64", "-shell", "bash" }
+	local msys2_fish = { "C:\\msys64\\msys2_shell.cmd", "-defterm", "-here", "-no-start", "-ucrt64", "-shell", "fish" }
+	config.default_prog = msys2_fish
 	config.launch_menu = {
-		{ label = "Bash", args = msys2 },
+		{ label = "Bash", args = msys2_bash },
+		{ label = "Fish", args = msys2_fish },
 		{ label = "CMD", args = { "cmd.exe" } },
 		{ label = "PowerShell", args = { "powershell.exe" } },
 		{ label = "WSL", args = { "wsl.exe", "--cd", "/home" } },
