@@ -73,7 +73,7 @@ code \
 
 Windows 环境在`settings.json`额外增加配置,  
 还有 Markdown Preview Enhanced: Customize CSS(Global) 的配置,  
-去掉Linux下Mise相关的配置
+去掉Linux下Mise和Stylua相关的配置
 ```json
 {
   // Terminal
