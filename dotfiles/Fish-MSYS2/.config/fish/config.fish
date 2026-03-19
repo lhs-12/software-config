@@ -9,10 +9,12 @@ set -gx LANGUAGE en_US   # zh_CN:en_US
 
 # add PATH
 fish_add_path -g "/d/Program Files/tools"
+fish_add_path -g "/c/Program Files/WezTerm"
 fish_add_path -g "/c/Program Files/Docker/Docker/resources/bin"
 fish_add_path -g (cygpath -u "$LOCALAPPDATA/Programs/Microsoft VS Code/bin")
 fish_add_path -g (cygpath -u (uv tool dir --bin))
 fish_add_path -g "$HOME/.local/share/fnm"
+set -q JAVA_HOME; and fish_add_path -g (cygpath -u "$JAVA_HOME/bin")
 
 # Multilevel cd ( .. ... .... , etc)
 function multicd

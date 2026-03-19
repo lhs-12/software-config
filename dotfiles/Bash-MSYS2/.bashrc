@@ -28,10 +28,12 @@ if [ -n "$MSYSTEM" ] && [ "$MSYSTEM" = "UCRT64" ]; then
     esac
   }
   append_path "/d/Program Files/tools"
+  append_path "/c/Program Files/WezTerm"
   append_path "/c/Program Files/Docker/Docker/resources/bin"
   append_path "$(cygpath -u "$LOCALAPPDATA/Programs/Microsoft VS Code/bin")"
   append_path "$(cygpath -u "$(uv tool dir --bin)")"
   append_path "$HOME/.local/share/fnm"
+  [ -n "$JAVA_HOME" ] && append_path "$(cygpath -u "$JAVA_HOME/bin")"
   # Tools
   if [[ "$TERM_PROGRAM" != "vscode" ]]; then
     eval "$(oh-my-posh init bash --config ~/.omp.json)"
