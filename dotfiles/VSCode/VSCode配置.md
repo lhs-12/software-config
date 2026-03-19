@@ -33,8 +33,8 @@ code \
 # 其他可选: Jupyter...
 
 # AI
---install-extension github.copilot \                                  # GitHub Copilot                      GitHub Copilot
---install-extension github.copilot-chat \                             # GitHub Copilot Chat                 GitHub Copilot Chat
+--install-extension github.copilot-chat \                             # GitHub Copilot Chat                 GitHub Copilot
+--install-extension anthropic.claude-code \                           # Claude Code for VS Code             Claude Code
 
 # 容器
 --install-extension ms-azuretools.vscode-docker \                     # Docker                              Docker支持
