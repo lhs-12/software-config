@@ -344,7 +344,7 @@ toggle do not disturb=none,,切换勿扰模式
 [services][com.mitchellh.ghostty.desktop]
 _launch=none
 
-[services][net.local.kitten.desktop]
+[services][kitty-quick-terminal.desktop]
 _launch=Meta+T
 
 [services][org.kde.konsole.desktop]
