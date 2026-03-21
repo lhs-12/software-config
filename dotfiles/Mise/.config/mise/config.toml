@@ -9,13 +9,14 @@ usage = "latest" # Mise命令补全
 pnpm  = "latest"
 uv    = "latest"
 ruff  = "latest"
+"npm:pm2" = "latest"
 
 # AI CLI tools
 claude   = "latest"
 codex    = "latest"
 opencode = "latest"
-"npm:snow-ai"             = "latest"
-"npm:@iflow-ai/iflow-cli" = "latest"
+gemini   = "latest"
+"npm:snow-ai" = "latest"
 
 [settings]
 npm.package_manager = "pnpm" # 使用 pnpm 作为 npm 包的下载器. 别用 pnpm install -g , 用 mise use -g
