@@ -1,26 +1,42 @@
+# 窗口设置
 window-decoration = none
 window-theme = ghostty
 window-width = 120
 window-height = 36
+window-show-tab-bar = auto
+gtk-titlebar = true
+gtk-tabs-location = top
 gtk-titlebar-style = tabs
 gtk-toolbar-style = flat
 gtk-wide-tabs = false
+gtk-custom-css = 
+# 主题颜色
 theme = 3024 Night
-background-opacity = 0.65
+background-opacity = 0.75
 background-blur = true
+# 光标设置
 cursor-style = underline
 cursor-color = cccccc
 cursor-style-blink = false
-custom-shader = "~/.config/ghostty/shaders/cursor_blaze.glsl"
+# custom-shader = "~/.config/ghostty/shaders/cursor_blaze.glsl"
+# 字体设置
 font-family = monospace
 font-feature = -calt, -liga, -dlig
 font-size = 12
+# 滚动设置
 scrollback-limit = 25000000
+# 鼠标设置
 mouse-hide-while-typing = true
+# 确认关闭
 confirm-close-surface = false
+# Shell设置
 command = /usr/bin/fish
 shell-integration-features = no-cursor
 
+# 按键配置
+config-file = "~/.config/ghostty/keybind.conf"
+
+# Quick Terminal 相关配置
 #keybind = global:super+t=toggle_quick_terminal
 #window-width = 150
 #initial-window = false
