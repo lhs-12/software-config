@@ -14,8 +14,8 @@ ruff  = "latest"
 # AI CLI tools
 claude   = "latest"
 codex    = "latest"
-opencode = "latest"
 gemini   = "latest"
+opencode = "latest"
 "npm:snow-ai" = "latest"
 
 [settings]
