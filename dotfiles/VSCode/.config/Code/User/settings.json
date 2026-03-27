@@ -2,6 +2,7 @@
   "files.autoSave": "onFocusChange",
   "explorer.compactFolders": false,
   "workbench.startupEditor": "none",
+  "workbench.colorTheme": "Dark Modern",
   "workbench.iconTheme": "vscode-icons",
   "editor.wordSegmenterLocales": ["zh"],
   "editor.fontFamily": "'Iosevka Term', 'MiSans', 'MiSans L3','Symbols Nerd Font Mono','Noto Color Emoji'",

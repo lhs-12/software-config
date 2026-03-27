@@ -309,7 +309,7 @@ powerProfile=Battery\tMeta+B,Battery\tMeta+B,切换电源管理方案
 [plasmashell]
 Slideshow Wallpaper Next Image=none,,下一张壁纸图像
 _k_friendly_name=plasmashell
-activate application launcher=none,Meta\tAlt+F1,激活应用程序启动器
+activate application launcher=Meta,Meta\tAlt+F1,激活应用程序启动器
 activate task manager entry 1=Meta+1,Meta+1,激活任务管理器条目 1
 activate task manager entry 10=none,,激活任务管理器条目 10
 activate task manager entry 2=Meta+2,Meta+2,激活任务管理器条目 2
@@ -352,14 +352,12 @@ _launch=none
 
 [services][org.kde.krunner.desktop]
 RunClipboard=none
-_launch=Meta\tSearch
+_launch=Search
 
 [services][org.kde.plasma.emojier.desktop]
 _launch=Meta+.
 
 [services][org.kde.spectacle.desktop]
-CurrentMonitorScreenShot=
-OpenWithoutScreenshot=
 RecordRegion=none
 RecordScreen=none
 RecordWindow=none
