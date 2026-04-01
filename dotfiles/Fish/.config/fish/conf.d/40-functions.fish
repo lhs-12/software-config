@@ -24,8 +24,3 @@ function mkdirg --description "Make directory and go to it"
 	mkdir -p "$argv[1]"
 	cd "$argv[1]"
 end
-
-# fcitx5-vinput model change
-function vinput-model
-    vinput model list | fzf --header-lines=1 | awk '{print $1}' | xargs -r vinput model use
-end
