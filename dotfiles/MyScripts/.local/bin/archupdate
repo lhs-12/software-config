@@ -216,7 +216,7 @@ EOF
 NEWS_URL="https://archlinux.org/feeds/news/"
 [ "$NEWS_SOURCE" == "cn" ] && NEWS_URL="https://www.archlinuxcn.org/category/news/feed/"
 
-if curl -sS -L --connect-timeout 15 -A "Mozilla/5.0" "$NEWS_URL" \
+if curl -sS -L --tls-max 1.2 --connect-timeout 15 -A "Mozilla/5.0" "$NEWS_URL" \
     | python -c "$PYTHON_SCRIPT" "$COUNT_LIMIT" "$MSG_NEWS_HEADER"; then
     # News fetched successfully
     printf "\n"
