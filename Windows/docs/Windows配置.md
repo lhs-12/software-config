@@ -26,7 +26,7 @@ Z-Library + Koodo-Reader
 
 浏览器插件:  
 `AdBlock`, `Dark Mode`, `Vimium`, `KeePassXC`, `Xget Now`, `PageTurn Book Reader`,  
-`划词翻译`, `沉浸式翻译`, `Tampermonkey`, `WebRTC Protect`, `Vue.js devtools`
+`简易翻译`, `Tampermonkey`, `WebRTC Protect`, `Vue.js devtools`
 
 # 字体
 
