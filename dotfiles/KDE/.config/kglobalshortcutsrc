@@ -227,6 +227,15 @@ seekforwardmedia=Media Fast Forward,Media Fast Forward,媒体播放向前时移 
 seekforwardmedialong=,,媒体播放向前时移 30 秒
 stopmedia=Media Stop,Media Stop,停止媒体播放
 
+[org.chromium.Chromium]
+3D07C133B595025DD56D02E3703CDEA5-Ctrl+Shift+Down=,none,Electron shortcut Ctrl+Shift+Down
+3E8EA47A8325834AF170EFA8F8F504DE-Ctrl+Shift+Space=,none,Electron shortcut Ctrl+Shift+Space
+53F7FDE0F89AF3FE460B34FDAC0FBE6E-Ctrl+Shift+Left=,none,Electron shortcut Ctrl+Shift+Left
+62264387C480FFD28F332FCBA61D8D78-Ctrl+Shift+Right=,none,Electron shortcut Ctrl+Shift+Right
+9BE8B60BB3B62BCEBDE5299ADEEB5742-Ctrl+Shift+D=,none,Electron shortcut Ctrl+Shift+D
+EC4854F64184E127E9987B83FD0B7C00-Ctrl+Shift+Up=,none,Electron shortcut Ctrl+Shift+Up
+_k_friendly_name=org.chromium.Chromium
+
 [org_kde_powerdevil]
 Decrease Keyboard Brightness=Keyboard Brightness Down,Keyboard Brightness Down,降低键盘亮度
 Decrease Screen Brightness=Monitor Brightness Down,Monitor Brightness Down,降低屏幕亮度
