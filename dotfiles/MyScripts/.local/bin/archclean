@@ -5,7 +5,7 @@
 # ===============================================================
 # 【功能说明】
 # 1. 移除孤儿软件包 (Orphans)
-# 2. 清理 Pacman 软件包缓存 (保留安装包，删除旧版本)
+# 2. 清理 Pacman 软件包缓存 (默认保留安装包，--all 彻底清空)
 # 3. 清理残留的下载目录 (download-*)
 # 4. 清理 Systemd 日志 (只保留最近 2 周)
 # 5. 清空用户回收站 (Trash) 和缩略图缓存 (Thumbnails)
@@ -18,6 +18,7 @@ trap 'echo "ERROR at line $LINENO: $BASH_COMMAND" >&2' ERR
 # 1. Default parameters
 # ------------------------------
 SKIP_CONFIRM=false
+CLEAN_ALL=false
 UI_LANG=$([[ ${LC_ALL:-${LC_MESSAGES:-${LANG}}} == zh* ]] && echo zh || echo en)
 
 # ------------------------------
@@ -29,6 +30,7 @@ Usage: $(basename "$0") [options]
 
 Options:
   --ui-lang zh|en    Force UI language (default: auto)
+  --all              Enable aggressive cleanup (clear all cache)
   --yes, -y          Skip confirmation prompt (non-interactive)
   --help, -h         Show this help and exit
 EOF
@@ -36,19 +38,11 @@ EOF
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
-        --ui-lang)
-            [[ "$2" =~ ^(zh|en)$ ]] && UI_LANG="$2" shift 2 || { echo "Error: --ui-lang requires zh or en."; exit 1; }
-            ;;
-        --yes|-y)
-            SKIP_CONFIRM=true
-            shift
-            ;;
-        --help|-h)
-            usage; exit 0
-            ;;
-        *)
-            echo "Unknown option: $1"; usage; exit 1
-            ;;
+        --ui-lang) [[ "${2:-}" =~ ^(zh|en)$ ]] && UI_LANG="$2" && shift 2 || { echo "Error: --ui-lang requires zh or en."; exit 1; } ;;
+        --all)     CLEAN_ALL=true; shift ;;
+        --yes|-y)  SKIP_CONFIRM=true; shift ;;
+        --help|-h) usage; exit 0 ;;
+        *) echo "Unknown option: $1"; usage; exit 1 ;;
     esac
 done
 
@@ -67,18 +61,21 @@ MSG_DESC_2        | 2. Clean package cache                                | 2. �
 MSG_DESC_3        | 3. Vacuum systemd journal logs                        | 3. 清理 systemd 日志
 MSG_DESC_4        | 4. Empty user Trash and thumbnail cache               | 4. 清空回收站和缩略图缓存
 MSG_DESC_5        | 5. Remove unused Flatpak runtimes                     | 5. 删除未使用的 Flatpak 运行时
+MSG_DESC_ALL      | * Aggressive mode: clear ALL caches                   | * 激进模式：清空所有缓存
 MSG_ASK_CONFIRM   | Continue with cleanup? [Y/n]                          | 是否继续执行清理？[Y/n]
 MSG_ABORT         | Cleanup cancelled by user.                            | 用户已取消清理。
 MSG_DONE          | System cleanup completed!                             | 系统清理完成！
 
-MSG_NO_HELPER     | No AUR helper found (paru or yay required).           | 未找到 AUR 助手 (需要 paru 或 yay) 
+MSG_NO_HELPER     | No AUR helper found (paru or yay required).           | 未找到 AUR 助手 (需要 paru 或 yay)
 MSG_HELPER_USE    | Using AUR helper: %s                                  | 使用 AUR 助手：%s
 MSG_STEP_ORPHAN   | Checking for orphaned packages...                     | 正在检查孤儿软件包...
 MSG_ORPHAN_FOUND  | Orphaned packages detected:                           | 发现孤儿软件包：
 MSG_ORPHAN_CLEAN  | Orphaned packages removed.                            | 已删除孤儿软件包。
 MSG_ORPHAN_NONE   | No orphaned packages found.                           | 未发现孤儿软件包。
 MSG_STEP_CACHE    | Cleaning package cache...                             | 正在清理软件包缓存...
+MSG_STEP_CACHE_ALL| Cleaning ALL package & AUR cache...                   | 正在清空所有软件包及 AUR 缓存...
 MSG_CACHE_DONE    | Package cache cleaned.                                | 软件包缓存已清理。
+MSG_CACHE_ALL_DONE| All package & AUR cache cleared.                      | 所有软件包及 AUR 缓存已清空。
 MSG_STEP_BROKEN   | Cleaning residual download directories...             | 正在清理残留下载目录...
 MSG_BROKEN_DONE   | Residual directories removed.                         | 残留目录已清理。
 MSG_STEP_LOG      | Vacuuming systemd journal logs...                     | 正在清理 systemd 日志...
@@ -95,8 +92,7 @@ while IFS='|' read -r v e c; do
     c=$(printf "%s" "$c" | sed 's/^ *//;s/ *$//')
     [ -z "$v" ] && continue
     case "$v" in \#*) continue ;; esac
-    [ "$UI_LANG" = "zh" ] && eval "$v=\$c" \
-                          || eval "$v=\$e"
+    [ "$UI_LANG" = "zh" ] && eval "$v=\$c" || eval "$v=\$e"
 done <<EOF
 $LANG_TABLE
 EOF
@@ -125,16 +121,13 @@ if [ "$SKIP_CONFIRM" = false ]; then
     printf "\n%s" "$MSG_DESC_3"
     printf "\n%s" "$MSG_DESC_4"
     printf "\n%s" "$MSG_DESC_5"
+    [ "$CLEAN_ALL" = true ] && printf "\n%s%s%s" "$RED" "$MSG_DESC_ALL" "$NC"
     printf "\n%s=======================================================%s" "$BLUE" "$NC"
     printf "\n%s%s %s" "$YELLOW" "$MSG_ASK_CONFIRM" "$NC"
     read -r confirm
     case "$confirm" in
-        [yY][eE][sS]|[yY])
-            ;;
-        *)
-            printf "%s\n" "$MSG_ABORT"
-            exit 0
-            ;;
+        [yY][eE][sS]|[yY]|"") ;;
+        *) printf "%s\n" "$MSG_ABORT"; exit 0 ;;
     esac
 fi
 
@@ -158,30 +151,48 @@ trap 'kill -- -$SUDO_PID 2>/dev/null || true' EXIT INT TERM
 
 # [Step 1] Orphans
 _info "$MSG_STEP_ORPHAN"
-if ORPHANS=$(pacman -Qtdq); then
+ORPHANS=$(pacman -Qtdq || true)
+if [[ -n "$ORPHANS" ]]; then
     printf "%s%s%s\n" "$YELLOW" "$MSG_ORPHAN_FOUND" "$NC"
     printf "%s\n" "$ORPHANS"
-    echo "$ORPHANS" | xargs -r -d '\n' $AUR_HELPER -Rns --noconfirm --
+    mapfile -t ORPHAN_ARR <<< "$ORPHANS"
+    $AUR_HELPER -Rns "${ORPHAN_ARR[@]}" --noconfirm
     _success "$MSG_ORPHAN_CLEAN"
 else
     _success "$MSG_ORPHAN_NONE"
 fi
 
 # [Step 2] Cache
-_info "$MSG_STEP_CACHE"
-$AUR_HELPER -Sc --noconfirm
-_success "$MSG_CACHE_DONE"
+if [ "$CLEAN_ALL" = true ]; then
+    _info "$MSG_STEP_CACHE_ALL"
+    PACMAN_FLAG="-Scc"
+    AUR_FLAG="-Scc --aur"
+else
+    _info "$MSG_STEP_CACHE"
+    PACMAN_FLAG="-Sc"
+    AUR_FLAG="-Sc --aur"
+fi
+
+sudo pacman $PACMAN_FLAG --noconfirm >/dev/null 2>&1 || true
+
+if command -v "$AUR_HELPER" >/dev/null 2>&1; then
+    $AUR_HELPER $AUR_FLAG --noconfirm >/dev/null 2>&1 || true
+fi
+
+if [ "$CLEAN_ALL" = true ]; then
+    [ -d "$HOME/.cache/yay" ] && rm -rf "$HOME/.cache/yay"/* 2>/dev/null || true
+    [ -d "$HOME/.cache/paru/clone" ] && rm -rf "$HOME/.cache/paru/clone"/* 2>/dev/null || true
+    _success "$MSG_CACHE_ALL_DONE"
+else
+    _success "$MSG_CACHE_DONE"
+fi
 
 # [Step 3] Broken Downloads
 TARGET_DIR="/var/cache/pacman/pkg"
 if [ -d "$TARGET_DIR" ]; then
-    found=0
-    while IFS= read -r -d '' dir; do
-        [ "$found" -eq 0 ] && _info "$MSG_STEP_BROKEN" && found=1
-        sudo rm -rf -- "$dir"
-        printf "  Removed: %s\n" "$dir"
-    done < <(find "$TARGET_DIR" -maxdepth 1 -type d -name "download-*" -print0 2>/dev/null)
-    [ "$found" -eq 1 ] && _success "$MSG_BROKEN_DONE"
+    _info "$MSG_STEP_BROKEN"
+    sudo find "$TARGET_DIR" -maxdepth 1 -type d -name "download-*" -exec rm -rf {} + 2>/dev/null || true
+    _success "$MSG_BROKEN_DONE"
 fi
 
 # [Step 4] Journal
@@ -194,15 +205,8 @@ _info "$MSG_STEP_TRASH"
 TRASH_DIR="$HOME/.local/share/Trash"
 THUMB_DIR="$HOME/.cache/thumbnails"
 
-if [ -d "$TRASH_DIR" ]; then
-    find "$TRASH_DIR" -mindepth 1 -delete
-    _success "$MSG_TRASH_DONE"
-fi
-
-if [ -d "$THUMB_DIR" ]; then
-    find "$THUMB_DIR" -type f -atime +30 -delete
-    _success "$MSG_THUMB_DONE"
-fi
+[ -d "$TRASH_DIR" ] && find "$TRASH_DIR" -mindepth 1 -delete && _success "$MSG_TRASH_DONE"
+[ -d "$THUMB_DIR" ] && find "$THUMB_DIR" -type f -atime +30 -delete && _success "$MSG_THUMB_DONE"
 
 # [Step 6] Flatpak
 if command -v flatpak >/dev/null 2>&1; then
