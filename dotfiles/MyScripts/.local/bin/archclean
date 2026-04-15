@@ -87,15 +87,13 @@ MSG_STEP_FLATPAK  | Checking for unused Flatpak runtimes...               | 正�
 MSG_FLATPAK_DONE  | Unused Flatpak runtimes removed.                      | 未使用的 Flatpak 运行时已删除。
 '
 while IFS='|' read -r v e c; do
-    v=$(printf "%s" "$v" | sed 's/^ *//;s/ *$//')
-    e=$(printf "%s" "$e" | sed 's/^ *//;s/ *$//')
-    c=$(printf "%s" "$c" | sed 's/^ *//;s/ *$//')
+    v=$(sed 's/^ *//;s/ *$//' <<<"$v")
+    e=$(sed 's/^ *//;s/ *$//' <<<"$e")
+    c=$(sed 's/^ *//;s/ *$//' <<<"$c")
     [ -z "$v" ] && continue
-    case "$v" in \#*) continue ;; esac
+    [[ "$v" == \#* ]] && continue
     [ "$UI_LANG" = "zh" ] && eval "$v=\$c" || eval "$v=\$e"
-done <<EOF
-$LANG_TABLE
-EOF
+done <<<"$LANG_TABLE"
 
 # ------------------------------
 # 4. Define Logging Functions
