@@ -1,5 +1,5 @@
 # 窗口设置
-window-decoration = none
+window-decoration = client
 window-theme = ghostty
 window-width = 120
 window-height = 36
@@ -9,7 +9,7 @@ gtk-tabs-location = top
 gtk-titlebar-style = tabs
 gtk-toolbar-style = flat
 gtk-wide-tabs = false
-gtk-custom-css = 
+gtk-custom-css = ~/.config/ghostty/gtk.css
 # 主题颜色
 theme = 3024 Night
 background-opacity = 0.75
