@@ -87,12 +87,11 @@ MSG_STEP_FLATPAK  | Checking for unused Flatpak runtimes...               | 正�
 MSG_FLATPAK_DONE  | Unused Flatpak runtimes removed.                      | 未使用的 Flatpak 运行时已删除。
 '
 while IFS='|' read -r v e c; do
-    v=$(sed 's/^ *//;s/ *$//' <<<"$v")
-    e=$(sed 's/^ *//;s/ *$//' <<<"$e")
-    c=$(sed 's/^ *//;s/ *$//' <<<"$c")
-    [ -z "$v" ] && continue
-    [[ "$v" == \#* ]] && continue
-    [ "$UI_LANG" = "zh" ] && eval "$v=\$c" || eval "$v=\$e"
+  v="${v#"${v%%[![:space:]]*}"}"; v="${v%"${v##*[![:space:]]}"}"
+  e="${e#"${e%%[![:space:]]*}"}"; e="${e%"${e##*[![:space:]]}"}"
+  c="${c#"${c%%[![:space:]]*}"}"; c="${c%"${c##*[![:space:]]}"}"
+  [[ -z "$v" || "$v" == \#* ]] && continue
+  val=$e; [[ $UI_LANG == zh ]] && val=$c; printf -v "$v" '%s' "$val"
 done <<<"$LANG_TABLE"
 
 # ------------------------------

@@ -97,12 +97,11 @@ MSG_GRUB_FAIL    | GRUB update failed.                      | GRUB 更新失败�
 MSG_GRUB_MISSING | Skip GRUB update (grub-mkconfig missing) | 跳过 GRUB 更新(grub-mkconfig 缺失)
 '
 while IFS='|' read -r v e c; do
-    v=$(sed 's/^ *//;s/ *$//' <<<"$v")
-    e=$(sed 's/^ *//;s/ *$//' <<<"$e")
-    c=$(sed 's/^ *//;s/ *$//' <<<"$c")
-    [ -z "$v" ] && continue
-    [[ "$v" == \#* ]] && continue
-    [ "$UI_LANG" = "zh" ] && eval "$v=\$c" || eval "$v=\$e"
+  v="${v#"${v%%[![:space:]]*}"}"; v="${v%"${v##*[![:space:]]}"}"
+  e="${e#"${e%%[![:space:]]*}"}"; e="${e%"${e##*[![:space:]]}"}"
+  c="${c#"${c%%[![:space:]]*}"}"; c="${c%"${c##*[![:space:]]}"}"
+  [[ -z "$v" || "$v" == \#* ]] && continue
+  val=$e; [[ $UI_LANG == zh ]] && val=$c; printf -v "$v" '%s' "$val"
 done <<<"$LANG_TABLE"
 
 # ------------------------------
