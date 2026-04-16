@@ -24,9 +24,9 @@ var lastApp = null;
 var lastId = null;
 
 // 使用本脚本处理的 Electron 应用
-var electronApps = ["code"];
+var electronApps = [];
 // 可能导致 Chromium/Electron IME 丢失的来源应用
-var problematicSources = ["org.wezfurlong.wezterm"];
+var problematicSources = [];
 
 const rimeService = "org.fcitx.Fcitx5";
 const rimePath = "/rime";
@@ -95,9 +95,9 @@ workspace.windowActivated.connect(function (client) {
   } else {
     delay(50, () => setAsciiMode(true));
   }
-  if (isElectronApp(newApp) && isProblematicSource(lastApp)) {
-    fixElectronIM(client);
-  }
+  // if (isElectronApp(newApp) && isProblematicSource(lastApp)) {
+  //   fixElectronIM(client);
+  // }
   lastApp = newApp;
 });
 
