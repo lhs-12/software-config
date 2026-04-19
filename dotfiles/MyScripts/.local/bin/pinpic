@@ -47,6 +47,18 @@ is_image_file() {
     file --mime-type -b "$f" | grep -q '^image/'
 }
 
+is_video_file() {
+    local f="$1"
+    file --mime-type -b "$f" | grep -q '^video/'
+}
+
+show_video_with_mpv() {
+    mpv "$1" \
+        --title="MPV_Pinned_$(basename "$1")" \
+        --border=no \
+        > /dev/null 2>&1
+}
+
 show_with_mpv() {
     mpv "$1" \
         --title="MPV_Pinned_$(basename "$1")" \
@@ -84,12 +96,16 @@ pin_from_clipboard() {
     if echo "$types" | has_type '^text/uri-list$'; then
         while IFS= read -r uri; do
             [[ "$uri" =~ ^file:// ]] || continue
-            path="${uri#file://}"
-            # 不可见字符导致出问题时, echo "$path" | od -c 测试一下
-            path="$(echo "$path" | tr -d '\r')" # 去掉不可见字符
+            # 不可见字符导致出问题时用 echo "$path" | od -c 测试
+            # 获取文件路径, 去掉不可见字符, 并且进行URI解码
+            path="$(printf '%b' "$(echo "${uri#file://}" | tr -d '\r' | sed 's/%/\\x/g')")"
             if is_image_file "$path"; then
                 cp "$path" "$TMP_IMG"
                 show_with_mpv "$TMP_IMG"
+                return
+            fi
+            if is_video_file "$path"; then
+                show_video_with_mpv "$path"
                 return
             fi
         done < <(wl-paste --type text/uri-list)
