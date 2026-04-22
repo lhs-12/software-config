@@ -2,7 +2,7 @@
   "telemetry": { "diagnostics": false, "metrics": false },
   "session": { "trust_all_worktrees": true },
   "project_panel": { "auto_fold_dirs": false },
-  "theme": "Ayu Dark",
+  "theme": "VSCode Dark Modern",
   "base_keymap": "JetBrains",
   "vim_mode": true,
   "ui_font_size": 16,

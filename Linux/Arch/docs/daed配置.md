@@ -1,4 +1,4 @@
-# <center>daed 使用指南</center>
+<h1><center>daed 使用指南</center></h1>
 
 适用于 Arch 个人桌面系统
 

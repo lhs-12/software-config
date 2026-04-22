@@ -1,4 +1,4 @@
-# <center>WSL2 配置</center>
+<h1><center>WSL2 配置</center></h1>
 
 # 常用命令
 

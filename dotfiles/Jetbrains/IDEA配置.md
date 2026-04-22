@@ -1,4 +1,4 @@
-# <center>IDEA 配置</center>
+<h1><center>IDEA 配置</center></h1>
 
 基于 IDEA 2025.3
 

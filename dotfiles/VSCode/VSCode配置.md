@@ -1,4 +1,4 @@
-# <center>VSCode配置</center>
+<h1><center>VSCode配置</center></h1>
 
 # 插件
 

@@ -1,5 +1,6 @@
 .github
 .vscode
+.obsidian
 .tmp
 
 cached_layouts

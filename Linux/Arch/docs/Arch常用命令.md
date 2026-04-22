@@ -1,4 +1,4 @@
-# <center>Arch Linux 常用命令</center>
+<h1><center>Arch Linux 常用命令</center></h1>
 
 # 包管理
 
