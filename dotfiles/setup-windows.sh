@@ -24,7 +24,7 @@ cp ./OhMyPosh/.omp.json ~
 # FastFetch
 cp -r ./FastFetch/.config/fastfetch $HOME/.config
 # Pictures
-cp ./Pictures/Pictures/* "$USERPROFILE/Pictures/Camera Roll"
+cp ./Pictures/Pictures/Wallpapers/* "$USERPROFILE/Pictures/Camera Roll"
 # Jetbrains
 cp ./Jetbrains/.ideavimrc $USERPROFILE
 # Ruff

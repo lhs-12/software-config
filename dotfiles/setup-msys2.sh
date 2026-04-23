@@ -59,7 +59,7 @@ git config --global https.proxy "http://127.0.0.1:10808" # edit proxy
 # install Python UV and UV tools
 echo "Installing Python UV and UV tools..."
 pacman -S --needed --noconfirm mingw-w64-ucrt-x86_64-uv
-uv tool install ruff@latest
+uv tool install --force ruff@latest
 
 # install Node.js
 echo "Installing Node.js"

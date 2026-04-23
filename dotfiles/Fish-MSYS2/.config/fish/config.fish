@@ -37,6 +37,9 @@ end
 abbr less bat
 abbr cat 'bat -pp'
 
+# FNM
+fnm env --use-on-cd --shell fish | source
+
 # Zoxide (smarter cd)
 zoxide init fish | source
 

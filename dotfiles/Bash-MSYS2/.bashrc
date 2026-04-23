@@ -38,7 +38,7 @@ if [ -n "$MSYSTEM" ] && [ "$MSYSTEM" = "UCRT64" ]; then
   if [[ "$TERM_PROGRAM" != "vscode" ]]; then
     eval "$(oh-my-posh init bash --config ~/.omp.json)"
   fi
-  eval "$(fnm env)"
+  eval "$(fnm env --use-on-cd --shell bash)"
   eval "$(zoxide init bash)"
   # Aliases
   alias ls='lsd'
