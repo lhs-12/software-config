@@ -69,8 +69,10 @@ fnm install --lts
 # 若想在PowerShell中运行 fnm 和 node, 需要配置PowerShell(PS5和PS7要分别执行)
 # 1. 创建配置: if (-not (Test-Path $profile)) { New-Item $profile -Force }
 # 2. 修改配置: Invoke-Item $profile
-#   加入以下内容
-#   $fnmPath = "C:\msys64\home\L\.local\share\fnm"
+#   加入以下内容(这里顺便写了oh-my-posh配置)
+#   $msysHome = "C:\msys64\home\$env:USERNAME"
+#   oh-my-posh init pwsh --config "$msysHome\.omp.json" | Invoke-Expression
+#   $fnmPath = "$msysHome\.local\share\fnm"
 #   if (-not ($env:PATH -split ";" | Where-Object { $_ -eq $fnmPath })) {
 #       $env:PATH += ";$fnmPath"
 #   }
