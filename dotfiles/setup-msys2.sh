@@ -66,6 +66,15 @@ echo "Installing Node.js"
 curl -fsSL https://fnm.vercel.app/install | bash -s -- --skip-shell
 export PATH="$HOME/.local/share/fnm:$PATH"
 fnm install --lts
+# 若想在PowerShell中运行 fnm 和 node, 需要配置PowerShell(PS5和PS7要分别执行)
+# 1. 创建配置: if (-not (Test-Path $profile)) { New-Item $profile -Force }
+# 2. 修改配置: Invoke-Item $profile
+#   加入以下内容
+#   $fnmPath = "C:\msys64\home\L\.local\share\fnm"
+#   if (-not ($env:PATH -split ";" | Where-Object { $_ -eq $fnmPath })) {
+#       $env:PATH += ";$fnmPath"
+#   }
+#   fnm env --use-on-cd --shell powershell | Out-String | Invoke-Expression
 
 echo "MSYS2 Setup Done."
 exit 0
