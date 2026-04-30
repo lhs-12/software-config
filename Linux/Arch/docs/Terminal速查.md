@@ -248,7 +248,7 @@
 | `shift+up`     | 向上扩展选择 |
 | `shift+down`   | 向下扩展选择 |
 
-> 注：按住 `Ctrl+Alt` 鼠标可矩形选中
+> 注: 按住 `Ctrl+Alt` 鼠标可矩形选中
 
 ## 复制粘贴
 
@@ -323,111 +323,87 @@
 
 # Kitty
 
-> 默认键位，使用 `kitty_mod`（默认为 `ctrl+shift`）
+> 自定义配置
 
-## 剪贴板
+## 配置与命令
 
-| 快捷键                          | 功能             |
-| ------------------------------- | ---------------- |
-| `ctrl+shift+c`                  | 复制到剪贴板     |
-| `ctrl+shift+v`                  | 从剪贴板粘贴     |
-| `ctrl+shift+s` / `shift+insert` | 从选区粘贴       |
-| `ctrl+shift+o`                  | 将选区传递给程序 |
+| 快捷键         | 功能     |
+| -------------- | -------- |
+| `ctrl+shift+p` | 命令面板 |
+
+## 搜索
+
+| 快捷键         | 功能 |
+| -------------- | ---- |
+| `ctrl+shift+f` | 搜索 |
+
+## 选择 / 复制
+
+| 快捷键             | 功能           |
+| ------------------ | -------------- |
+| `ctrl+shift+c`     | 复制到剪贴板   |
+| `ctrl+shift+v`     | 从剪贴板粘贴   |
+| `ctrl+shift+x`     | 显示回滚缓冲区 |
+| `ctrl+shift+space` | URL hints      |
 
 ## 滚动
 
-| 快捷键                             | 功能                      |
-| ---------------------------------- | ------------------------- |
-| `ctrl+shift+up` / `ctrl+shift+k`   | 向上滚动一行              |
-| `ctrl+shift+down` / `ctrl+shift+j` | 向下滚动一行              |
-| `ctrl+shift+page_up`               | 向上滚动一页              |
-| `ctrl+shift+page_down`             | 向下滚动一页              |
-| `ctrl+shift+home`                  | 滚动到顶部                |
-| `ctrl+shift+end`                   | 滚动到底部                |
-| `ctrl+shift+z`                     | 滚动到上一个 shell 提示符 |
-| `ctrl+shift+x`                     | 滚动到下一个 shell 提示符 |
-| `ctrl+shift+h`                     | 在分页器中浏览滚动缓冲区  |
-| `ctrl+shift+g`                     | 浏览最后一个命令输出      |
-| `ctrl+shift+/`                     | 在分页器中搜索            |
+| 快捷键                 | 功能              |
+| ---------------------- | ----------------- |
+| `ctrl+shift+y`         | 向上滚动 1 行     |
+| `ctrl+shift+e`         | 向下滚动 1 行     |
+| `ctrl+shift+u`         | 跳到上一个 prompt |
+| `ctrl+shift+d`         | 跳到下一个 prompt |
+| `ctrl+shift+page_up`   | 向上翻页          |
+| `ctrl+shift+page_down` | 向下翻页          |
+| `ctrl+shift+home`      | 跳到顶部          |
+| `ctrl+shift+end`       | 跳到底部          |
+| `ctrl+shift+alt+home`  | 清空滚动缓冲区    |
 
-## 窗口管理
+## 窗口
 
-| 快捷键                    | 功能                 |
-| ------------------------- | -------------------- |
-| `ctrl+shift+enter`        | 新建窗口             |
-| `ctrl+shift+n`            | 新建 OS 窗口         |
-| `ctrl+shift+w`            | 关闭窗口             |
-| `ctrl+shift+]`            | 下一个窗口           |
-| `ctrl+shift+[`            | 上一个窗口           |
-| `ctrl+shift+f`            | 向前移动窗口         |
-| `ctrl+shift+b`            | 向后移动窗口         |
-| <code>ctrl+shift+`</code> | 移动窗口到顶部       |
-| `ctrl+shift+r`            | 开始调整窗口大小     |
-| `ctrl+shift+1` ~ `0`      | 聚焦第 1~10 个窗口   |
-| `ctrl+shift+f7`           | 可视化选择并聚焦窗口 |
-| `ctrl+shift+f8`           | 可视化交换窗口       |
+| 快捷键           | 功能     |
+| ---------------- | -------- |
+| `ctrl+shift+f11` | 切换全屏 |
 
 ## 标签页
 
-| 快捷键                               | 功能             |
-| ------------------------------------ | ---------------- |
-| `ctrl+shift+right` / `ctrl+tab`      | 下一个标签页     |
-| `ctrl+shift+left` / `ctrl+shift+tab` | 上一个标签页     |
-| `ctrl+shift+t`                       | 新建标签页       |
-| `ctrl+shift+q`                       | 关闭标签页       |
-| `ctrl+shift+.`                       | 向前移动标签页   |
-| `ctrl+shift+,`                       | 向后移动标签页   |
-| `ctrl+shift+alt+t`                   | 设置标签页标题   |
-| `ctrl+alt+1` ~ `9`                   | 跳转到特定标签页 |
+| 快捷键             | 功能                  |
+| ------------------ | --------------------- |
+| `ctrl+shift+t`     | 新建标签页            |
+| `ctrl+tab`         | 下一个标签页          |
+| `ctrl+shift+tab`   | 上一个标签页          |
+| `ctrl+shift+alt+w` | 关闭当前标签页        |
+| `ctrl+shift+alt+t` | 修改当前标签页标题    |
+| `ctrl+alt+1` ~ `9` | 切换到第 1~9 个标签页 |
 
-## 布局
+## 分屏
 
-| 快捷键         | 功能             |
-| -------------- | ---------------- |
-| `ctrl+shift+l` | 下一个布局       |
-| `ctrl+alt+t`   | 跳转到高布局     |
-| `ctrl+alt+s`   | 跳转到堆叠布局   |
-| `ctrl+alt+p`   | 上次使用的布局   |
-| `ctrl+alt+z`   | 切换布局（缩放） |
+| 快捷键                 | 功能             |
+| ---------------------- | ---------------- |
+| `ctrl+shift+enter`     | 垂直分屏（左右） |
+| `ctrl+shift+alt+enter` | 水平分屏（上下） |
+| `ctrl+shift+w`         | 关闭当前分屏     |
+| `ctrl+shift+h`         | 聚焦左侧分屏     |
+| `ctrl+shift+j`         | 聚焦下方分屏     |
+| `ctrl+shift+k`         | 聚焦上方分屏     |
+| `ctrl+shift+l`         | 聚焦右侧分屏     |
+| `ctrl+shift+left`      | 减小分屏宽度     |
+| `ctrl+shift+right`     | 增加分屏宽度     |
+| `ctrl+shift+up`        | 增加分屏高度     |
+| `ctrl+shift+down`      | 减小分屏高度     |
 
 ## 字体大小
 
-| 快捷键                                 | 功能         |
-| -------------------------------------- | ------------ |
-| `ctrl+shift+equal` / `ctrl+shift+plus` | 增大字体     |
-| `ctrl+shift+minus`                     | 减小字体     |
-| `ctrl+shift+backspace`                 | 重置字体大小 |
+| 快捷键         | 功能         |
+| -------------- | ------------ |
+| `ctrl+shift+=` | 增大字体     |
+| `ctrl+-`       | 减小字体     |
+| `ctrl+0`       | 重置字体大小 |
 
-## 选择并操作可见文本
+## 鼠标操作
 
-| 快捷键                 | 功能                 |
-| ---------------------- | -------------------- |
-| `ctrl+shift+e`         | 打开 URL             |
-| `ctrl+shift+p>f`       | 插入选定路径         |
-| `ctrl+shift+p>shift+f` | 打开选定路径         |
-| `ctrl+shift+p>c`       | 插入选择的文件       |
-| `ctrl+shift+p>d`       | 插入选择的目录       |
-| `ctrl+shift+p>l`       | 插入选定行           |
-| `ctrl+shift+p>w`       | 插入选定单词         |
-| `ctrl+shift+p>h`       | 插入选定哈希         |
-| `ctrl+shift+p>n`       | 在选定行打开选定文件 |
-| `ctrl+shift+p>y`       | 打开选定的超链接     |
-
-## 其他
-
-| 快捷键              | 功能                  |
-| ------------------- | --------------------- |
-| `ctrl+shift+f1`     | 显示文档              |
-| `ctrl+shift+f3`     | 命令面板              |
-| `ctrl+shift+f11`    | 切换全屏              |
-| `ctrl+shift+f10`    | 切换最大化            |
-| `ctrl+shift+u`      | Unicode 输入          |
-| `ctrl+shift+f2`     | 编辑配置文件          |
-| `ctrl+shift+escape` | 打开 kitty 命令 shell |
-| `ctrl+shift+a>m`    | 增加背景不透明度      |
-| `ctrl+shift+a>l`    | 减少背景不透明度      |
-| `ctrl+shift+a>1`    | 背景完全不透明        |
-| `ctrl+shift+a>d`    | 重置背景不透明度      |
-| `ctrl+shift+delete` | 重置终端              |
-| `ctrl+shift+f5`     | 重新加载 kitty.conf   |
-| `ctrl+shift+f6`     | 调试 kitty 配置       |
+1. 无修饰: 左键选/单击点/双击词/三击行，中键粘贴，右键扩展(拖动反选)
+2. 加Shift: 左键扩展或普通选(看状态)，双击/三击/右键, 同上
+3. Ctrl+Alt+左键框选: 矩形选择
+5. Ctrl+Shift+右键点击: 显示鼠标下的命令输出
