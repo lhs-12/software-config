@@ -176,6 +176,7 @@ perform_update() {
     # Step 5: Update Mise
     if command -v mise >/dev/null 2>&1; then
         _info "$MSG_STEP_5"
+        mise self-update
         mise upgrade
     fi
 }

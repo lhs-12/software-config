@@ -1,23 +1,18 @@
 [tools]
-# Langs
+aube      = "latest" # aube自动代替npm作为包管理器, 用 mise use -g 代替 npm install -g
+usage     = "latest"
+pitchfork = "latest"
+
+claude        = "latest"
+codex         = "latest"
+opencode      = "latest"
+"npm:snow-ai" = "latest"
+
 java  = "25"
 maven = "3"
 node  = "lts"
-
-# CLI utilities
-usage = "latest" # Mise命令补全
-pnpm  = "latest"
 uv    = "latest"
 ruff  = "latest"
-"npm:pm2" = "latest"
-
-# AI CLI tools
-claude   = "latest"
-codex    = "latest"
-gemini   = "latest"
-opencode = "latest"
-"npm:snow-ai" = "latest"
 
 [settings]
-npm.package_manager = "pnpm" # 使用 pnpm 作为 npm 包的下载器. 别用 pnpm install -g , 用 mise use -g
 idiomatic_version_file_enable_tools = ["python", "node", "pnpm", "java"]
