@@ -8,8 +8,8 @@ patch:
     collocation_max_length: 8
     collocation_min_length: 3
     collocation_penalty: -10
-    non_collocation_penalty: -15
-    weak_collocation_penalty: -45
+    non_collocation_penalty: -5
+    weak_collocation_penalty: -50
     rear_penalty: -5
   translator/contextual_suggestions: false
   translator/max_homophones: 8
