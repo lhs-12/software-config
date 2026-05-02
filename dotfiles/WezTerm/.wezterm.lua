@@ -23,12 +23,12 @@ config.window_padding = { left = 4, right = 12, top = 1, bottom = 1 }
 -- stylua: ignore
 config.color_schemes = {
 	["Bogster"] = {
-		foreground   = "#c6b8ad", background   = "#161c23",
-		selection_fg = "#b6b6c9", selection_bg = "#2d3946",
-		cursor_fg    = "#e5ded6", cursor_bg    = "#161c23",
-		ansi    = { "#161c23", "#d32c5d", "#57a331", "#dcb659", "#36b2d4", "#b759dc", "#59dcb7", "#c6b8ad" },
-		brights = { "#5a738c", "#dc597f", "#7fdc59", "#e5c86b", "#5bcceb", "#d393ea", "#7cebc9", "#e5ded6" },
-		scrollbar_thumb = "#404040",
+		foreground   = "#c6bfba", background   = "#161c23",
+		selection_fg = "#d2c6b8", selection_bg = "#252f3b",
+		cursor_fg    = "#161c23", cursor_bg    = "#dfd7d0",
+		ansi    = { "#161c23", "#bd2853", "#549d2f", "#cca734", "#248baa", "#b759dc", "#23a580", "#c6bfba" },
+		brights = { "#45576d", "#db567c", "#6fcc4c", "#dfc26b", "#4fbadb", "#dc59c0", "#59dcb7", "#dfd7d0" },
+		scrollbar_thumb = "#252f3b",
 	},
 }
 config.color_scheme = "Bogster"
