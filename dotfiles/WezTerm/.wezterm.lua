@@ -19,11 +19,21 @@ config.enable_scroll_bar = true
 config.initial_cols = 120
 config.initial_rows = 35
 config.window_padding = { left = 4, right = 12, top = 1, bottom = 1 }
-local my_scheme = wezterm.color.get_builtin_schemes()["3024 (base16)"]
-my_scheme.ansi[5] = "#33bcff"
-config.color_schemes = { ["my_scheme"] = my_scheme }
-config.color_scheme = "my_scheme"
-config.colors = { scrollbar_thumb = "#404040" }
+-- Color Scheme
+-- stylua: ignore
+config.color_schemes = {
+	["Bogster Dark"] = {
+		foreground   = "#c6b8ad", background   = "#161c23",
+		selection_fg = "#b6b6c9", selection_bg = "#2d3946",
+		cursor_fg    = "#e5ded6", cursor_bg    = "#161c23",
+		ansi    = { "#161c23", "#d32c5d", "#57a331", "#dcb659", "#36b2d4", "#b759dc", "#59dcb7", "#c6b8ad" },
+		brights = { "#5a738c", "#dc597f", "#7fdc59", "#e5c86b", "#5bcceb", "#d393ea", "#7cebc9", "#e5ded6" },
+		scrollbar_thumb = "#404040",
+	},
+}
+config.color_scheme = "Bogster Dark"
+config.window_background_opacity = 0.9
+config.bold_brightens_ansi_colors = false
 -- Font
 config.font_size = 12.0
 config.adjust_window_size_when_changing_font_size = false
@@ -39,12 +49,6 @@ config.font = wezterm.font_with_fallback({
 })
 -- Linux Config
 if wezterm.target_triple == "x86_64-unknown-linux-gnu" then
-	config.background = {
-		{
-			source = { File = os.getenv("HOME") .. "/Pictures/Wallpapers/01.jpg" },
-			hsb = { brightness = 0.05, hue = 0.5, saturation = 0.5 },
-		},
-	}
 	config.default_prog = { "fish" }
 	config.launch_menu = {
 		{ label = "Bash", args = { "bash" } },
@@ -63,22 +67,16 @@ if wezterm.target_triple == "x86_64-pc-windows-msvc" then
 	local msys2_bash = { "C:\\msys64\\msys2_shell.cmd", "-defterm", "-here", "-no-start", "-ucrt64", "-shell", "bash" }
 	local msys2_fish = { "C:\\msys64\\msys2_shell.cmd", "-defterm", "-here", "-no-start", "-ucrt64", "-shell", "fish" }
 	config.default_prog = msys2_fish
+	-- stylua: ignore
 	config.launch_menu = {
-		{ label = "Bash", args = msys2_bash },
-		{ label = "Fish", args = msys2_fish },
-		{ label = "CMD", args = { "cmd.exe" } },
+		{ label = "Bash"       , args = msys2_bash },
+		{ label = "Fish"       , args = msys2_fish },
+		{ label = "CMD"        , args = { "cmd.exe"        } },
 		{ label = "PowerShell5", args = { "powershell.exe" } },
 		{ label = "PowerShell7", args = { "pwsh.exe"       } },
-		{ label = "WSL", args = { "wsl.exe", "--cd", "/home" } },
+		{ label = "WSL"        , args = { "wsl.exe", "--cd", "/home" } },
 	}
 	config.win32_system_backdrop = "Acrylic"
-	config.background = {
-		{
-			source = { File = os.getenv("HOMEPATH") .. "/Pictures/Camera Roll/01.jpg" },
-			opacity = 0.85,
-			hsb = { brightness = 0.05, hue = 0.5, saturation = 0.5 },
-		},
-	}
 	wezterm.on("gui-startup", function(cmd)
 		local tab, pane, window = wezterm.mux.spawn_window(cmd or {})
 		window:gui_window():set_position(520, 250)
@@ -88,8 +86,8 @@ end
 -- stylua: ignore
 config.mouse_bindings = {
 	-- 鼠标滚动行数
-	{ event = { Down = { streak = 1, button = { WheelUp = 1 } } }, mods = "NONE", action = wezterm.action.ScrollByLine(-5), alt_screen = false },
-	{ event = { Down = { streak = 1, button = { WheelDown = 1 } } }, mods = "NONE", action = wezterm.action.ScrollByLine(5), alt_screen = false },
+	{ event = { Down = { streak = 1, button = { WheelUp = 1   } } }, mods = "NONE", action = wezterm.action.ScrollByLine(-5), alt_screen = false },
+	{ event = { Down = { streak = 1, button = { WheelDown = 1 } } }, mods = "NONE", action = wezterm.action.ScrollByLine(5) , alt_screen = false },
 	-- ctrl + 左键单击 -> 打开链接
 	{ event = { Up = { streak = 1, button = 'Left' } }, mods = 'CTRL', action = act.OpenLinkAtMouseCursor },
 	-- 无修饰键 + 左键单击 -> 仅复制到主选区, 不复制到剪贴板

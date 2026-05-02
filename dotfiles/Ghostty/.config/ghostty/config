@@ -11,7 +11,7 @@ gtk-toolbar-style = flat
 gtk-wide-tabs = false
 gtk-custom-css = ~/.config/ghostty/gtk.css
 # 主题颜色
-theme = 3024 Night
+theme = bogster_dark
 background-opacity = 0.75
 background-blur = true
 # 光标设置
