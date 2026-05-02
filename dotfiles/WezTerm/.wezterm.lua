@@ -36,21 +36,6 @@ config.bold_brightens_ansi_colors = false
 config.window_background_opacity = 0.85
 config.kde_window_background_blur = true
 config.win32_system_backdrop = "Acrylic"
--- improve contrast between directory blue and text white in pwsh
-local bogster = config.color_schemes["Bogster"]
-wezterm.on("update-right-status", function(window, pane)
-  local proc = pane:get_foreground_process_name() or ""
-  local is_pwsh = proc:find("pwsh.exe")
-  local overrides = window:get_config_overrides() or {}
-  if is_pwsh and not overrides.colors then
-	local new_ansi = { table.unpack(bogster.ansi) }
-  	local new_brights = { table.unpack(bogster.brights) }
-  	new_ansi[5] = "#3278bb" new_brights[5] = "#3888cb"
-    window:set_config_overrides({ colors = { ansi = new_ansi, brights = new_brights } })
-  elseif not is_pwsh and overrides.colors then
-    window:set_config_overrides({ colors = nil })
-  end
-end)
 -- Font
 config.font_size = 12.0
 config.adjust_window_size_when_changing_font_size = false
