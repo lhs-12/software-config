@@ -32,8 +32,10 @@ config.color_schemes = {
 	},
 }
 config.color_scheme = "Bogster Dark"
-config.window_background_opacity = 0.9
 config.bold_brightens_ansi_colors = false
+config.window_background_opacity = 0.85
+config.kde_window_background_blur = true
+config.win32_system_backdrop = "Acrylic"
 -- Font
 config.font_size = 12.0
 config.adjust_window_size_when_changing_font_size = false
@@ -76,7 +78,6 @@ if wezterm.target_triple == "x86_64-pc-windows-msvc" then
 		{ label = "PowerShell7", args = { "pwsh.exe"       } },
 		{ label = "WSL"        , args = { "wsl.exe", "--cd", "/home" } },
 	}
-	config.win32_system_backdrop = "Acrylic"
 	wezterm.on("gui-startup", function(cmd)
 		local tab, pane, window = wezterm.mux.spawn_window(cmd or {})
 		window:gui_window():set_position(520, 250)
