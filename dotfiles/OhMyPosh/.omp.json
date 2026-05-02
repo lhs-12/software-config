@@ -18,7 +18,7 @@
         {
           "type": "shell",
           "style": "powerline",
-          "template": "{{ if eq .Name \"bash\" }}{{ else if eq .Name \"fish\" }}{{ else if eq .Name \"zsh\" }}{{ else }}{{ .Name }}{{ end }} ",
+          "template": "{{ if eq .Name \"bash\" }} {{ else if eq .Name \"fish\" }} {{ else if eq .Name \"zsh\" }} {{ else if or (eq .Name \"pwsh\") (eq .Name \"powershell\") }}PS{{ index (splitList \".\" .Version) 0 }}{{ else }}{{ .Name }}{{ end }}",
           "background": "#3A3A3A",
           "foreground": "#D0CBC4"
         },
