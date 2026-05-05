@@ -318,3 +318,6 @@ _launch=F3
 
 [services][pinpic-screenshot.desktop]
 _launch=F1
+
+[services][pinpic-stitch.desktop]
+_launch=Shift+F1

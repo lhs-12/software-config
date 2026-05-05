@@ -34,6 +34,18 @@ from PyQt6.QtCore import QRectF, Qt, pyqtSignal
 from PyQt6.QtGui import QColor, QFont, QPainter, QPen
 from PyQt6.QtWidgets import QApplication, QWidget
 
+# 配色方案
+PALETTE = {
+    "bg": "#161c23",  # 面板背景
+    "close": "#252f3b",  # 关闭按钮
+    "shot": "#23a580",  # 截图按钮
+    "shot_busy": "#232d38",  # 截图按钮(忙碌中)
+    "done": "#bd2853",  # 完成按钮
+    "text": "#c6bfba",  # 按钮文字色
+    "shot_text": "#232d38",  # 截图按钮文字色(亮色按钮用深色字)
+    "info": "#c6bfba",  # 帧数/高度信息
+}
+
 
 class ImageStitcher:
     def __init__(self):
@@ -110,21 +122,24 @@ class StitchPanel(QWidget):
     def paintEvent(self, event):
         p = QPainter(self)
         p.setRenderHint(QPainter.RenderHint.Antialiasing)
-        p.fillRect(QRectF(0, 0, 64, 176), QColor(32, 33, 36, 240))
+        bg = QColor(PALETTE["bg"])
+        bg.setAlpha(240)
+        p.fillRect(QRectF(0, 0, 64, 176), bg)
 
-        def btn(rect, text, color):
+        def btn(rect, text, color, text_color=None):
             p.fillRect(rect, color)
-            p.setPen(QPen(QColor(255, 255, 255)))
+            p.setPen(QPen(text_color or QColor(PALETTE["text"])))
             p.setFont(QFont("sans-serif", 10, QFont.Weight.Medium))
             p.drawText(QRectF(rect), Qt.AlignmentFlag.AlignCenter, text)
 
-        sc = QColor(138, 138, 138) if self.busy else QColor(66, 133, 244)
-        btn(self.close_r, "关闭", QColor(95, 99, 104))
-        btn(self.shot_r, "截图", sc)
-        btn(self.done_r, "完成", QColor(234, 67, 53))
+        sc = QColor(PALETTE["shot_busy"]) if self.busy else QColor(PALETTE["shot"])
+        stc = QColor(PALETTE["text"]) if self.busy else QColor(PALETTE.get("shot_text", PALETTE["text"]))
+        btn(self.close_r, "关闭", QColor(PALETTE["close"]))
+        btn(self.shot_r, "截图", sc, text_color=stc)
+        btn(self.done_r, "完成", QColor(PALETTE["done"]))
 
         s = self.stitcher
-        p.setPen(QPen(QColor(189, 193, 198)))
+        p.setPen(QPen(QColor(PALETTE["info"])))
         p.setFont(QFont("sans-serif", 9))
         if s.count:
             p.drawText(QRectF(self.info_r), Qt.AlignmentFlag.AlignCenter, f"{s.count}帧\n{s.total_height}px")
