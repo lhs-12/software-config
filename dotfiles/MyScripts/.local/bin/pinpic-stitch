@@ -1,0 +1,211 @@
+#!/usr/bin/env python3
+# ------------------------------------------------------------
+# pinpic-stitch - 多次截图拼接成长图
+#
+# 功能说明:
+#   - 提供浮动控制面板，通过截图按钮触发多次区域选择截图
+#   - 使用 spectacle 进行区域选择截图
+#   - 自动将多次截图垂直拼接为一张长图
+#   - 以所有截图中最大宽度为准，较窄的图片自动检测背景色并向右扩展
+#   - 点击完成后输出长图，由 pinpic 调用 mpv 贴图显示
+#
+# 使用方式:
+#   pinpic-stitch --out /tmp/pinpic-stitch.png
+#
+# 运行环境:
+#   - Arch KDE Plasma Wayland
+# 系统依赖:
+#   - spectacle (KDE 截图)
+#   - python-pyqt6
+#   - python-pillow
+# ------------------------------------------------------------
+
+import argparse
+import os
+import signal
+import subprocess
+import sys
+import tempfile
+import threading
+from collections import Counter
+
+from PIL import Image
+from PyQt6.QtCore import QRectF, Qt, pyqtSignal
+from PyQt6.QtGui import QColor, QFont, QPainter, QPen
+from PyQt6.QtWidgets import QApplication, QWidget
+
+
+class ImageStitcher:
+    def __init__(self):
+        self.images = []
+        self.max_w = 0
+
+    def add(self, img: Image.Image):
+        img = img.convert("RGB")
+        if img.width > self.max_w:
+            self.max_w = img.width
+        self.images.append(img)
+
+    @staticmethod
+    def _detect_bg(img: Image.Image) -> tuple[int, int, int]:
+        # Detect background color by sampling the right edge with color quantization.
+        q = 16
+        px = img.load()
+        right_x = img.width - 1
+        samples = [px[right_x, y] for y in range(img.height)]
+        quantized = Counter(((r // q) * q, (g // q) * q, (b // q) * q) for r, g, b in samples)
+        return quantized.most_common(1)[0][0]
+
+    def result(self) -> Image.Image | None:
+        # Stitch vertically using max width; pad narrower images with detected background color.
+        if not self.images:
+            return None
+
+        w = self.max_w
+        h = sum(im.height for im in self.images)
+        out = Image.new("RGB", (w, h))
+        y = 0
+
+        for im in self.images:
+            if im.width < w:
+                bg = self._detect_bg(im)
+                strip = Image.new("RGB", (w - im.width, im.height), bg)
+                out.paste(im, (0, y))
+                out.paste(strip, (im.width, y))
+            else:
+                out.paste(im, (0, y))
+            y += im.height
+
+        return out
+
+    @property
+    def count(self):
+        return len(self.images)
+
+    @property
+    def total_height(self):
+        return sum(im.height for im in self.images)
+
+
+class StitchPanel(QWidget):
+    shotCompleted = pyqtSignal()
+
+    def __init__(self, on_shot, on_done):
+        super().__init__()
+        self.on_shot = on_shot
+        self.on_done = on_done
+        self.busy = False
+        self.stitcher = ImageStitcher()
+        self.shotCompleted.connect(self._on_shot_done)
+
+        self.setWindowTitle("pinpic-stitch")
+        self.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint)
+        self.setGeometry(100, 100, 64, 176)
+
+        self.close_r = QRectF(8, 8, 48, 28)
+        self.info_r = QRectF(8, 44, 48, 40)
+        self.shot_r = QRectF(8, 92, 48, 34)
+        self.done_r = QRectF(8, 134, 48, 34)
+
+    def paintEvent(self, event):
+        p = QPainter(self)
+        p.setRenderHint(QPainter.RenderHint.Antialiasing)
+        p.fillRect(QRectF(0, 0, 64, 176), QColor(32, 33, 36, 240))
+
+        def btn(rect, text, color):
+            p.fillRect(rect, color)
+            p.setPen(QPen(QColor(255, 255, 255)))
+            p.setFont(QFont("sans-serif", 10, QFont.Weight.Medium))
+            p.drawText(QRectF(rect), Qt.AlignmentFlag.AlignCenter, text)
+
+        sc = QColor(138, 138, 138) if self.busy else QColor(66, 133, 244)
+        btn(self.close_r, "关闭", QColor(95, 99, 104))
+        btn(self.shot_r, "截图", sc)
+        btn(self.done_r, "完成", QColor(234, 67, 53))
+
+        s = self.stitcher
+        p.setPen(QPen(QColor(189, 193, 198)))
+        p.setFont(QFont("sans-serif", 9))
+        if s.count:
+            p.drawText(QRectF(self.info_r), Qt.AlignmentFlag.AlignCenter, f"{s.count}帧\n{s.total_height}px")
+        else:
+            p.drawText(QRectF(self.info_r), Qt.AlignmentFlag.AlignCenter, "等待\n截图")
+        p.end()
+
+    def mousePressEvent(self, event):
+        pos = event.position()
+        if self.shot_r.contains(pos) and not self.busy:
+            self.busy = True
+            self.update()
+            self.on_shot()
+        elif self.done_r.contains(pos):
+            self.on_done()
+        elif self.close_r.contains(pos):
+            QApplication.instance().quit()
+        else:
+            handle = self.windowHandle()
+            if handle:
+                handle.startSystemMove()
+
+    def _on_shot_done(self):
+        self.busy = False
+        self.update()
+
+
+class StitchApp:
+    def __init__(self, out_path):
+        self.out_path = out_path
+        self.panel = StitchPanel(on_shot=self.capture_frame, on_done=self.finish_stitch)
+        self.panel.show()
+
+    def capture_frame(self):
+        def run():
+            fd, path = tempfile.mkstemp(suffix=".png")
+            os.close(fd)
+            try:
+                subprocess.run(
+                    ["spectacle", "-b", "-n", "-r", "-o", path],
+                    check=True,
+                    capture_output=True,
+                )
+                if os.path.exists(path) and os.path.getsize(path) > 0:
+                    s = self.panel.stitcher
+                    with Image.open(path) as im:
+                        s.add(im.copy())
+                    print(f"[pinpic-stitch] #{s.count} 高{s.total_height}px", file=sys.stderr)
+            except subprocess.CalledProcessError:
+                pass
+            except Exception as e:
+                print(f"[pinpic-stitch] 错误: {e}", file=sys.stderr)
+            finally:
+                if os.path.exists(path):
+                    os.unlink(path)
+                self.panel.shotCompleted.emit()
+
+        threading.Thread(target=run, daemon=True).start()
+
+    def finish_stitch(self):
+        s = self.panel.stitcher
+        if s.count == 0:
+            print("[pinpic-stitch] 没有截图", file=sys.stderr)
+            QApplication.instance().quit()
+            return
+        img = s.result()
+        img.save(self.out_path, "PNG")
+        print(f"[pinpic-stitch] 完成! {s.count} 帧 高{s.total_height}px → {self.out_path}", file=sys.stderr)
+        QApplication.instance().quit()
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--out", default="/tmp/pinpic-stitch.png")
+    args = parser.parse_args()
+
+    signal.signal(signal.SIGINT, signal.SIG_DFL)
+    app = QApplication(sys.argv)
+    StitchApp(args.out)
+    sys.exit(app.exec())
+
+
+if __name__ == "__main__":
+    main()

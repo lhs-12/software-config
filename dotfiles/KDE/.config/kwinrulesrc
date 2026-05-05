@@ -10,7 +10,7 @@ count=3
 rules=76d475dc-3e43-4742-8b50-8b68e257e74e,deada39d-b124-4d34-a844-2eda8b78477a,a03cd815-9ebe-4f91-947d-9663b8ba925f
 
 [a03cd815-9ebe-4f91-947d-9663b8ba925f]
-Description=MPV_Pinned
+Description=pinpic
 above=true
 aboverule=2
 skippager=true
@@ -19,10 +19,10 @@ skipswitcher=true
 skipswitcherrule=2
 skiptaskbar=true
 skiptaskbarrule=2
-title=MPV_Pinned
+title=pinpic-
 titlematch=2
-wmclass=mpv
-wmclassmatch=1
+wmclass=^(mpv|python3)$
+wmclassmatch=3
 
 [deada39d-b124-4d34-a844-2eda8b78477a]
 Description=v2rayN

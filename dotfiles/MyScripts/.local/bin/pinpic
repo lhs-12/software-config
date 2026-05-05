@@ -3,7 +3,7 @@
 # pinpic - Wayland 下的图片 / 文本贴图工具
 #
 # 功能说明:
-#   - 将截图、剪贴板中的内容以“置顶贴图”的方式显示在桌面
+#   - 将截图、剪贴板中的内容以"置顶贴图"的方式显示在桌面
 #   - 支持图片 / 图片文件 / 普通文本 / 富文本（HTML）
 #   - 文本与富文本通过 Qt WebEngine 渲染为图片
 #   - 使用 mpv 作为显示窗口，并配合 Lua 脚本实现贴图交互
@@ -12,14 +12,16 @@
 # 使用方式:
 #   pinpic --screenshot    # 截图贴图  （对应 Snipaste F1）
 #   pinpic --clipboard     # 剪贴板贴图（对应 Snipaste F3）
+#   pinpic --stitch        # 多次截图拼接成长图
 #
 # 运行环境:
 #   - Arch KDE Plasma Wayland
 # 系统依赖:
-#   - spectacle (KDE)
-#   - mpv (需要使用mpv脚本 pin_image.lua)
+#   - spectacle (KDE 截图)
+#   - mpv (需配置 lua 脚本 pin_image.lua)
 #   - wl-clipboard
-#   - qt6-webengine 和 python-pyqt6-webengine
+#   - qt6-webengine python-pyqt6-webengine
+#   - pinpic-stitch (多次截图拼接脚本，依赖 spectacle python-pyqt6 python-pillow)
 # ------------------------------------------------------------
 
 set -euo pipefail
@@ -54,14 +56,14 @@ is_video_file() {
 
 show_video_with_mpv() {
     mpv "$1" \
-        --title="MPV_Pinned_$(basename "$1")" \
+        --title="pinpic-$(basename "$1")" \
         --border=no \
         > /dev/null 2>&1
 }
 
 show_with_mpv() {
     mpv "$1" \
-        --title="MPV_Pinned_$(basename "$1")" \
+        --title="pinpic-$(basename "$1")" \
         --script="$MPV_LUA" \
         --no-config --no-input-builtin-bindings \
         > /dev/null 2>&1
@@ -144,6 +146,16 @@ pin_from_clipboard() {
     return
 }
 
+# ========= 多次截图拼接 =========
+
+pin_from_stitch() {
+    local stitch_output="$TMP_DIR/pinpic-stitch.png"
+    pinpic-stitch --out "$stitch_output"
+    if [[ -s "$stitch_output" ]]; then
+        show_with_mpv "$stitch_output"
+    fi
+}
+
 # ========= 主入口 =========
 
 case "$MODE" in
@@ -153,8 +165,11 @@ case "$MODE" in
     --clipboard)
         pin_from_clipboard
         ;;
+    --stitch)
+        pin_from_stitch
+        ;;
     *)
-        echo "Usage: $0 {--screenshot|--clipboard}" >&2
+        echo "Usage: $0 {--screenshot|--clipboard|--stitch}" >&2
         exit 1
         ;;
 esac
