@@ -58,8 +58,13 @@ body {{
 }}
 #container {{
     display: inline-block;
-    max-width: 120ch;
+    width: max-content;
+    max-width: 160ch;
     padding: 12px;
+}}
+#container * {{
+    white-space: pre-wrap !important;
+    word-break: break-word !important;
 }}
 * {{
     scrollbar-width: none;
@@ -112,6 +117,7 @@ body {{
 pre {{
     margin: 0;
     padding: 12px;
+    width: max-content;
     max-width: 120ch;
     color: #d4d4d4;
     font-family: monospace, "Symbols Nerd Font Mono";
