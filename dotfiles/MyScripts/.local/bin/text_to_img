@@ -19,6 +19,7 @@
 # ------------------------------------------------------------
 
 import argparse
+import html
 import re
 import sys
 from pathlib import Path
@@ -135,7 +136,7 @@ pre {{
 </style>
 </head>
 <body>
-<pre>{text}</pre>
+<pre>{html.escape(text)}</pre>
 </body>
 </html>
 """
@@ -196,13 +197,13 @@ def main() -> None:
     # HTML
     if args.html:
         html_raw = sys.stdin.read() if args.html.name == "-" else args.html.read_text(encoding="utf-8", errors="ignore")
-        html = render_html_template(html_raw)
+        rendered_html = render_html_template(html_raw)
     # TEXT
     else:
         text = sys.stdin.read() if args.text.name == "-" else args.text.read_text(encoding="utf-8", errors="ignore")
         text = decode_unicode_escape(text)
-        html = render_text_template(text)
-    render_to_image(html, args.out)
+        rendered_html = render_text_template(text)
+    render_to_image(rendered_html, args.out)
 
 
 if __name__ == "__main__":
