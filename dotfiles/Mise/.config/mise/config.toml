@@ -5,6 +5,7 @@ pitchfork = "latest"
 
 claude        = "latest"
 codex         = "latest"
+pi            = "latest"
 opencode      = "latest"
 "npm:snow-ai" = "latest"
 
