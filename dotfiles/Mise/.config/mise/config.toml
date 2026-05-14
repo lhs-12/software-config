@@ -16,4 +16,4 @@ uv    = "latest"
 ruff  = "latest"
 
 [settings]
-idiomatic_version_file_enable_tools = ["python", "node", "pnpm", "java"]
+idiomatic_version_file_enable_tools = ["java", "node", "pnpm"]
