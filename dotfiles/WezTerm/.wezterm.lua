@@ -33,8 +33,8 @@ config.color_schemes = {
 }
 config.color_scheme = "Bogster"
 config.bold_brightens_ansi_colors = false
-config.window_background_opacity = 0.85
-config.kde_window_background_blur = true
+-- config.window_background_opacity = 0.85
+-- config.kde_window_background_blur = true
 config.win32_system_backdrop = "Acrylic"
 -- Font
 config.font_size = 12.0
