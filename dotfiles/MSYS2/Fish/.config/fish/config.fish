@@ -12,9 +12,8 @@ fish_add_path -g "/d/Program Files/tools"
 fish_add_path -g "/c/Program Files/WezTerm"
 fish_add_path -g "/c/Program Files/Docker/Docker/resources/bin"
 fish_add_path -g (cygpath -u "$LOCALAPPDATA/Programs/Microsoft VS Code/bin")
-fish_add_path -g (cygpath -u (uv tool dir --bin))
-fish_add_path -g "$HOME/.local/share/fnm"
 set -q JAVA_HOME; and fish_add_path -g (cygpath -u "$JAVA_HOME/bin")
+fish_add_path -g "$HOME/.local/bin"
 
 # Multilevel cd ( .. ... .... , etc)
 function multicd
@@ -33,12 +32,12 @@ if test "$TERM_PROGRAM" != "vscode" # Skip in VSCode integrated terminal
     end
 end
 
+# Mise (environment manager)
+mise activate fish --shims | sed -E "s|'([^']+)'|(cygpath '\1')|g" | source
+
 # Bat (cat/less replacement)
 abbr less bat
 abbr cat 'bat -pp'
-
-# FNM
-fnm env --use-on-cd --shell fish | source
 
 # Zoxide (smarter cd)
 zoxide init fish | source
@@ -57,17 +56,24 @@ function yy --description "Yazi with cd"
     rm -f -- "$tmp"
 end
 
-# cd into fzf directory
+# === Functions ===
 function cdg --description "Change directory with fzf"
     set dir (fd -td "$argv[1]" "." | fzf)
     test -n "$dir" && cd "$dir"
+end
+function mvg --description "Move and go to directory"
+	mv "$argv[1]" "$argv[2]"
+	test -d "$argv[2]" && cd "$argv[2]"
+end
+function mkdirg --description "Make directory and go to it"
+	mkdir -p "$argv[1]"
+	cd "$argv[1]"
 end
 
 # === Abbreviations ===
 # Editor aliases
 abbr vi 'nvim --clean'
 abbr vim nvim
-abbr svi 'sudo nvim'
 # Directory listing (lsd)
 abbr ls lsd
 abbr la 'lsd -a'
@@ -93,3 +99,5 @@ abbr rgp 'rg --sort path' # Sort output by file path
 abbr h 'history -r | grep'
 # Process search
 abbr p 'ps aux | grep'
+# Flush DNS
+abbr fdns 'ipconfig -flushdns'

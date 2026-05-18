@@ -7,7 +7,6 @@ export LANGUAGE=en_US   # zh_CN:en_US
 
 # PATH
 append_path(){ case ":$PATH:" in *:"$1":*) ;; *) PATH="${PATH:+$PATH:}$1" ;; esac; }
-append_path "$HOME/.opencode/bin"
 
 # Mise (environment manager)
 eval "$(mise activate bash)"

@@ -2,6 +2,10 @@
 
 [[ "$-" != *i* ]] && return
 
+# Language
+export LANG=en_US.UTF-8 # zh_CN.UTF-8
+export LANGUAGE=en_US   # zh_CN:en_US
+
 # History
 export HISTFILE="$HOME/.bash_history"
 export HISTFILESIZE=20000
@@ -16,9 +20,9 @@ export HISTIGNORE="ls:ll:la:cd:pwd:exit:clear:history"
 
 # UCRT64 Config
 if [ -n "$MSYSTEM" ] && [ "$MSYSTEM" = "UCRT64" ]; then
-  # add PATH
+  # === add PATH ===
   # echo $PATH | tr ':' '\n'
-  # append path if exist
+  # append path if exist (add to PATH end, lowest priority)
   append_path() {
     local p="$1"
     [ -d "$p" ] || return
@@ -31,31 +35,22 @@ if [ -n "$MSYSTEM" ] && [ "$MSYSTEM" = "UCRT64" ]; then
   append_path "/c/Program Files/WezTerm"
   append_path "/c/Program Files/Docker/Docker/resources/bin"
   append_path "$(cygpath -u "$LOCALAPPDATA/Programs/Microsoft VS Code/bin")"
-  append_path "$(cygpath -u "$(uv tool dir --bin)")"
-  append_path "$HOME/.local/share/fnm"
   [ -n "$JAVA_HOME" ] && append_path "$(cygpath -u "$JAVA_HOME/bin")"
-  # Tools
+  append_path "$HOME/.local/bin"
+
+  # === Tools ===
+  # Prompt (Oh My Posh)
   if [[ "$TERM_PROGRAM" != "vscode" ]]; then
     eval "$(oh-my-posh init bash --config ~/.omp.json)"
   fi
-  eval "$(fnm env --use-on-cd --shell bash)"
-  eval "$(zoxide init bash)"
-  # Aliases
-  alias ls='lsd'
-  alias la='lsd -a'
-  alias ll='lsd --long --header'
-  alias lla='ll -a'
-  alias lr='lsd --tree'
-  alias lf='lsd -l | grep -v "^d"'
-  alias ldir='lsd -l | grep "^d"'
-  alias las='lsd -a | grep "^\."'
+  # Mise (environment manager)
+  eval "$(mise activate bash --shims | sed -E 's#"([^"]+):(\$PATH)"#"$(cygpath '\''\1'\''):\2"#')"
+  # Bat (cat/less replacement)
   alias less='bat'
   alias cat='bat -pp'
-  alias vi='nvim --clean'
-  alias vim='nvim'
-  alias cdg='cd_g() { local d=$(fd -td "${1:-}" "${2:-.}" | fzf); [ -n "$d" ] && cd "$d"; }; cd_g'
-  alias fdns='ipconfig -flushdns'
-  alias sva='source .venv/Scripts/activate'
+  # Zoxide (smarter cd)
+  eval "$(zoxide init bash)"
+  # Yazi
   alias yz='yazi'
   function yy() {
     local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
@@ -64,4 +59,26 @@ if [ -n "$MSYSTEM" ] && [ "$MSYSTEM" = "UCRT64" ]; then
     [ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && builtin cd -- "$cwd"
     rm -f -- "$tmp"
   }
+
+  # === Aliases ===
+  # Editor aliases
+  alias vi='nvim --clean'
+  alias vim='nvim'
+  # Directory listing (lsd)
+  alias ls='lsd'
+  alias la='lsd -a'
+  alias ll='lsd --long --header'
+  alias lla='ll -a'
+  alias lr='lsd --tree'
+  alias lf='lsd -l | grep -v "^d"'
+  alias ldir='lsd -l | grep "^d"'
+  alias las='lsd -a | grep "^\."'
+  # Grep
+  alias grep='grep --color=auto'
+  unset GREP_OPTIONS
+  # Others
+  alias h="history | grep "
+  alias p="ps aux | grep "
+  alias fdns='ipconfig -flushdns'
+  alias cdg='cd_g() { local d=$(fd -td "${1:-}" "${2:-.}" | fzf); [ -n "$d" ] && cd "$d"; }; cd_g'
 fi

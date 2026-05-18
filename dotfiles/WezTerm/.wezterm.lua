@@ -41,8 +41,6 @@ config.font_size = 12.0
 config.adjust_window_size_when_changing_font_size = false
 config.default_cursor_style = "SteadyUnderline"
 config.font = wezterm.font_with_fallback({
-	-- "Maple Mono NF CN",
-	-- "Maple Mono Normal NL NF CN",
 	"Iosevka Term",
 	"MiSans",
 	{ family = "Symbols Nerd Font Mono", scale = 0.9 },

@@ -7,6 +7,33 @@ if [[ -z "${MSYSTEM:-}" || "${MSYSTEM}" != "UCRT64" ]]; then
   exit 1
 fi
 
+# ===== 配置区域: 开始 =====
+# 必填参数
+declare -A REQUIRED_VARS
+REQUIRED_VARS["git_username"]=""  # Git 用户名
+REQUIRED_VARS["git_email"]=""     # Git 邮箱
+# 选填参数(可为空)
+declare -A OPTIONAL_VARS
+OPTIONAL_VARS["git_proxy"]=""     # Git 代理地址, 比如 http://127.0.0.1:10808
+OPTIONAL_VARS["github_token"]=""  # GITHUB_TOKEN, 用于解决 curl Github 访问限流
+# ===== 配置区域: 结束 =====
+
+# 检查必填参数
+for param in "${!REQUIRED_VARS[@]}"; do
+  if [[ -z "${REQUIRED_VARS[$param]}" ]]; then
+    echo "Error: Required parameter '$param' is not set. Please edit the configuration." >&2
+    exit 1
+  fi
+done
+
+# GITHUB_TOKEN 参数处理: 环境变量 ; curl 请求头
+if [[ -n "${OPTIONAL_VARS[github_token]:-}" ]]; then
+  export GITHUB_TOKEN=${OPTIONAL_VARS[github_token]}
+  CURL_GH_AUTH=(-H "Authorization: Bearer ${OPTIONAL_VARS[github_token]}")
+else
+  CURL_GH_AUTH=()
+fi
+
 # replace pacman mirrors (https://mirror.tuna.tsinghua.edu.cn/help/msys2/)
 echo "Replacing pacman mirrors..."
 sed -i "s#https\?://mirror.msys2.org/#https://mirrors.tuna.tsinghua.edu.cn/msys2/#g" /etc/pacman.d/mirrorlist*
@@ -20,68 +47,75 @@ pacman -S --needed --noconfirm --disable-download-timeout \
   stow fish tmux zip unzip \
   mingw-w64-ucrt-x86_64-{neovim,tree-sitter,lsd,bat,zoxide,dust,tldr,oh-my-posh,fastfetch} \
   mingw-w64-ucrt-x86_64-{yazi,ffmpeg,jq,imagemagick,poppler,mediainfo,mdbook} \
-  mingw-w64-ucrt-x86_64-{fzf,fd,ripgrep}
+  mingw-w64-ucrt-x86_64-{fzf,fd,ripgrep,delta}
 
 # install win32yank
-curl -L -o win32yank-x64.zip $(curl -s https://api.github.com/repos/equalsraf/win32yank/releases/latest | \
+curl -L -o win32yank-x64.zip $(curl -s "${CURL_GH_AUTH[@]}" https://api.github.com/repos/equalsraf/win32yank/releases/latest | \
 jq -r '.assets[] | select(.name | test("win32yank-x64.*\\.zip$")) | .browser_download_url') \
 && unzip -q -d /usr/bin/ win32yank-x64.zip && rm win32yank-x64.zip
 
 # install Git
 echo "Installing Git..."
-pacman -S --needed --noconfirm git mingw-w64-ucrt-x86_64-git-lfs
+pacman -S --needed --noconfirm mingw-w64-ucrt-x86_64-{git,git-lfs}
+
+echo "Installing Git LFS..."
 git lfs install
 
 echo "Installing Git Credential Manager..."
-curl -L -o gcm-latest.zip $(curl -s https://api.github.com/repos/git-ecosystem/git-credential-manager/releases/latest | \
-jq -r '.assets[] | select(.name | test("gcm-win-x86-(?!.*symbols).*\\.zip$")) | .browser_download_url') \
-&& unzip -q -d /usr/lib/git-core/ gcm-latest.zip && rm gcm-latest.zip
+curl -L -o gcm-latest.zip $(curl -s "${CURL_GH_AUTH[@]}" https://api.github.com/repos/git-ecosystem/git-credential-manager/releases/latest | \
+jq -r '.assets[] | select(.name | test("gcm-win-x64-(?!.*symbols).*\\.zip$")) | .browser_download_url') \
+&& unzip -q -d "$(git --exec-path)" gcm-latest.zip && rm gcm-latest.zip
+git credential-manager configure
 
 echo "Configuring git..."
+# git 基本配置
 git config --global init.defaultBranch main
 git config --global core.autocrlf true
 git config --global core.quotepath false
 git config --global core.editor "nvim --clean"
-git config --global credential.helper manager
-git config --global user.name "your-name"                # edit name
-git config --global user.email "you@example.com"         # edit email
-git config --global http.proxy "http://127.0.0.1:10808"  # edit proxy
-git config --global https.proxy "http://127.0.0.1:10808" # edit proxy
+git config --global user.name "${REQUIRED_VARS[git_username]}"
+git config --global user.email "${REQUIRED_VARS[git_email]}"
+# git diff/merge: 使用 git-delta 和 neovim
+git config --global core.pager delta
+git config --global interactive.diffFilter "delta --color-only"
+git config --global delta.navigate true
+git config --global delta.hyperlinks true
+git config --global delta.line-numbers true
+git config --global delta.syntax-theme base16
+git config --global diff.tool nvimdiff
+git config --global difftool.prompt false
+git config --global merge.tool nvimdiff
+git config --global mergetool.prompt false
+git config --global merge.conflictStyle zdiff3
+# 不设置 delta.side-by-side true , 需要时加环境变量: DELTA_FEATURES=+side-by-side git diff
+# git 代理设置
+if [[ -n "${OPTIONAL_VARS[git_proxy]:-}" ]]; then
+  git config --global http.proxy "${OPTIONAL_VARS[git_proxy]}"
+  git config --global https.proxy "${OPTIONAL_VARS[git_proxy]}"
+else
+  git config --global --unset http.proxy 2>/dev/null || true
+  git config --global --unset https.proxy 2>/dev/null || true
+fi
 
 # 可选择给GitHub添加SSH认证
 # ssh-keygen -t ed25519 -C "you@example.com" # 生成ED25519类型的SSH密钥对, 用邮箱标识
 # eval "$(ssh-agent -s)"                     # 启动SSH代理, 用于管理SSH密钥
 # ssh-add ~/.ssh/id_ed25519                  # 将生成私钥添加到SSH代理
 # cat ~/.ssh/id_ed25519.pub | clip.exe       # 将公钥复制到Windows剪切板
-# 访问https://github.com/settings/keys, 点击"New SSH key", 粘贴公钥并保存
-# ssh -T git@github.com            # 测试SSH连接是否正常
+# 访问 https://github.com/settings/keys , 点击"New SSH key", 粘贴公钥并保存
+# ssh -T git@github.com                      # 测试SSH连接是否正常
 
-# install Python UV and UV tools
-echo "Installing Python UV and UV tools..."
-pacman -S --needed --noconfirm mingw-w64-ucrt-x86_64-uv
-uv tool install --force ruff@latest
-
-# install Node.js
-echo "Installing Node.js"
-curl -fsSL https://fnm.vercel.app/install | bash -s -- --skip-shell
-export PATH="$HOME/.local/share/fnm:$PATH"
-fnm install --lts
-# 若想在PowerShell中运行 fnm 和 node, 需要配置PowerShell(PS5和PS7要分别执行)
-# 1. 创建配置: if (-not (Test-Path $profile)) { New-Item $profile -Force }
-# 2. 修改配置: Invoke-Item $profile
-#   加入以下内容(这里顺便写些其他配置, 不同版本不同, 以后再整理)
-#   $PSStyle.FileInfo.Directory = "`e[38;2;54;178;212m"
-#   Set-Alias grep Select-String
-#   Set-Alias which Get-Command
-#   $msysHome = "C:\msys64\home\$env:USERNAME"
-#   if ($Host.Name -eq 'ConsoleHost' -and [Environment]::UserInteractive) {
-#     oh-my-posh init pwsh --config ~/.omp.json | Invoke-Expression
-#   }
-#   $fnmPath = "$msysHome\.local\share\fnm"
-#   if (-not ($env:PATH -split ";" | Where-Object { $_ -eq $fnmPath })) {
-#       $env:PATH += ";$fnmPath"
-#   }
-#   fnm env --use-on-cd --shell powershell | Out-String | Invoke-Expression
+# install Mise
+# 安装行为: 下载 mise.exe 和 mise-shim.exe 放在 C:\Users\xxx\.local\bin
+# 安装后可通过命令升级: mise self-update
+echo "Installing Mise..."
+curl -L -o mise.zip $(curl -s "${CURL_GH_AUTH[@]}" https://api.github.com/repos/jdx/mise/releases/latest | \
+jq -r '.assets[] | select(.name | test("windows-x64.zip$")) | .browser_download_url' | tr -d '\r') \
+&& unzip -q mise.zip -d /tmp/mise && cp /tmp/mise/mise/bin/mise*.exe "$USERPROFILE/.local/bin/" && rm -rf mise.zip /tmp/mise
+# Mise 配置文件: 复制到默认位置: C:\Users\xxx\.config\mise\config.toml
+mkdir -p $USERPROFILE/.config/mise/ && cp -r ./MSYS2/Mise/* $USERPROFILE/.config/mise/
+# Mise 安装工具: 根据配置文件安装
+mise upgrade
 
 echo "MSYS2 Setup Done."
 exit 0

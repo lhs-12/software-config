@@ -30,10 +30,10 @@ Z-Library + Koodo-Reader
 
 # 字体
 
-[SarasaTermSC](https://github.com/be5invis/Sarasa-Gothic)
-> 注: Sarasa Fixed无连字, Mono的中文破折号更美观但表格对不齐
-
-[MapleMonoNormalNL-NF-CN](https://github.com/subframe7536/maple-font)
+- [IosevkaTerm](https://github.com/be5invis/Iosevka/releases)
+- [MiSans](https://hyperos.mi.com/font/zh/download/)
+- [SarasaTermSC](https://github.com/be5invis/Sarasa-Gothic/releases)
+- [NerdFontsSymbolsOnly](https://github.com/ryanoasis/nerd-fonts/releases)
 
 # RIME输入法
 
@@ -51,44 +51,57 @@ Z-Library + Koodo-Reader
 4. 配置 Windows 的 任务计划程序(Task Scheduler)
 
 任务计划程序配置:
+
 1. 按 `Win + R`, 运行 `taskschd.msc`
 2. 右侧点击 "创建任务..." (注意不是基本任务)
 3. `常规`选项卡 -> 名称: `Kanata CapsLock+`, 勾选 "只在用户登录时运行" 和 "使用最高权限运行"
 4. `触发器`选项卡 -> 点击 "新建", 选择 "登录时", 选择 "特定的用户". 设置 "延迟任务时间" 10 秒
 5. `操作`选项卡 -> 点击 "新建", 操作选 "启动程序"
-    - "程序或脚本": `kanata_windows_gui_winIOv2_x64.exe`
-    - "添加参数": `-c capslock+.kbd`
-    - "起始于": `D:\Program Files\tools\kanata\`
+   - "程序或脚本": `kanata_windows_gui_winIOv2_x64.exe`
+   - "添加参数": `-c capslock+.kbd`
+   - "起始于": `D:\Program Files\tools\kanata\`
 6. `条件`选项卡 -> 取消勾选 "只有在计算机使用交流电源时才启动此任务"
 7. `设置`选项卡 -> 取消勾选 "如果任务运行时间超过以下时间, 停止任务"
 8. 立即使用: 右键点击运行任务计划程序库中的 Kanata 任务
 
----
-
 > 废弃:  
-> AutoHotkey (也能用, 但有些小问题)  
-> 安装 AutoHotkey 软件, 将 CapsLock+.ahk 放 Startup 目录即可
+> AutoHotkey (也能用, 有些小问题): 安装 AutoHotkey 软件, 将 CapsLock+.ahk 放 Startup 目录即可
 
-# 开发软件
+# 开发环境
 
-手动安装软件:  
-`WezTerm(Nightly)`, `MobaXterm`,  
-`VSCode`, `JetBrains Toolbox`,  
-`Navicat(DeltaFoX)`, `Postman/Hoppscotch/ApiFox`, `Fiddler`,  
-`WSL2`, `Docker`
+## 开发相关软件
 
-安装配置 MSYS2 环境
+| 软件名            | 作用               |
+| ----------------- | ------------------ |
+| PowerShell(pwsh)  | 微软 Shell         |
+| WezTerm(Nightly)  | 模拟终端           |
+| MobaXterm         | 远程管理           |
+| VSCode            | 编辑器             |
+| JetBrains Toolbox | JetBrains 管理工具 |
+| Navicat(DeltaFoX) | 数据库管理         |
+| ApiFox            | 网络访问           |
+| Fiddler           | 抓包工具           |
+| WSL2              | Linux 环境         |
+| Docker Desktop    | Docker 环境        |
 
-1. 下载安装 MSYS2, 添加系统变量 Path: `C:\msys64\ucrt64\bin\` 和 `C:\msys64\usr\bin`
-2. 使用 UCRT64 环境启动, 检查修改脚本并执行: `bash setup-windows.sh`(里面包含了`setup-msys2.sh`)
+> Jetbrains 软件安装 JDK 后, 可使用 `jdk_path.ps1` 脚本配置相关环境变量
 
-pacman 常用命令参考
+## MSYS2 环境
 
-```
-升级所有软件: pacman -Syu
-查询可用包: pacman -Ss xxx
-安装包: pacman -Sy xxx
-查询已安装包: pacman -Qe 或 -Qs
-删除包及相关无用依赖: pacman -Rs xxx
-清理下载缓存: pacman -Sc
-```
+1. 下载 `MSYS2` 安装包, 执行安装
+2. 添加系统变量 Path: `C:\msys64\ucrt64\bin\` 和 `C:\msys64\usr\bin`
+3. 添加用户变量 Path: `C:\Users\用户名\.local\bin`
+4. 统一 `HOME` 目录: 用 `pwsh` 执行 `edit C:\msys64\etc\nsswitch.conf`, 将 `db_home` 的值从 `cygwin desc` 改为 `windows`
+4. 使用 `MSYS2` 的 `UCRT64` 环境启动, 检查修改并执行脚本: `bash setup-msys2.sh`
+
+MSYS2 的包管理工具是 `pacman`
+
+| 常用命令      | 作用             |
+| ------------- | ---------------- |
+| `pacman -Syu` | 升级所有软件     |
+| `pacman -Ss`  | 查询可用包       |
+| `pacman -S`   | 安装包           |
+| `pacman -Qs`  | 查询已安装包     |
+| `pacman -Qi`  | 查询已安装包信息 |
+| `pacman -Rns` | 卸载包及依赖     |
+| `pacman -Sc`  | 清理缓存         |

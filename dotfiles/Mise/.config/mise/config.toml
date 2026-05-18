@@ -9,11 +9,12 @@ pi            = "latest"
 opencode      = "latest"
 "npm:snow-ai" = "latest"
 
-java  = "25"
-maven = "3"
-node  = "lts"
-uv    = "latest"
-ruff  = "latest"
+java   = "25"
+maven  = "3"
+node   = "lts"
+uv     = "latest"
+ruff   = "latest"
+stylua = "latest"
 
 [settings]
 idiomatic_version_file_enable_tools = ["java", "node", "pnpm"]

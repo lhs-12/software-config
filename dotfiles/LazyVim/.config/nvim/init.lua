@@ -2,9 +2,6 @@ if vim.g.vscode then
   require("vscode-nvim")
   return
 end
-if vim.g.neovide then
-  vim.o.guifont = "Maple Mono Normal NL NF CN:h14"
-end
 
 -- Prevent msys2 utilities (e.g. certutil) from shadowing Windows system commands on blink.cmp
 if vim.fn.has("win32") == 1 then
