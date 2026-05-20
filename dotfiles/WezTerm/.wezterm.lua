@@ -71,9 +71,9 @@ if wezterm.target_triple == "x86_64-pc-windows-msvc" then
 	config.launch_menu = {
 		{ label = "Bash"       , args = msys2_bash },
 		{ label = "Fish"       , args = msys2_fish },
-		{ label = "CMD"        , args = { "cmd.exe"        } },
-		{ label = "PowerShell5", args = { "powershell.exe" } },
-		{ label = "PowerShell7", args = { "pwsh.exe"       } },
+		{ label = "Pwsh"       , args = { "pwsh.exe"      , "-NoLogo" } },
+		{ label = "PowerShell" , args = { "powershell.exe", "-NoLogo" } },
+		{ label = "CMD"        , args = { "cmd.exe" } },
 		{ label = "WSL"        , args = { "wsl.exe", "--cd", "/home" } },
 	}
 	wezterm.on("gui-startup", function(cmd)

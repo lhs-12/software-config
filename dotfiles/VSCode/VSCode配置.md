@@ -18,6 +18,7 @@ code \
 --install-extension fabiospampinato.vscode-open-in-application \      # Open in Application                 默认程序打开文件
 --install-extension ms-vscode-remote.vscode-remote-extensionpack \    # Remote Development                  远程开发套件(WSL/容器/SSH...)
 --install-extension ms-vsliveshare.vsliveshare \                      # Live Share                          实时共享
+--install-extension hverlin.mise-vscode \                             # Mise VSCode                         Mise支持
 --install-extension johnnymorganz.stylua \                            # StyLua                              Lua支持
 --install-extension redhat.vscode-xml \                               # XML                                 XML支持
 --install-extension tamasfe.even-better-toml \                        # Even Better TOML                    TOML支持
@@ -71,16 +72,15 @@ code \
 
 使用`settings.json`和`keybindings.json`
 
-Windows 环境在`settings.json`额外增加配置,  
-还有 Markdown Preview Enhanced: Customize CSS(Global) 的配置,  
-去掉Linux下Mise和Stylua相关的配置
+Windows 环境要在 `settings.json` 修改下面的配置, 另外执行 Markdown Preview Enhanced: Customize CSS(Global) 复制粘贴样式
+
 ```json
 {
   // Terminal
   "terminal.integrated.profiles.windows": {
     "Bash(UCRT64)": {
       "path": "cmd.exe",
-      "args": ["/k", "C:\\msys64\\msys2_shell.cmd -defterm -here -no-start -ucrt64 -shell bash -l -i"],
+      "args": [ "/k", "C:\\msys64\\msys2_shell.cmd -defterm -here -no-start -ucrt64 -shell bash -l -i" ],
       "icon": "terminal-bash"
     },
     "Git Bash": null
@@ -91,6 +91,7 @@ Windows 环境在`settings.json`额外增加配置,
 ```
 
 可选配置: LaTeX Workshop 配置
+
 ```json
 {
   // LaTeX Workshop 的配置
@@ -134,6 +135,7 @@ Windows 环境在`settings.json`额外增加配置,
 ```
 
 可选配置: Markdown渲染折叠显示内容: Markdown Preview Enhanced: Extend Parser(Workspace)
+
 ```js
 // 修改parser.js文件
   onDidParseMarkdown: async function (html) {
@@ -143,6 +145,7 @@ Windows 环境在`settings.json`额外增加配置,
     });
   },
 ```
+
 ```less
 // 修改style.less
 .markdown-preview.markdown-preview {

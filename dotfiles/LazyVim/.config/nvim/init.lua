@@ -8,15 +8,11 @@ if vim.fn.has("win32") == 1 then
   local sysroot = vim.fn.getenv("SystemRoot") or "C:\\Windows"
   local sys32 = sysroot .. "\\System32"
   local sys32_lower = sys32:lower()
-
   local paths = vim.split(vim.env.PATH, ";", { plain = true })
   local keep = {}
   for _, p in ipairs(paths) do
-    if p:lower() ~= sys32_lower and p ~= "" then
-      keep[#keep + 1] = p
-    end
+    if p:lower() ~= sys32_lower and p ~= "" then keep[#keep + 1] = p end
   end
-
   vim.env.PATH = sys32 .. ";" .. table.concat(keep, ";")
 end
 
