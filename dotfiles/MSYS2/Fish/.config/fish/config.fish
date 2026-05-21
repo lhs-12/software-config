@@ -32,8 +32,25 @@ if test "$TERM_PROGRAM" != "vscode" # Skip in VSCode integrated terminal
     end
 end
 
-# Mise (environment manager)
-mise activate fish --shims | sed -E "s|'([^']+)'|(cygpath '\1')|g" | source
+# Mise (Mise 输出路径没适配 MSYS2, 是 Win 风格, 修复 PATH 变量为 Unix 风格)
+function __mise_hook_env_fix
+    set -l _output
+    while read -l _line
+        if not string match -qr '^set -gx PATH\s' -- $_line
+            set -a _output $_line
+        end
+    end
+    for _b in (command mise hook-env -s bash 2>/dev/null | string split \n)
+        if string match -qr "^export PATH=" -- $_b
+            set -l _wp (string replace -r "^export PATH='(.+)'\$" '$1' -- $_b)
+            set -l _up (/usr/bin/cygpath -u -p -- $_wp)
+            set -a _output "set -gx PATH "(string join ' ' (string split ':' -- $_up))
+        end
+    end
+    for _line in $_output; echo $_line; end
+end
+set -l _mise_path (which mise)
+mise activate fish | string replace -a -- (cygpath -w $_mise_path) "$_mise_path" | string replace -a -- 'hook-env -s fish | source' 'hook-env -s fish | __mise_hook_env_fix | source' | source
 
 # Bat (cat/less replacement)
 abbr less bat

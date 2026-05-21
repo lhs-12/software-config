@@ -43,8 +43,13 @@ if [ -n "$MSYSTEM" ] && [ "$MSYSTEM" = "UCRT64" ]; then
   if [[ "$TERM_PROGRAM" != "vscode" ]]; then
     eval "$(oh-my-posh init bash --config ~/.omp.json)"
   fi
-  # Mise (environment manager)
-  eval "$(mise activate bash --shims | sed -E 's#"([^"]+):(\$PATH)"#"$(cygpath '\''\1'\''):\2"#')"
+  # Mise (Mise 输出路径没适配 MSYS2, 是 Win 风格, 修复 PATH 变量为 Unix 风格)
+  mise_activate_script="$(mise activate bash)"
+  fixed_mise_script=$(
+      printf '%s\n' "$mise_activate_script" |
+      sed 's|eval "\$(mise hook-env .*)"|&; export PATH="$(/usr/bin/cygpath -u -p \"$PATH\")";|'
+  )
+  eval "$fixed_mise_script"
   # Bat (cat/less replacement)
   alias less='bat'
   alias cat='bat -pp'

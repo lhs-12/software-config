@@ -1,5 +1,6 @@
 #!/usr/bin/bash
 set -Eeuo pipefail
+cd "$(dirname "$0")"
 
 # ensure running in MSYS2 UCRT64 environment
 if [[ -z "${MSYSTEM:-}" || "${MSYSTEM}" != "UCRT64" ]]; then
@@ -7,15 +8,23 @@ if [[ -z "${MSYSTEM:-}" || "${MSYSTEM}" != "UCRT64" ]]; then
   exit 1
 fi
 
+# ensure HOME directory is unified with Windows
+if ! grep -qE '^[[:space:]]*db_home:[[:space:]]+windows' /etc/nsswitch.test.conf 2>/dev/null; then
+  echo "Error: HOME directory is not unified with Windows." >&2
+  echo "Please edit /etc/nsswitch.conf to set 'db_home: windows' and migrate home directory files," >&2
+  echo "then close all MSYS2 terminal processes and reopen to continue." >&2
+  exit 1
+fi
+
 # ===== 配置区域: 开始 =====
 # 必填参数
 declare -A REQUIRED_VARS
-REQUIRED_VARS["git_username"]=""  # Git 用户名
-REQUIRED_VARS["git_email"]=""     # Git 邮箱
+REQUIRED_VARS["git_username"]=""  # 设置 Git 用户名
+REQUIRED_VARS["git_email"]=""     # 设置 Git 邮箱
 # 选填参数(可为空)
 declare -A OPTIONAL_VARS
-OPTIONAL_VARS["git_proxy"]=""     # Git 代理地址, 比如 http://127.0.0.1:10808
-OPTIONAL_VARS["github_token"]=""  # GITHUB_TOKEN, 用于解决 curl Github 访问限流
+OPTIONAL_VARS["git_proxy"]=""     # 设置 Git 代理地址, 比如 http://127.0.0.1:10808
+OPTIONAL_VARS["github_token"]=""  # 设置 GITHUB_TOKEN, 用于解决 Github 访问限流(更建议放 Windows 用户环境变量)
 # ===== 配置区域: 结束 =====
 
 # 检查必填参数
@@ -111,11 +120,42 @@ fi
 echo "Installing Mise..."
 curl -L -o mise.zip $(curl -s "${CURL_GH_AUTH[@]}" https://api.github.com/repos/jdx/mise/releases/latest | \
 jq -r '.assets[] | select(.name | test("windows-x64.zip$")) | .browser_download_url' | tr -d '\r') \
-&& unzip -q mise.zip -d /tmp/mise && cp /tmp/mise/mise/bin/mise*.exe "$USERPROFILE/.local/bin/" && rm -rf mise.zip /tmp/mise
+&& unzip -q mise.zip -d /tmp/mise && cp /tmp/mise/mise/bin/mise*.exe "$HOME/.local/bin/" && rm -rf mise.zip /tmp/mise
 # Mise 配置文件: 复制到默认位置: C:\Users\xxx\.config\mise\config.toml
-mkdir -p $USERPROFILE/.config/mise/ && cp -r ./MSYS2/Mise/* $USERPROFILE/.config/mise/
+mkdir -p $HOME/.config/mise/ && cp -r ./MSYS2/Mise/* $HOME/.config/mise/
 # Mise 安装工具: 根据配置文件安装
 mise upgrade
+
+# ===== 复制配置文件 =====
+# Rime
+mkdir -p $APPDATA/Rime && cp -r ./Rime-Ice/.local/share/fcitx5/rime/* $APPDATA/Rime
+# WezTerm
+cp ./WezTerm/.wezterm.lua $HOME
+# Pictures
+cp ./Pictures/Pictures/Wallpapers/* "$HOME/Pictures/Camera Roll"
+# Shell: Bash + Fish + PowerShell + Pwsh
+cp ./MSYS2/Bash/.bash* $HOME
+cp -r ./MSYS2/Fish/.config/fish $HOME/.config/
+cp -r ./MSYS2/PowerShell5/WindowsPowerShell $HOME/Documents
+cp -r ./MSYS2/Pwsh/PowerShell $HOME/Documents
+# OhMyPosh
+cp ./OhMyPosh/.omp.json $HOME
+# FastFetch
+cp -r ./FastFetch/.config/fastfetch $HOME/.config
+# Yazi
+mkdir -p $APPDATA/yazi/config && cp -r ./Yazi/.config/yazi/* $APPDATA/yazi/config/
+# LazyVim
+cp -r ./LazyVim/.config/nvim $LOCALAPPDATA
+# Jetbrains
+cp ./Jetbrains/.ideavimrc $HOME
+# VSCode
+mkdir -p $APPDATA/Code/User
+cp ./VSCode/.config/Code/User/keybindings.json $APPDATA/Code/User/
+cp ./VSCode/.config/Code/User/settings.json $APPDATA/Code/User/
+# Ruff
+cp -r ./Ruff/.config/ruff $APPDATA
+# AutoHotkey(废弃, 用 Kanata 替代, Kanata 手动配置, 不在脚本操作)
+# cp ./AutoHotkey/CapsLock+.ahk "$APPDATA/Microsoft/Windows/Start Menu/Programs/Startup/"
 
 echo "MSYS2 Setup Done."
 exit 0
