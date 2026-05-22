@@ -121,8 +121,10 @@ echo "Installing Mise..."
 curl -L -o mise.zip $(curl -s "${CURL_GH_AUTH[@]}" https://api.github.com/repos/jdx/mise/releases/latest | \
 jq -r '.assets[] | select(.name | test("windows-x64.zip$")) | .browser_download_url' | tr -d '\r') \
 && unzip -q mise.zip -d /tmp/mise && cp /tmp/mise/mise/bin/mise*.exe "$HOME/.local/bin/" && rm -rf mise.zip /tmp/mise
-# Mise 配置文件: 复制到默认位置: C:\Users\xxx\.config\mise\config.toml
+# Mise 配置文件
 mkdir -p $HOME/.config/mise/ && cp -r ./MSYS2/Mise/* $HOME/.config/mise/
+# Aube 配置文件
+mkdir -p $HOME/.config/aube/ && cp -r ./MSYS2/Aube/* $HOME/.config/aube/
 # Mise 安装工具: 根据配置文件安装
 mise upgrade
 
