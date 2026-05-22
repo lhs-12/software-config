@@ -92,7 +92,7 @@ Z-Library + Koodo-Reader
 2. 添加系统变量 Path: `C:\msys64\ucrt64\bin\` 和 `C:\msys64\usr\bin`
 3. 添加用户变量 Path: `C:\Users\用户名\.local\bin`
 4. 统一 `HOME` 目录: 用 `pwsh` 执行 `edit C:\msys64\etc\nsswitch.conf`, 将 `db_home` 的值从 `cygwin desc` 改为 `windows`
-4. 使用 `MSYS2` 的 `UCRT64` 环境启动, 检查修改并执行脚本: `bash setup-msys2.sh`
+5. 使用 `MSYS2` 的 `UCRT64` 环境启动, 检查修改并执行脚本: `bash setup-msys2.sh`
 
 MSYS2 的包管理工具是 `pacman`
 
