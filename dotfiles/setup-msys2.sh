@@ -9,7 +9,7 @@ if [[ -z "${MSYSTEM:-}" || "${MSYSTEM}" != "UCRT64" ]]; then
 fi
 
 # ensure HOME directory is unified with Windows
-if ! grep -qE '^[[:space:]]*db_home:[[:space:]]+windows' /etc/nsswitch.test.conf 2>/dev/null; then
+if ! grep -qE '^[[:space:]]*db_home:[[:space:]]+windows' /etc/nsswitch.conf 2>/dev/null; then
   echo "Error: HOME directory is not unified with Windows." >&2
   echo "Please edit /etc/nsswitch.conf to set 'db_home: windows' and migrate home directory files," >&2
   echo "then close all MSYS2 terminal processes and reopen to continue." >&2
@@ -126,7 +126,7 @@ mkdir -p $HOME/.config/mise/ && cp -r ./MSYS2/Mise/* $HOME/.config/mise/
 # Aube 配置文件
 mkdir -p $HOME/.config/aube/ && cp -r ./MSYS2/Aube/* $HOME/.config/aube/
 # Mise 安装工具: 根据配置文件安装
-mise upgrade
+$HOME/.local/bin/mise upgrade
 
 # ===== 复制配置文件 =====
 # Rime
