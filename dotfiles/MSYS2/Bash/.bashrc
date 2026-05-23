@@ -47,7 +47,8 @@ if [ -n "$MSYSTEM" ] && [ "$MSYSTEM" = "UCRT64" ]; then
   mise_activate_script="$(mise activate bash)"
   fixed_mise_script=$(
       printf '%s\n' "$mise_activate_script" |
-      sed 's|eval "\$(mise hook-env .*)"|&; export PATH="$(/usr/bin/cygpath -u -p \"$PATH\")";|'
+      sed -e 's|eval "\$(mise hook-env .*)"|&; export PATH="$(/usr/bin/cygpath -u -p \"$PATH\")";|' \
+          -e 's|eval "\$(command "\$__MISE_EXE" "\$command" "\$@")"|&; export PATH="$(/usr/bin/cygpath -u -p \"$PATH\")";|'
   )
   eval "$fixed_mise_script"
   # Bat (cat/less replacement)

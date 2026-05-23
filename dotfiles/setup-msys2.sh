@@ -43,6 +43,12 @@ else
   CURL_GH_AUTH=()
 fi
 
+# git_proxy 参数处理: 该参数不为空, 说明用户使用了系统代理, 脚本中设置相关网络变量优化下载 http_proxy/https_proxy (可作用于 curl)
+if [[ -n "${OPTIONAL_VARS[git_proxy]:-}" ]]; then
+  export http_proxy="${OPTIONAL_VARS[git_proxy]}"
+  export https_proxy="${OPTIONAL_VARS[git_proxy]}"
+fi
+
 # replace pacman mirrors (https://mirror.tuna.tsinghua.edu.cn/help/msys2/)
 echo "Replacing pacman mirrors..."
 sed -i "s#https\?://mirror.msys2.org/#https://mirrors.tuna.tsinghua.edu.cn/msys2/#g" /etc/pacman.d/mirrorlist*
