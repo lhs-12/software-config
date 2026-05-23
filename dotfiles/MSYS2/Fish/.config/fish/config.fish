@@ -32,27 +32,29 @@ if test "$TERM_PROGRAM" != "vscode" # Skip in VSCode integrated terminal
     end
 end
 
-# Mise
-# 修复 mise fish hook-env 输出的 PATH 被分号拆碎的问题
-function __mise_hook_env_fix
-    perl -MIPC::Open2 -e '
-        while (<STDIN>) {
-            if (/^set -gx PATH (.*)/) {
-                (my $p = $1) =~ s/\x27//g;
-                $p =~ s/([A-Z]) \\\\/$1:\\\\/g;
-                my $pid = open2(my $out, my $in, "cygpath", "-u", "-p", "-f", "-");
-                print $in $p, "\n"; close $in;
-                chomp(my $up = <$out>); close $out; waitpid $pid, 0;
-                print "set -gx PATH ", join(" ", map {"\x27$_\x27"} split /:/, $up), "\n";
-            } else { print }
-        }
-    '
+# Mise (修复 hook-env 输出的 Win 风格 PATH 为 Unix 风格)
+function mise_activate
+    function __mise_hook_env_fix
+        perl -MIPC::Open2 -e '
+            while (<STDIN>) {
+                if (/^set -gx PATH (.*)/) {
+                    (my $p = $1) =~ s/\x27//g;
+                    $p =~ s/([A-Z]) \\\\/$1:\\\\/g;
+                    my $pid = open2(my $out, my $in, "cygpath", "-u", "-p", "-f", "-");
+                    print $in $p, "\n"; close $in;
+                    chomp(my $up = <$out>); close $out; waitpid $pid, 0;
+                    print "set -gx PATH ", join(" ", map {"\x27$_\x27"} split /:/, $up), "\n";
+                } else { print }
+            }
+        '
+    end
+    set -l _mise_path (which mise)
+    mise activate fish |
+    string replace -a -- (cygpath -w $_mise_path) "$_mise_path" |
+    string replace -a -- 'hook-env -s fish | source' 'hook-env -s fish | __mise_hook_env_fix | source' |
+    string replace -- '|psub)' '| __mise_hook_env_fix | psub)' | source
 end
-set -l _mise_path (which mise)
-mise activate fish |
-string replace -a -- (cygpath -w $_mise_path) "$_mise_path" |
-string replace -a -- 'hook-env -s fish | source' 'hook-env -s fish | __mise_hook_env_fix | source' |
-string replace -- '|psub)' '| __mise_hook_env_fix | psub)' | source
+mise_activate
 
 # Bat (cat/less replacement)
 abbr less bat
