@@ -43,7 +43,7 @@ else
   CURL_GH_AUTH=()
 fi
 
-# git_proxy 参数处理: 该参数不为空, 说明用户使用了系统代理, 脚本中设置相关网络变量优化下载 http_proxy/https_proxy (可作用于 curl)
+# git_proxy 参数处理: 该参数不为空, 说明用户使用了系统代理, 脚本中设置相关网络变量优化下载 http(s)_proxy (可作用于 curl)
 if [[ -n "${OPTIONAL_VARS[git_proxy]:-}" ]]; then
   export http_proxy="${OPTIONAL_VARS[git_proxy]}"
   export https_proxy="${OPTIONAL_VARS[git_proxy]}"
