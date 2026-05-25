@@ -28,6 +28,26 @@ Z-Library + Koodo-Reader
 `AdBlock`, `Dark Mode`, `Vimium`, `KeePassXC`, `Xget Now`, `PageTurn Book Reader`,  
 `简易翻译`, `Tampermonkey`, `WebRTC Protect`, `Vue.js devtools`
 
+# 代理
+
+[FlClash](https://github.com/chen08209/FlClash)
+
+基本配置:
+
+1. 下载便携软件包到自定义目录, 启动程序
+2. `配置` -> `添加配置` -> 导入 URL 配置
+3. `代理` -> `设置` -> 修改显示样式为紧凑标签页
+4. `代理` -> 设置不同场景使用的节点. 其中 `漏网之鱼` 选 `DIRECT`
+5. `工具` -> `资源` -> `同步` 更新数据
+6. `工具` -> `应用程序` -> 开启 `退出时最小化`, `自启动`, `静默启动`, `自动运行`
+7. `仪表盘` -> 开启 `虚拟网卡`, 点击右下角启动按钮打开
+8. 出现网络问题时可尝试修改虚拟网卡栈模式为 gvisor; 遇到网络冲突问题时去进阶配置的附加规则里设置冲突规则
+9. 使用 FlClash 的 TUN 模式, 注意检查并删掉环境变量中残留的 http_proxy 和 https_proxy 变量
+
+---
+
+[v2rayN](https://github.com/2dust/v2rayn)
+
 # 字体
 
 - [IosevkaTerm](https://github.com/be5invis/Iosevka/releases)
@@ -66,26 +86,6 @@ Z-Library + Koodo-Reader
 
 > 废弃:  
 > AutoHotkey (也能用, 有些小问题): 安装 AutoHotkey 软件, 将 CapsLock+.ahk 放 Startup 目录即可
-
-# 代理
-
-[FlClash](https://github.com/chen08209/FlClash)
-
-基本配置:
-
-1. 下载便携软件包到自定义目录, 启动程序
-2. `配置` -> `添加配置` -> 导入 URL 配置
-3. `代理` -> `设置` -> 修改显示样式为紧凑标签页
-4. `代理` -> 设置不同场景使用的节点. 其中 `漏网之鱼` 选 `DIRECT`
-5. `工具` -> `资源` -> `同步` 更新数据
-6. `工具` -> `应用程序` -> 开启 `退出时最小化`, `自启动`, `静默启动`, `自动运行`
-7. `仪表盘` -> 开启 `虚拟网卡`, 点击右下角启动按钮打开
-8. 出现网络问题时可尝试修改虚拟网卡栈模式为 gvisor; 遇到网络冲突问题时去进阶配置的附加规则里设置冲突规则
-9. 使用 FlClash 的 TUN 模式, 注意检查并删掉环境变量中残留的 http_proxy 和 https_proxy 变量
-
----
-
-[v2rayN](https://github.com/2dust/v2rayn)
 
 # 开发环境
 
