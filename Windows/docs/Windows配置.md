@@ -50,10 +50,14 @@ Z-Library + Koodo-Reader
 
 # 字体
 
-- [IosevkaTerm](https://github.com/be5invis/Iosevka/releases)
-- [MiSans](https://hyperos.mi.com/font/zh/download/)
-- [SarasaTermSC](https://github.com/be5invis/Sarasa-Gothic/releases)
-- [NerdFontsSymbolsOnly](https://github.com/ryanoasis/nerd-fonts/releases)
+| 字体                                                                        | 文件                           |
+| --------------------------------------------------------------------------- | ------------------------------ |
+| [IosevkaTerm](https://github.com/be5invis/Iosevka/releases)                 | PkgTTC-SGr-IosevkaTerm-xxx.zip |
+| [MiSans](https://hyperos.mi.com/font/zh/download/)                          | MiSans{,TC,L3}                 |
+| [LxgwNeoXiZhi-Screen](https://github.com/lxgw/LxgwNeoXiZhi-Screen/releases) | LXGWNeoZhiSongScreenFull.ttf   |
+| [SarasaTermSC](https://github.com/be5invis/Sarasa-Gothic/releases)          | SarasaTermSC-TTF-xxx.7z        |
+| [NerdFontsSymbolsOnly](https://github.com/ryanoasis/nerd-fonts/releases)    | NerdFontsSymbolsOnly.zip       |
+| [Noto Color Emoji](https://fonts.google.com/noto/specimen/Noto+Color+Emoji) | Noto_Color_Emoji.zip           |
 
 # RIME输入法
 
