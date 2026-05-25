@@ -236,26 +236,22 @@ systemctl show --property=Environment docker
 
 以 ArchLinux 为例
 
-- 去 github 下载 `LxRunOffline.exe` 放到 C 盘 system32 目录中
-- 去国内的源下载 `archlinux-bootstrap-yyyy.MM.dd-x86_64.tar.gz`
-- 安装发行版 `LxRunOffline i -n ArchLinux -f E:\archlinux-bootstrap-yyyy.MM.dd-x86_64.tar.gz -d E:\ArchLinux  -r root.x86_64`
-- 设置 wsl 版本 `wsl --set-version ArchLinux 2`
-- 删除网络配置 `wsl -d ArchLinux`, `rm /etc/resolv.conf`, `exit`
-- 重启 `wsl --shutdown ArchLinux`, `wsl -d ArchLinux`
-- 修改下载源
-
 > 现在已经有官方Arch镜像: https://github.com/yuk7/ArchWSL/  
 > 下载ArchWSL，然后安装 Arch.exe 即可
 
--
 
 ```
 cd /etc/
 explorer.exe .
 
-修改pacman.conf,在文件最后加入
+# 配置国内源
+cat > /etc/pacman.d/mirrorlist << 'EOF'
+# archlinuxcn 源 - 国内社区维护的常用软件包
 [archlinuxcn]
+Server = https://mirrors.cloud.tencent.com/archlinuxcn/$arch
 Server = https://mirrors.tuna.tsinghua.edu.cn/archlinuxcn/$arch
+Server = https://mirrors.aliyun.com/archlinuxcn/$arch
+EOF
 
 进入下一级pacman.d目录,编辑mirrolist文件,把China的部分的注释去掉
 
