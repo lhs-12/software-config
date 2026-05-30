@@ -33,10 +33,6 @@ code \
 --install-extension pomdtr.excalidraw-editor \                        # Excalidraw                          图表编辑(.excalidraw)
 # 其他可选: Jupyter...
 
-# AI
---install-extension github.copilot-chat \                             # GitHub Copilot Chat                 GitHub Copilot
---install-extension anthropic.claude-code \                           # Claude Code for VS Code             Claude Code
-
 # 容器
 --install-extension ms-azuretools.vscode-docker \                     # Docker                              Docker支持
 --install-extension ms-kubernetes-tools.vscode-kubernetes-tools \     # Kubernetes                          容器编排支持

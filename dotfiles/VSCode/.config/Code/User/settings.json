@@ -13,6 +13,8 @@
   "editor.linkedEditing": true,
   "debug.showBreakpointsInOverviewRuler": true,
   // Markdown
+  "markdown.preview.fontSize": 16,
+  "markdown.preview.lineHeight": 1.2,
   "markdown-preview-enhanced.enablePreviewZenMode": true, // 去除多余预览功能
   "markdown-preview-enhanced.hideDefaultVSCodeMarkdownPreviewButtons": false, // 取消劫持默认markdown预览
   "markdown-preview-enhanced.breakOnSingleNewLine": false, // 要求Markdown行末两空格表示换行
