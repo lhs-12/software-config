@@ -1,14 +1,17 @@
 [tools]
-aube  = "latest" # aube自动代替npm作为包管理器, 用 mise use -g 代替 npm install -g
-usage = "latest"
+aube      = "latest" # aube自动代替npm作为包管理器, 用 mise use -g 代替 npm install -g
+usage     = "latest"
+pitchfork = "latest"
 
+pi     = "latest"
 claude = "latest"
-"npm:snow-ai" = "latest"
 
 node   = "lts"
 uv     = "latest"
 ruff   = "latest"
 stylua = "latest"
+oxfmt  = "latest"
+oxlint = "latest"
 
 [settings]
 idiomatic_version_file_enable_tools = ["java", "node", "pnpm"]

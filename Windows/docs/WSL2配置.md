@@ -190,7 +190,7 @@ done
 echo "All windows have been processed"
 ```
 
-# 在 WSL 安装 Docker 
+# 在 WSL 安装 Docker
 
 安装 docker 和 docker-compose
 

@@ -1,5 +1,4 @@
 {
-  "files.autoSave": "onFocusChange",
   "explorer.compactFolders": false,
   "workbench.startupEditor": "none",
   "workbench.colorTheme": "Dark Modern",
@@ -28,8 +27,14 @@
   "hediet.vscode-drawio.appearance": "dark",
   "excalidraw.theme": "dark",
   "excalidraw.language": "zh-CN",
-  // 格式化配置
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  // 格式化相关配置
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "always",
+    "source.organizeImports": "always",
+  },
+  "files.autoSave": "onFocusChange",
+  "editor.formatOnSave": false,
+  "editor.defaultFormatter": "oxc.oxc-vscode",
   "[html]": { "files.autoSave": "off", "editor.formatOnSave": true },
   "[javascript]": { "files.autoSave": "off", "editor.formatOnSave": true },
   "[typescript]": { "files.autoSave": "off", "editor.formatOnSave": true },
@@ -46,13 +51,14 @@
   // NeoVim
   "extensions.experimental.affinity": { "asvetliakov.vscode-neovim": 1 },
   "vscode-neovim.ctrlKeysForInsertMode": ["d", "o", "r", "t", "u", "w"],
-  "vscode-neovim.ctrlKeysForNormalMode": /*prettier-ignore*/ [ // 保留 c, n, s, x, z
+  "vscode-neovim.ctrlKeysForNormalMode": /*oxfmt-ignore*/ [ // 保留 c, n, s, x, z
     "a", "b", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "o", "p", "q", "r", "t", "u", "v", "w", "y",
     "up", "right", "left", "down", "backspace", "delete", "]",
   ],
-  "github.copilot.enable": {
-    "*": false, "plaintext": false, "markdown": false, "scminput": false,
+  // Github Copilot
+  "github.copilot.enable": /*oxfmt-ignore*/ {
+    "*": false, "plaintext": false, "markdown": false, "scminput": false
   },
-  "claudeCode.preferredLocation": "panel",
+  // Diff
   "diffEditor.hideUnchangedRegions.enabled": true,
 }
