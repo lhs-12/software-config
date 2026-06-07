@@ -192,6 +192,9 @@ PYTHON_SCRIPT=$(cat <<'EOF'
 import sys
 import xml.etree.ElementTree as ET
 try:
+    def clean(text):
+        """Strip control chars to prevent terminal escape injection."""
+        return ''.join(c for c in (text or '') if ord(c) >= 32 and ord(c) != 127)
     limit = int(sys.argv[1])
     header_template = sys.argv[2]
     sys.stdin.reconfigure(encoding='utf-8')
@@ -201,9 +204,9 @@ try:
     items = root.findall('./channel/item')[:limit]
     print(f'\n\033[1;33m{header_template.format(len(items))}\033[0m\n')
     for item in items:
-        title = item.find('title').text
-        link = item.find('link').text
-        pub_date = item.find('pubDate').text
+        title = clean(item.find('title').text)
+        link = clean(item.find('link').text)
+        pub_date = clean(item.find('pubDate').text)
         date_str = pub_date[:16]
         check_text = title.lower()
         if any(x in check_text for x in ['intervention', 'manual', '手动', '干预']):
@@ -213,7 +216,7 @@ try:
         # OSC 8 hyperlink for terminal clickable links
         osc8_start = f'\033]8;;{link}\033\\'
         osc8_end = '\033]8;;\033\\'
-        print(f'{color}[{date_str}] {prefix}{osc8_start}{title}{osc8_end}\033[0m')
+        print(f'{color}{osc8_start}[{date_str}] {prefix}{title}{osc8_end}\033[0m')
 except Exception as e:
     sys.stderr.write(f'\nParse Error: {e}\n')
     sys.exit(1)
