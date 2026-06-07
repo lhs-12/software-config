@@ -2,13 +2,13 @@
 set -Eeuo pipefail
 cd "$(dirname "$0")"
 
-# ensure running in MSYS2 UCRT64 environment
+# 确保在 MSYS2 UCRT64 环境中运行
 if [[ -z "${MSYSTEM:-}" || "${MSYSTEM}" != "UCRT64" ]]; then
   echo "This script must be run from the MSYS2 UCRT64 shell, Exiting." >&2
   exit 1
 fi
 
-# ensure HOME directory is unified with Windows
+# 确保 HOME 目录与 Windows 统一
 if ! grep -qE '^[[:space:]]*db_home:[[:space:]]+windows' /etc/nsswitch.conf 2>/dev/null; then
   echo "Error: HOME directory is not unified with Windows." >&2
   echo "Please edit /etc/nsswitch.conf to set 'db_home: windows' and migrate home directory files," >&2
@@ -49,11 +49,11 @@ if [[ -n "${OPTIONAL_VARS[git_proxy]:-}" ]]; then
   export https_proxy="${OPTIONAL_VARS[git_proxy]}"
 fi
 
-# replace pacman mirrors (https://mirror.tuna.tsinghua.edu.cn/help/msys2/)
+# 替换 pacman 镜像源 (https://mirror.tuna.tsinghua.edu.cn/help/msys2/)
 echo "Replacing pacman mirrors..."
 sed -i "s#https\?://mirror.msys2.org/#https://mirrors.tuna.tsinghua.edu.cn/msys2/#g" /etc/pacman.d/mirrorlist*
 
-# install base packages and tooling
+# 安装基础包和工具链
 echo "Installing base packages and tooling..."
 pacman -Syu --noconfirm
 pacman -S --needed --noconfirm --disable-download-timeout base-devel mingw-w64-ucrt-x86_64-toolchain
@@ -64,12 +64,12 @@ pacman -S --needed --noconfirm --disable-download-timeout \
   mingw-w64-ucrt-x86_64-{yazi,ffmpeg,jq,imagemagick,poppler,mediainfo,mdbook} \
   mingw-w64-ucrt-x86_64-{fzf,fd,ripgrep,delta}
 
-# install win32yank
+# 安装 win32yank
 curl -L -o win32yank-x64.zip $(curl -s "${CURL_GH_AUTH[@]}" https://api.github.com/repos/equalsraf/win32yank/releases/latest | \
 jq -r '.assets[] | select(.name | test("win32yank-x64.*\\.zip$")) | .browser_download_url') \
 && unzip -q -d /usr/bin/ win32yank-x64.zip && rm win32yank-x64.zip
 
-# install Git
+# 安装 Git
 echo "Installing Git..."
 pacman -S --needed --noconfirm mingw-w64-ucrt-x86_64-{git,git-lfs}
 
@@ -120,18 +120,17 @@ fi
 # 访问 https://github.com/settings/keys , 点击"New SSH key", 粘贴公钥并保存
 # ssh -T git@github.com                      # 测试SSH连接是否正常
 
-# install Mise
-# 安装行为: 下载 mise.exe 和 mise-shim.exe 放在 C:\Users\xxx\.local\bin
+# 安装 Mise: 下载 mise.exe 和 mise-shim.exe 到 C:\Users\xxx\.local\bin
 # 安装后可通过命令升级: mise self-update
 echo "Installing Mise..."
 curl -L -o mise.zip $(curl -s "${CURL_GH_AUTH[@]}" https://api.github.com/repos/jdx/mise/releases/latest | \
 jq -r '.assets[] | select(.name | test("windows-x64.zip$")) | .browser_download_url' | tr -d '\r') \
 && unzip -q mise.zip -d /tmp/mise && cp /tmp/mise/mise/bin/mise*.exe "$HOME/.local/bin/" && rm -rf mise.zip /tmp/mise
-# Mise 配置文件
+# 复制 Mise 配置文件
 mkdir -p $HOME/.config/mise/ && cp -r ./MSYS2/Mise/* $HOME/.config/mise/
-# Aube 配置文件
+# 复制 Aube 配置文件
 mkdir -p $HOME/.config/aube/ && cp -r ./MSYS2/Aube/* $HOME/.config/aube/
-# Mise 安装工具: 根据配置文件安装
+# 根据 Mise 配置文件安装工具
 $HOME/.local/bin/mise upgrade
 
 # ===== 复制配置文件 =====
