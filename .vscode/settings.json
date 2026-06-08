@@ -15,7 +15,7 @@
       "url": "https://github.com/fastfetch-cli/fastfetch/raw/master/doc/json_schema.json"
     },
     {
-      "fileMatch": ["**/*.om-posh.json"],
+      "fileMatch": ["**/.om-posh.json"],
       "url": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json"
     },
     {
