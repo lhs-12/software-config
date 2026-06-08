@@ -41,7 +41,7 @@ if [ -n "$MSYSTEM" ] && [ "$MSYSTEM" = "UCRT64" ]; then
   # === Tools ===
   # Prompt (Oh My Posh)
   if [[ "$TERM_PROGRAM" != "vscode" ]]; then
-    eval "$(oh-my-posh init bash --config ~/.omp.json)"
+    eval "$(oh-my-posh init bash --config ~/.om-posh.json)"
   fi
   # Mise (修复 hook-env 输出的 Win 风格 PATH 为 Unix 风格)
   mise_activate() {

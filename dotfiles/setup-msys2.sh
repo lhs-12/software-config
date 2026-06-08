@@ -146,7 +146,7 @@ cp -r ./MSYS2/Fish/.config/fish $HOME/.config/
 cp -r ./MSYS2/PowerShell5/WindowsPowerShell $HOME/Documents
 cp -r ./MSYS2/Pwsh/PowerShell $HOME/Documents
 # OhMyPosh
-cp ./OhMyPosh/.omp.json $HOME
+cp ./OhMyPosh/.om-posh.json $HOME
 # FastFetch
 cp -r ./FastFetch/.config/fastfetch $HOME/.config
 # Yazi

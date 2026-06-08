@@ -3,7 +3,7 @@
 
 # Oh-my-posh prompt (skip in VSCode)
 if [[ "$TERM_PROGRAM" != "vscode" ]]; then
-  eval "$(oh-my-posh init bash --config ~/.omp.json)"
+  eval "$(oh-my-posh init bash --config ~/.om-posh.json)"
 fi
 
 # Bat (cat/less replacement)

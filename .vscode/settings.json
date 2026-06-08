@@ -1,0 +1,26 @@
+{
+  "files.associations": {
+    "**/*.{desktop,service}": "ini",
+    "**/dotfiles/Btop/.config/btop/**/*.theme": "ini",
+    "**/dotfiles/Fcitx5/.config/fcitx5/{config,profile}": "ini",
+    "**/dotfiles/FontConfig/.config/fontconfig/**/*.conf": "html",
+    "**/dotfiles/Ghostty/.config/ghostty/themes/*": "ini",
+    "**/dotfiles/Ghostty/.config/ghostty/config": "ini",
+    "**/dotfiles/KDE/.config/klassy/*": "ini",
+    "**/dotfiles/KDE/.config/{plasma-localerc,kwinrulesrc,kglobalshortcutsrc}": "ini",
+  },
+  "json.schemas": [
+    {
+      "fileMatch": ["**/fastfetch/**/*.jsonc"],
+      "url": "https://github.com/fastfetch-cli/fastfetch/raw/master/doc/json_schema.json"
+    },
+    {
+      "fileMatch": ["**/*.om-posh.json"],
+      "url": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json"
+    },
+    {
+      "fileMatch": ["**/zed/themes/**/*.json"],
+      "url": "https://zed.dev/schema/themes/v0.2.0.json"
+    }
+  ]
+}

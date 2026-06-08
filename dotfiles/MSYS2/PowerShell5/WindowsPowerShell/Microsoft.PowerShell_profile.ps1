@@ -1,6 +1,6 @@
 # OhMyPosh
 if ($Host.Name -eq 'ConsoleHost' -and [Environment]::UserInteractive) {
-    oh-my-posh init powershell --config "$HOME\.omp.json" | Invoke-Expression
+    oh-my-posh init powershell --config "$HOME\.om-posh.json" | Invoke-Expression
 }
 
 # Zoxide

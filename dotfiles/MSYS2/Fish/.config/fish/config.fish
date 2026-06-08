@@ -24,7 +24,7 @@ abbr --add dotdot --regex '^\.+$' --function multicd
 # Prompt (Oh My Posh)
 if test "$TERM_PROGRAM" != "vscode" # Skip in VSCode integrated terminal
     # Initialize
-    oh-my-posh init fish --config ~/.omp.json | source
+    oh-my-posh init fish --config ~/.om-posh.json | source
 
     # refresh prompt on directory change
     function rerender_on_dir_change --on-variable PWD

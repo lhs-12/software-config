@@ -5,7 +5,7 @@ Set-PSReadLineKeyHandler -Key Tab -Function MenuComplete
 
 # OhMyPosh
 if ($Host.Name -eq 'ConsoleHost' -and [Environment]::UserInteractive) {
-  oh-my-posh init pwsh --config "$HOME\.omp.json" | Invoke-Expression
+  oh-my-posh init pwsh --config "$HOME\.om-posh.json" | Invoke-Expression
 }
 
 # Zoxide
