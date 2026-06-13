@@ -133,8 +133,8 @@ trap 'kill -- -$SUDO_PID 2>/dev/null || true' EXIT INT TERM
 # ------------------------------
 # 6. Check AUR Helper
 # ------------------------------
-command -v paru &>/dev/null && UPDATE_CMD=paru ||
-command -v yay  &>/dev/null && UPDATE_CMD=yay  ||
+{ command -v paru &>/dev/null && UPDATE_CMD=paru; } ||
+{ command -v yay  &>/dev/null && UPDATE_CMD=yay; } ||
 _error "$MSG_NO_HELPER"
 
 # ------------------------------

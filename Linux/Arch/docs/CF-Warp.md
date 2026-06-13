@@ -4,7 +4,7 @@ Arch Linux 配置步骤
 
 ```bash
 # 1. 安装启动 cloudflare-warp
-yay -S cloudflare-warp-bin
+paru -S cloudflare-warp-bin
 warp-cli --version
 sudo systemctl start warp-svc # or enable --now
 

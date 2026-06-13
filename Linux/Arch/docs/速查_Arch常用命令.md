@@ -49,8 +49,10 @@ sudo pacman -Scc # 彻底清空缓存（无法再降级软件包）
 ### 2.1 安装与更新
 
 ```bash
+paru                   # 等同于 paru -Syu
 paru -Syu              # 更新所有包（包括官方和 AUR）
 paru -S <package_name> # 从官方仓库或 AUR 安装软件包
+paru -Rns <package>    # 卸载包、依赖和配置文件
 ```
 
 ### 2.2 查询与搜索
@@ -59,13 +61,30 @@ paru -S <package_name> # 从官方仓库或 AUR 安装软件包
 paru -Ss <keyword>      # 同时在官方仓库和 AUR 中搜索
 paru -Qs <keyword>      # 在已安装的包中搜索（包括 AUR 包）
 paru -Si <package_name> # 显示软件包信息（包括 AUR 包）
+paru -Qi <package>      # 查看包信息
+paru -Ql <package>      # 列出包安装的文件
+paru -Qe                # 列出手动安装的包
+paru -Qtd               # 列出孤立依赖
+paru <package_name>     # 交互式搜索安装
+paru -Qua               # 列出可更新的 AUR 包
 ```
 
 ### 2.3 清理
 
 ```bash
-paru -Sc # 清理包构建文件和未使用的依赖
-paru -c  # 清理 AUR 构建缓存目录
+paru -Sc  # 清理包构建文件和未使用的依赖
+paru -c   # 清理 AUR 构建缓存目录（移除不需要的 makedepends）
+paru -Scc # 彻底清空所有缓存（谨慎使用）
+```
+
+### 2.4 AUR 专用
+
+```bash
+paru -Pw           # 查看 Arch Linux 新闻
+paru -Ps           # 查看系统包统计（AUR 包数量、大小等）
+paru -G <package>  # 下载 PKGBUILD 到当前目录（不安装）
+paru -Gp <package> # 打印 PKGBUILD 到终端
+paru -Syu --devel  # 更新时也检查 -git/-svn 开发包
 ```
 
 # 系统与服务管理

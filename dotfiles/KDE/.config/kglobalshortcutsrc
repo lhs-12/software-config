@@ -321,3 +321,12 @@ _launch=F1
 
 [services][pinpic-stitch.desktop]
 _launch=Shift+F1
+
+[splayer]
+3D07C133B595025DD56D02E3703CDEA5-Ctrl+Shift+Down=,Ctrl+Shift+Down,SPlayer shortcut: Ctrl+Shift+Down
+3E8EA47A8325834AF170EFA8F8F504DE-Ctrl+Shift+Space=,Ctrl+Shift+Space,SPlayer shortcut: Ctrl+Shift+Space
+53F7FDE0F89AF3FE460B34FDAC0FBE6E-Ctrl+Shift+Left=,Ctrl+Shift+Left,SPlayer shortcut: Ctrl+Shift+Left
+62264387C480FFD28F332FCBA61D8D78-Ctrl+Shift+Right=,Ctrl+Shift+Right,SPlayer shortcut: Ctrl+Shift+Right
+9BE8B60BB3B62BCEBDE5299ADEEB5742-Ctrl+Shift+D=,Ctrl+Shift+D,SPlayer shortcut: Ctrl+Shift+D
+EC4854F64184E127E9987B83FD0B7C00-Ctrl+Shift+Up=,Ctrl+Shift+Up,SPlayer shortcut: Ctrl+Shift+Up
+_k_friendly_name=SPlayer
