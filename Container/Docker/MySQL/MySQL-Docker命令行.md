@@ -1,8 +1,8 @@
 # MySQL(单节点)
 
-如果使用了WSL2的mirrored网络模式, 客户端连接的时候要加ssl参数, 不然很慢
+如果使用了WSL2的mirrored网络模式, navicat客户端连接的时候要勾选ssl参数, 不然很慢
 ```
-docker pull mysql:5.7
+docker pull percona/percona-server:5.7
 
 docker run -itd ^
 --name mysql5.7 ^
