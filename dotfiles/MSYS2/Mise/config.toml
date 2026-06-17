@@ -19,5 +19,7 @@ oxfmt  = "latest"
 oxlint = "latest"
 
 [settings]
+minimum_release_age = "24h" # s=秒 m=分 h=时 d=天 w=周 mo=月 y=年, "0s"禁用
+minimum_release_age_excludes = ["pi", "claude"]
 rust.default_host = "x86_64-pc-windows-gnu" # 默认编译目标设为 GNU, 省去安装 Visual Studio Build Tools
 idiomatic_version_file_enable_tools = ["java", "node", "pnpm", "rust"]
