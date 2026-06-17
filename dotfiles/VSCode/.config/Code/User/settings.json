@@ -59,6 +59,5 @@
   "github.copilot.enable": /*oxfmt-ignore*/ {
     "*": false, "plaintext": false, "markdown": false, "scminput": false
   },
-  // Diff
   "diffEditor.hideUnchangedRegions.enabled": true,
 }

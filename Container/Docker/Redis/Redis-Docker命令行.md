@@ -1,4 +1,4 @@
-<h1><center>Redis-Dokcer命令行</center></h1>
+<h1><center>Redis-Docker命令行</center></h1>
 
 # 事前准备
 

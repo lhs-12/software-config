@@ -100,7 +100,7 @@ class ImageStitcher:
 
 
 class StitchPanel(QWidget):
-    shotCompleted = pyqtSignal()
+    shot_completed = pyqtSignal()
 
     def __init__(self, on_shot, on_done):
         super().__init__()
@@ -108,7 +108,7 @@ class StitchPanel(QWidget):
         self.on_done = on_done
         self.busy = False
         self.stitcher = ImageStitcher()
-        self.shotCompleted.connect(self._on_shot_done)
+        self.shot_completed.connect(self._on_shot_done)
 
         self.setWindowTitle("pinpic-stitch")
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint)
@@ -119,7 +119,7 @@ class StitchPanel(QWidget):
         self.shot_r = QRectF(8, 92, 48, 34)
         self.done_r = QRectF(8, 134, 48, 34)
 
-    def paintEvent(self, event):
+    def paintEvent(self, event):  # noqa: N802
         p = QPainter(self)
         p.setRenderHint(QPainter.RenderHint.Antialiasing)
         bg = QColor(PALETTE["bg"])
@@ -147,7 +147,7 @@ class StitchPanel(QWidget):
             p.drawText(QRectF(self.info_r), Qt.AlignmentFlag.AlignCenter, "等待\n截图")
         p.end()
 
-    def mousePressEvent(self, event):
+    def mousePressEvent(self, event):  # noqa: N802
         pos = event.position()
         if self.shot_r.contains(pos) and not self.busy:
             self.busy = True
@@ -195,7 +195,7 @@ class StitchApp:
             finally:
                 if os.path.exists(path):
                     os.unlink(path)
-                self.panel.shotCompleted.emit()
+                self.panel.shot_completed.emit()
 
         threading.Thread(target=run, daemon=True).start()
 

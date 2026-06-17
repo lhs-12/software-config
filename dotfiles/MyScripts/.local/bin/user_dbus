@@ -20,18 +20,18 @@ class YdotoolInterface(ServiceInterface):
         super().__init__("org.user.services.ydotool")  # interface name
 
     @method()
-    def Key(self, sequence: "s") -> "b":  # type: ignore # noqa: F821,UP037
+    def Key(self, sequence: "s") -> "b":  # type: ignore # noqa: F821,N802,UP037
         """执行 ydotool key 命令"""
         try:
             # shlex.split 安全拆分参数
-            cmd = ["ydotool", "key"] + shlex.split(sequence)
+            cmd = ["ydotool", "key", *shlex.split(sequence)]
             subprocess.run(cmd, check=True)
             return True
         except Exception:
             return False
 
     @method()
-    def Type(self, text: "s") -> "b":  # type: ignore # noqa: F821,UP037
+    def Type(self, text: "s") -> "b":  # type: ignore # noqa: F821,N802,UP037
         """执行 ydotool type 命令"""
         try:
             subprocess.run(["ydotool", "type", text], check=True)
