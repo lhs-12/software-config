@@ -1,5 +1,6 @@
 {
   "files.associations": {
+    "*.svg": "html",
     "**/*.{desktop,service}": "ini",
     "**/dotfiles/Btop/.config/btop/**/*.theme": "ini",
     "**/dotfiles/Fcitx5/.config/fcitx5/{config,profile}": "ini",
