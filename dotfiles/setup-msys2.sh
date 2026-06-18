@@ -1,6 +1,7 @@
 #!/usr/bin/bash
 set -Eeuo pipefail
 cd "$(dirname "$0")"
+BASE_DIR="$PWD"
 
 # 确保在 MSYS2 UCRT64 环境中运行
 if [[ -z "${MSYSTEM:-}" || "${MSYSTEM}" != "UCRT64" ]]; then
@@ -26,6 +27,27 @@ declare -A OPTIONAL_VARS
 OPTIONAL_VARS["git_proxy"]=""     # 设置 Git 代理地址, 比如 http://127.0.0.1:10808
 OPTIONAL_VARS["github_token"]=""  # 设置 GITHUB_TOKEN, 用于解决 Github 访问限流(更建议放 Windows 用户环境变量)
 # ===== 配置区域: 结束 =====
+
+# 安全创建符号链接函数
+safe_ln() {
+    local src="$1" dst="$2"
+    [[ ! -e "$src" ]] && { echo "ERROR: $src 不存在"; return 1; }
+    [[ -e "$dst" || -L "$dst" ]] && { echo "WARN: $dst 已存在, 跳过"; return 0; }
+    mkdir -p "$(dirname "$dst")"
+    ln -s "$src" "$dst" && echo "OK: $dst"
+}
+safe_ln_each() {
+    local src_dir="$1" dst_dir="$2"
+    [[ ! -d "$src_dir" ]] && { echo "ERROR: $src_dir 不存在"; return 1; }
+    mkdir -p "$dst_dir"
+    find "$src_dir" -type f | while read -r src; do
+        local rel="${src#$src_dir/}"
+        safe_ln "$src" "$dst_dir/$rel" || true
+    done
+}
+
+# 设置 MSYS2 环境变量以支持原生符号链接
+export MSYS=winsymlinks:nativestrict
 
 # 检查必填参数
 for param in "${!REQUIRED_VARS[@]}"; do
@@ -126,43 +148,45 @@ echo "Installing Mise..."
 curl -L -o mise.zip $(curl -s "${CURL_GH_AUTH[@]}" https://api.github.com/repos/jdx/mise/releases/latest | \
 jq -r '.assets[] | select(.name | test("windows-x64.zip$")) | .browser_download_url' | tr -d '\r') \
 && unzip -q mise.zip -d /tmp/mise && cp /tmp/mise/mise/bin/mise*.exe "$HOME/.local/bin/" && rm -rf mise.zip /tmp/mise
-# 复制 Mise 配置文件
-mkdir -p $HOME/.config/mise/ && cp -r ./MSYS2/Mise/* $HOME/.config/mise/
-# 复制 Aube 配置文件
-mkdir -p $HOME/.config/aube/ && cp -r ./MSYS2/Aube/* $HOME/.config/aube/
+# Mise 配置
+safe_ln "$BASE_DIR/MSYS2/Mise/config.toml" "$HOME/.config/mise/config.toml"
+# Aube 配置
+safe_ln "$BASE_DIR/MSYS2/Aube/config.toml" "$HOME/.config/aube/config.toml"
 # 根据 Mise 配置文件安装工具
 $HOME/.local/bin/mise upgrade
 
 # ===== 复制配置文件 =====
-# Rime
-mkdir -p $APPDATA/Rime && cp -r ./Rime-Ice/.local/share/fcitx5/rime/* $APPDATA/Rime
-# WezTerm
-cp ./WezTerm/.wezterm.lua $HOME
+
+# --- cp 配置(有运行时文件或需要额外修改的) ---
 # Pictures
 cp ./Pictures/Pictures/Wallpapers/* "$HOME/Pictures/Camera Roll"
-# Shell: Bash + Fish + PowerShell + Pwsh
-cp ./MSYS2/Bash/.bash* $HOME
-cp -r ./MSYS2/Fish/.config/fish $HOME/.config/
-cp -r ./MSYS2/PowerShell5/WindowsPowerShell $HOME/Documents
-cp -r ./MSYS2/Pwsh/PowerShell $HOME/Documents
-# OhMyPosh
-cp ./OhMyPosh/.om-posh.json $HOME
-# FastFetch
-cp -r ./FastFetch/.config/fastfetch $HOME/.config
-# Yazi
-mkdir -p $APPDATA/yazi/config && cp -r ./Yazi/.config/yazi/* $APPDATA/yazi/config/
-# LazyVim
-cp -r ./LazyVim/.config/nvim $LOCALAPPDATA
-# Jetbrains
-cp ./Jetbrains/.ideavimrc $HOME
 # VSCode
 mkdir -p $APPDATA/Code/User
 cp ./VSCode/.config/Code/User/keybindings.json $APPDATA/Code/User/
 cp ./VSCode/.config/Code/User/settings.json $APPDATA/Code/User/
+
+# --- ln -s 配置 ---
+# Rime
+safe_ln_each "$BASE_DIR/Rime-Ice/.local/share/fcitx5/rime" "$APPDATA/Rime"
+# WezTerm
+safe_ln "$BASE_DIR/WezTerm/.wezterm.lua" "$HOME/.wezterm.lua"
+# Shell: Bash + Fish + PowerShell + Pwsh
+safe_ln_each "$BASE_DIR/MSYS2/Bash" "$HOME"
+safe_ln "$BASE_DIR/MSYS2/Fish/.config/fish" "$HOME/.config/fish"
+safe_ln "$BASE_DIR/MSYS2/PowerShell5/WindowsPowerShell" "$HOME/Documents/WindowsPowerShell"
+safe_ln "$BASE_DIR/MSYS2/Pwsh/PowerShell" "$HOME/Documents/PowerShell"
+# OhMyPosh
+safe_ln "$BASE_DIR/OhMyPosh/.om-posh.json" "$HOME/.om-posh.json"
+# FastFetch
+safe_ln "$BASE_DIR/FastFetch/.config/fastfetch" "$HOME/.config/fastfetch"
+# Yazi
+safe_ln "$BASE_DIR/Yazi/.config/yazi" "$APPDATA/yazi/config"
+# LazyVim
+safe_ln "$BASE_DIR/LazyVim/.config/nvim" "$LOCALAPPDATA/nvim"
+# Jetbrains
+safe_ln "$BASE_DIR/Jetbrains/.ideavimrc" "$HOME/.ideavimrc"
 # Ruff
-cp -r ./Ruff/.config/ruff $APPDATA
-# AutoHotkey(废弃, 用 Kanata 替代, Kanata 手动配置, 不在脚本操作)
-# cp ./AutoHotkey/CapsLock+.ahk "$APPDATA/Microsoft/Windows/Start Menu/Programs/Startup/"
+safe_ln "$BASE_DIR/Ruff/.config/ruff" "$APPDATA/ruff"
 
 echo "MSYS2 Setup Done."
 exit 0

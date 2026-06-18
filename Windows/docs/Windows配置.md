@@ -89,9 +89,13 @@ Z-Library + Koodo-Reader
 8. 立即使用: 右键点击运行任务计划程序库中的 Kanata 任务
 
 > 废弃:  
-> AutoHotkey (也能用, 有些小问题): 安装 AutoHotkey 软件, 将 CapsLock+.ahk 放 Startup 目录即可
+> AutoHotkey(不稳定): 安装软件并将配置文件 CapsLock+.ahk 放 `$APPDATA/Microsoft/Windows/Start Menu/Programs/Startup/`
 
 # 开发环境
+
+## 系统设置
+
+`Windows 设置` -> `系统` -> `高级` -> `开发者选项` -> 打开 `开发人员模式` (让普通用户也可以创建 Symbolic Link)
 
 ## 开发相关软件
 
