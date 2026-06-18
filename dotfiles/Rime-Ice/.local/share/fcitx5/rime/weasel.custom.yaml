@@ -19,7 +19,7 @@ patch:
       vim_mode: true
   # 主题设置
   style/color_scheme: steam # 默认配色方案
-  style/font_face: "MiSans, MiSans L3, Segoe UI Emoji, Noto Color Emoji" # 字体
+  style/font_face: "Segoe UI Emoji:23:23, Segoe UI Emoji:2a:2a, Segoe UI Emoji:30:39, Segoe UI Emoji:fe0f:fe0f, Segoe UI Emoji:20e3:20e3, MiSans, MiSans L3, Segoe UI Emoji, Noto Color Emoji" # 全局字体
   style/label_font_face: "MiSans, MiSans L3"    # 标签字体
   style/comment_font_face: "MiSans, MiSans L3"  # 注释字体
   style/font_point: 12          # 全局字体字号

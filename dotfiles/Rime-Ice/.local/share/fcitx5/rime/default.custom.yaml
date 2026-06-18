@@ -1,5 +1,5 @@
 patch:
-  __include: rime_ice_suggestion:/  # used in Arch Linux only
+  __include: rime_ice_suggestion:/  # 只在 Arch Linux 用, 在 Windows 重新部署的时候记得删掉
 
   schema_list:
     - schema: double_pinyin_flypy # 小鹤双拼
