@@ -63,7 +63,9 @@ Z-Library + Koodo-Reader
 
 1. 下载[RIME输入法](https://github.com/rime/weasel)
 2. git clone [雾凇拼音](https://github.com/iDvel/rime-ice) 到 RIME 用户目录
-3. 将配置文件放进 RIME 用户目录
+3. 将配置文件放进 RIME 用户目录 (可通过脚本软链接过去)
+
+> 注意输入法重新部署的时候要删掉 `default.custom.yaml` 里的 Arch Linux 特别配置
 
 # 改键
 
