@@ -25,4 +25,4 @@ minimum_release_age_excludes = ["pi", "claude"]
 rust.default_host = "x86_64-pc-windows-gnu" # 默认编译目标设为 GNU, 省去安装 Visual Studio Build Tools
 idiomatic_version_file_enable_tools = ["java", "node", "pnpm", "rust"]
 
-# Windows 下, mise upgrade 可能没清理掉旧版本工具, 可执行 mise prune 手动清理
+# 有时候 mise upgrade 可能没清理掉旧版本工具, 可执行 mise prune 手动清理
