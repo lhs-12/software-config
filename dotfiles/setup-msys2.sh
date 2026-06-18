@@ -17,8 +17,14 @@ if ! grep -qE '^[[:space:]]*db_home:[[:space:]]+windows' /etc/nsswitch.conf 2>/d
   exit 1
 fi
 
-# !!! 需要先在 Windows 系统设置中开启 "开发人员模式" 以支持符号链接 !!!
-# 设置 MSYS2 环境变量以支持原生符号链接
+# 检查 Windows 开发者模式开启, 并设置 MSYS2 环境变量, 以支持原生符号链接
+dev_mode=$(powershell.exe -Command \
+  '(Get-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\AppModelUnlock).AllowDevelopmentWithoutDevLicense' \
+  2>/dev/null | tr -d '\r')
+if [[ "$dev_mode" != "1" ]]; then
+  echo "Error: Windows Developer Mode is not enabled. Please enable it in Windows Settings > System > Advanced > Developer Mode" >&2
+  exit 1
+fi
 export MSYS=winsymlinks:nativestrict
 
 # ===== 配置区域: 开始 =====
