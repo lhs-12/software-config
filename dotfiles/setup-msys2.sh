@@ -17,6 +17,10 @@ if ! grep -qE '^[[:space:]]*db_home:[[:space:]]+windows' /etc/nsswitch.conf 2>/d
   exit 1
 fi
 
+# !!! 需要先在 Windows 系统设置中开启 "开发人员模式" 以支持符号链接 !!!
+# 设置 MSYS2 环境变量以支持原生符号链接
+export MSYS=winsymlinks:nativestrict
+
 # ===== 配置区域: 开始 =====
 # 必填参数
 declare -A REQUIRED_VARS
@@ -45,9 +49,6 @@ safe_ln_each() {
         safe_ln "$src" "$dst_dir/$rel" || true
     done
 }
-
-# 设置 MSYS2 环境变量以支持原生符号链接
-export MSYS=winsymlinks:nativestrict
 
 # 检查必填参数
 for param in "${!REQUIRED_VARS[@]}"; do
