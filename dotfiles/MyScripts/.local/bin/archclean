@@ -132,7 +132,7 @@ fi
 # 6. Check AUR Helper
 # ------------------------------
 { command -v paru &>/dev/null && AUR_HELPER=paru; } ||
-{ command -v yay  &>/dev/null && AUR_HELPER=yay; } ||
+{ command -v yay  &>/dev/null && AUR_HELPER=yay;  } ||
 _error "$MSG_NO_HELPER"
 
 # ------------------------------
