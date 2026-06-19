@@ -1,5 +1,7 @@
 patch:
-  __include: rime_ice_suggestion:/  # 只在 Arch Linux 用, 在 Windows 重新部署的时候记得删掉
+  # Arch Linux 的 AUR 安装, 会把 default.yaml 改名并安装为 rime_ice_suggestion.yaml, 需要 __include 引入
+  # 其他非 AUR 安装的情况: 需要注释掉此行, 或加一个空 patch 文件(rime_ice_suggestion.yaml, 内容仅有patch:), 否则配置会错乱
+  __include: rime_ice_suggestion:/
 
   schema_list:
     - schema: double_pinyin_flypy # 小鹤双拼

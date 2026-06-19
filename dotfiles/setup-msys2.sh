@@ -164,7 +164,8 @@ $HOME/.local/bin/mise upgrade
 
 # ===== 复制配置文件 =====
 
-# --- cp 配置(有运行时文件或需要额外修改的) ---
+# --- cp 配置(适用于需要额外修改或不常改动的配置文件) ---
+
 # Pictures
 cp ./Pictures/Pictures/Wallpapers/* "$HOME/Pictures/Camera Roll"
 # VSCode
@@ -173,8 +174,15 @@ cp ./VSCode/.config/Code/User/keybindings.json $APPDATA/Code/User/
 cp ./VSCode/.config/Code/User/settings.json $APPDATA/Code/User/
 
 # --- ln -s 配置 ---
+
 # Rime
 safe_ln_each "$BASE_DIR/Rime-Ice/.local/share/fcitx5/rime" "$APPDATA/Rime"
+# 适配 default.custom.yaml 中的 __include: rime_ice_suggestion:/ 引用(AUR 特殊配置)
+# 前提: rime-ice 通过 git clone 安装到 $APPDATA/Rime
+# 处理: 放一个空 patch 文件, 并排除git跟踪
+echo 'patch:' > "$APPDATA/Rime/rime_ice_suggestion.yaml"
+echo 'rime_ice_suggestion.yaml' >> "$APPDATA/Rime/.git/info/exclude"
+
 # WezTerm
 safe_ln "$BASE_DIR/WezTerm/.wezterm.lua" "$HOME/.wezterm.lua"
 # Shell: Bash + Fish + PowerShell + Pwsh
