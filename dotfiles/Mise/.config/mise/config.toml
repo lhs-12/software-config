@@ -2,6 +2,7 @@
 aube      = "latest" # aube自动代替npm作为包管理器, 用 mise use -g 代替 npm install -g
 usage     = "latest"
 pitchfork = "latest"
+gh        = "latest"
 
 pi       = "latest"
 claude   = "latest"
