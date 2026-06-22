@@ -4,9 +4,12 @@ usage     = "latest"
 pitchfork = "latest"
 
 # Windows 的 PI 需要在 ~/.pi/agent/settings.json 配置 Shell 路径
-# 选择建议: pwsh 兼容性更好 ; bash 命令更实用, 但执行某些 Windows 程序(比如 winget)命令可能有 bug
-#   pwsh配置: "shellPath": "C:/Program Files/PowerShell/7/pwsh.exe"
-#   bash配置: "shellPath": "C:/msys64/usr/bin/bash.exe"
+# 选择建议: pwsh 执行命令兼容性更好 ; bash 命令更实用, 但执行某些 Windows 程序(比如 winget)命令可能有 bug
+#   bash配置:
+#       "shellPath": "C:/msys64/usr/bin/bash.exe"
+#   pwsh配置(额外设置 UTF8 编码防止乱码):
+#       "shellPath": "C:/Program Files/PowerShell/7/pwsh.exe"
+#       "shellCommandPrefix": "[Console]::OutputEncoding = [Text.Encoding]::UTF8; "
 pi     = "latest"
 claude = "latest"
 "npm:skills" = "latest"

@@ -54,6 +54,7 @@ wsl --manage archlinux --set-default-user 用户名
 > 查看虚拟化是否开启: 任务管理器 → 性能 → CPU → 虚拟化：已启用
 
 参考:
+
 1. [WSL安装](https://learn.microsoft.com/zh-cn/windows/wsl/install)
 2. [WSL网络](https://learn.microsoft.com/zh-cn/windows/wsl/networking#mirrored-mode-networking)
 3. [WSL文档源码](https://github.com/MicrosoftDocs/WSL)
@@ -122,7 +123,7 @@ TLS ClientHello 包较大(1200-1800 bytes), TUN 的 MTU 过大会导致丢包.
 
 [参考](https://github.com/microsoft/wslg/issues/530#issuecomment-2628240995)
 
-# Arch Linux
+# Arch Linux 配置
 
 ```bash
 # 进入 Arch WSL
@@ -143,6 +144,8 @@ useradd -m -g wheel 用户名
 passwd 用户名
 # 启用 sudo 权限
 sed -i 's/# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/' /etc/sudoers
+# 生成 locale
+sudo locale-gen en_US.UTF-8
 # 禁用 Windows PATH 注入, 手动添加需要的路径
 sudo bash -c 'cat >> /etc/wsl.conf << EOF
 [interop]
@@ -159,8 +162,6 @@ wsl --shutdown
 wsl --manage archlinux --set-default-user 用户名
 # 重新启动 WSL
 wsl
-# 生成 locale
-sudo locale-gen en_US.UTF-8
 # 安装基本包
 sudo pacman -S base-devel wget git neovim
 # 安装 Docker

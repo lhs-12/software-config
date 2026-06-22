@@ -1,0 +1,22 @@
+# docker run -itd \
+#   --name mysql \
+#   -p 3306:3306 \
+#   -v ~/data-container/docker/mysql57-single:/var/lib/mysql \
+#   -v ./my.cnf:/etc/mysql/my.cnf \
+#   -e MYSQL_ROOT_PASSWORD=root \
+#   mysql:5.7
+
+# 注意：MySQL 会忽略具有任意操作权限的配置文件，需设置为只读
+# Linux: chmod 444 my.cnf
+# Windows: 右键 my.cnf → 属性 → 勾选“只读”
+
+services:
+  mysql:
+    image: mysql:5.7
+    ports:
+      - "3306:3306"
+    volumes:
+      - "~/data-container/docker/mysql57-single:/var/lib/mysql"
+      - "./my.cnf:/etc/mysql/my.cnf"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
