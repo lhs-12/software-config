@@ -2,300 +2,172 @@
 
 # 常用命令
 
-```
-查看运行状态
+安装
+
+```sh
+# 升级 WSL
+wsl --update
+# 查看可安装的发行版
+wsl -l -o
+# 安装
+wsl --install [DistributionName]
+# 查看拥有的发行版
+wsl -l
+# 查看运行状态
 wsl -l -v
-查看拥有的发行版
-wsl --list
-设置默认启动的发行版
-wslconfig /setdefault [发行版名称, 如CentOS7]
-注销发行版
-wsl --unregister [发行版名称]
+# 设置默认启动的发行版
+wsl -s [DistributionName]
+# 注销发行版
+wsl --unregister [DistributionName]
+```
+
+备份/恢复/迁移
+
+```sh
+# vhdx: 虚拟硬盘镜像, 体积大, 适合本地快速备份恢复
+# wsl --export <DistributionName> <FileName.vhdx> --vhd
+# wsl --import-in-place <DistributionName> <FileName.vhdx>
+wsl --export archlinux "D:\ProgramData\wsl-data\archlinux.vhdx" --vhd
+wsl --import-in-place archlinux "D:\ProgramData\wsl-data\archlinux.vhdx"
+
+# tar: 压缩归档, 体积小, 适合跨机器迁移
+# wsl --export <DistributionName> <FileName.tar>
+# wsl --import <DistributionName> <InstallLocation> <FileName.tar> --version 2
+wsl --export archlinux "D:\ProgramData\wsl-data\archlinux.tar"
+wsl --import archlinux "D:\WSL\archlinux" "D:\ProgramData\wsl-data\archlinux.tar" --version 2
+
+# 迁移步骤: 导出 -> 注销原发行版 -> 导入 -> 重新设置默认登录用户
+wsl --export archlinux "D:\ProgramData\wsl-data\archlinux.vhdx" --vhd
+wsl --unregister archlinux
+wsl --import-in-place archlinux "D:\ProgramData\wsl-data\archlinux.vhdx"
+wsl --manage archlinux --set-default-user 用户名
 ```
 
 # 安装
 
-根据官方文档,使用 wsl 命令配置前置环境
+## 前置条件
 
-> 参考文档：https://learn.microsoft.com/zh-cn/windows/wsl/networking#mirrored-mode-networking
+1. 系统版本达到 Windows 11 以上
+2. BIOS 启用虚拟化(Intel VT-x / AMD-V), 大部分电脑已默认开启
 
----
+> 查看 Windows 系统版本: `Win + R` 输入 `winver`  
+> 查看虚拟化是否开启: 任务管理器 → 性能 → CPU → 虚拟化：已启用
 
-新建配置文件: `%HOMEPATH%/.wslconfig`  
-参考官方文档进行配置, 注意版本(如有需要, 使用 `wsl --update` 升级)
+参考:
+1. [WSL安装](https://learn.microsoft.com/zh-cn/windows/wsl/install)
+2. [WSL网络](https://learn.microsoft.com/zh-cn/windows/wsl/networking#mirrored-mode-networking)
+3. [WSL文档源码](https://github.com/MicrosoftDocs/WSL)
+
+## 编写 WSL 配置
+
+查看最新的配置文档, 编写配置文件: `%HOMEPATH%/.wslconfig`
+
+> 使用镜像网络模式, win 和 wsl 可互相通过 localhost 访问
 
 ```toml
 [wsl2]
-networkingMode=mirrored # mirrored 网络模式, win和wsl可互相通过localhost访问
-autoProxy=false
+networkingMode=mirrored
 dnsTunneling=true
+autoProxy=false
 firewall=true
 [experimental]
-autoMemoryReclaim=dropcache
+hostAddressLoopback=true
+autoMemoryReclaim=dropCache
 sparseVhd=true
 ```
 
+## 安装发行版
+
+以 Arch Linux 为例
+
+- 建议先更新到最新版 WSL: `wsl --update`
+- 查看可安装的 Linux 发行版: `wsl -l -o`
+- 执行安装: `wsl --install -d archlinux`
+- 指定默认使用: `wsl -s archlinux`
+- 启动: `wsl -d archlinux`
+
+# 使用技巧
+
+## 网络代理
+
+使用系统代理的时候, 仅在 `~/.bashrc` 中配置了系统代理端口的设置是不够的,  
+因为 WSL 启动时是 login shell, 它默认读取的是 `~/.bash_profile`,  
+因此 `~/.bash_profile` 中需要存在: `[[ -f ~/.bashrc ]] && . ~/.bashrc`
+
 ---
 
-安装发行版, 以 FedoraLinux-42 为例
+使用 v2rayN 的 TUN 网络时,  
+建议 core 类型选 singbox, MTU 调至 1408,  
+原因:  
+TLS ClientHello 包较大(1200-1800 bytes), TUN 的 MTU 过大会导致丢包.  
+表现为 WSL 的 HTTPS 连接可能超时, 而 HTTP 正常
 
-- 查看可安装的 Linux 发行版: `wsl --list --online`
-- 执行安装: `wsl --install -d FedoraLinux-42`
-- 指定默认使用: `wsl -s FedoraLinux-42`
-- 启动: `wsl -d FedoraLinux-42`
-- 配置用户名 (可选配置密码: `sudo passwd [用户名]`)
+---
 
-> 也可以 Github 搜索下载 Linux-WSL 发行版(.appx 文件), 改后缀为 zip 解压到指定目录并打开
+使用 FlClash 之类的 Mihomo 的 TUN 代理时,  
+把 "DNS 模式" 从 `Fake-IP` 改为 `Redir-Host`,  
+原因: FlClash 的排除规则会排除 WSL 的流量, Fake-IP 被排除后不处理导致超时
 
-# 配置网络代理
+## VSCode 编辑调试 WSL 项目
 
-配置 v2rayN:
+> Windows 的硬盘挂载在了 WSL 系统的 `/mnt` 目录下
 
-1. 设置 -> 基础设置 -> 勾选"允许来自局域网的连接"
-2. 注意确保防火墙中允许 V2ray 进行公用和专用网络的访问
+> 由于 Windows 和 Linux 的文件行尾不一致, Git 会报一堆文件修改,  
+> 可通过 `.gitattributes` 或命令禁用 Git 行尾转换解决, 具体参考 WSL 文档
 
-进入 WSL
+1. Windows 下的 VSCode 添加环境变量即可(别在 Linux 里面装 VSCode)
+2. 在 VSCode 内通过 WSL 插件访问目录, 或在 Linux 目录执行 `code .` 启动
 
-- 修改配置: `vi ~/.bashrc`
-- 使配置生效: `source ~/.bashrc`
-- 执行`proxy`和`unproxy`实现代理开关
+## GUI 应用边框问题
 
-```bash
-# proxy setting
-# export hostip=$(ip route | grep default | awk '{print $3}')
-export hostip=127.0.0.1
-export hostport=10808
-alias proxy='
-    export HTTPS_PROXY="http://${hostip}:${hostport}";
-    export HTTP_PROXY="http://${hostip}:${hostport}";
-    export ALL_PROXY="http://${hostip}:${hostport}";
-    git config --global http.proxy "http://${hostip}:${hostport}";
-    git config --global https.proxy "http://${hostip}:${hostport}";
-    sudo sed -i "/proxy=http:/d" /etc/dnf/dnf.conf;
-    echo -e "proxy=http://${hostip}:${hostport}" | sudo tee -a /etc/dnf/dnf.conf > /dev/null;
-'
-alias unproxy='
-    unset HTTPS_PROXY;
-    unset HTTP_PROXY;
-    unset ALL_PROXY;
-    git config --global --unset http.proxy;
-    git config --global --unset https.proxy;
-    sudo sed -i "/proxy=http:/d" /etc/dnf/dnf.conf;
-'
-```
+[参考](https://github.com/microsoft/wslg/issues/530#issuecomment-2628240995)
 
-WSL 启动时是登录 shell（login shell），它默认读取 ~/.bash_profile，而不是 ~/.bashrc。
+# Arch Linux
 
 ```bash
-if [ -f ~/.bashrc ]; then
-    source ~/.bashrc
-fi
-```
-
-验证代理情况:
-
-- `env | grep -E 'hostip|hostport|HTTP_PROXY|HTTPS_PROXY|ALL_PROXY'`
-- `alias | grep -E 'proxy|unproxy'`
-- `git config --global --get http.proxy`
-
-对于Chrome, 加参数: `chromium-browser --proxy-server=localhost:10808`
-
-# 安装配置
-
-```sh
-# 打开Docker Desktop, 设置WSL集成
-
-# 可参考 https://kskroyal.com/10-important-things-to-do-right-after-installing-fedora-40/
-
-# 设置真彩色
-echo 'export COLORTERM=truecolor' >> ~/.bashrc
-# 更新仓库元数据
-sudo dnf makecache
-# 更新所有包
-sudo dnf upgrade -y
-# 安装常用包
-sudo dnf install -y @core development-tools gcc-c++ net-tools git tldr --exclude=plymouth*
-# 取消软件边框修改参考: https://github.com/microsoft/wslg/issues/530#issuecomment-2628240995
-sudo dnf install -y fontconfig gnome-text-editor nautilus libglvnd-gles chromium
-# 安装字体
-sudo dnf install -y google-noto-sans-mono-cjk-vf-fonts
-sudo mkdir -p /usr/share/fonts/sarasa
-sudo find /mnt/c/Windows/Fonts -name "*Sarasa*" -exec cp {} /usr/share/fonts/sarasa \;
-sudo chown -R root: /usr/share/fonts/sarasa
-sudo chmod 644 /usr/share/fonts/sarasa/*
-sudo restorecon -vFr /usr/share/fonts/sarasa
-sudo fc-cache -fv
-# 安装mise(多语言版本控制)
+# 进入 Arch WSL
+wsl
+# Pacman 显示下载进度
+sudo sed -i 's/^NoProgressBar/# NoProgressBar/' /etc/pacman.conf
+sudo sed -i 's/^#Color/Color/' /etc/pacman.conf
+# 换镜像源
+cat > /etc/pacman.d/mirrorlist << 'EOF'
+Server = https://mirrors.tuna.tsinghua.edu.cn/archlinux/$repo/os/$arch
+Server = https://mirrors.cloud.tencent.com/archlinux/$repo/os/$arch
+EOF
+# 更新密钥环并初始化
+pacman -Sy archlinux-keyring
+pacman -Syyu
+# 创建普通用户
+useradd -m -g wheel 用户名
+passwd 用户名
+# 启用 sudo 权限
+sed -i 's/# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/' /etc/sudoers
+# 禁用 Windows PATH 注入, 手动添加需要的路径
+sudo bash -c 'cat >> /etc/wsl.conf << EOF
+[interop]
+appendWindowsPath=false
+EOF'
+# PATH 去重注入函数
+echo 'append_path(){ case ":$PATH:" in *:"$1":*) ;; *) PATH="${PATH:+$PATH:}$1" ;; esac; }' >> ~/.bashrc
+# 注入 Path: VSCode
+echo 'append_path "/mnt/c/Users/L/AppData/Local/Programs/Microsoft VS Code/bin"' >> ~/.bashrc
+# 退出 WSL
+exit
+wsl --shutdown
+# 设置 WSL 默认登录用户
+wsl --manage archlinux --set-default-user 用户名
+# 重新启动 WSL
+wsl
+# 生成 locale
+sudo locale-gen en_US.UTF-8
+# 安装基本包
+sudo pacman -S base-devel wget git neovim
+# 安装 Docker
+sudo pacman -S docker docker-compose
+sudo systemctl enable --now docker
+sudo usermod -aG docker $USER
+# 安装 Mise
 curl https://mise.run | sh
 echo 'eval "$(~/.local/bin/mise activate bash)"' >> ~/.bashrc
-source ~/.bashrc
 ```
-
-# 输入法
-
-```sh
-sudo dnf install fcitx5 fcitx5-rime fcitx5-configtool
-
-vi ~/.bashrc # 修改内容
-export INPUT_METHOD=fcitx
-export GTK_IM_MODULE=fcitx
-export QT_IM_MODULE=fcitx
-export XMODIFIERS=@im=fcitx
-source ~/.bashrc
-
-cd ~/.local/share/fcitx5/rime
-sudo cp -r /mnt/c/Users/L/AppData/Roaming/Rime/* .
-rm -rf ./build
-
-fcitx5 --disable=wayland & # 启动
-fcitx5-configtool # 输入法选项框添加Rime
-fcitx5-remote -r # 重置
-pkill fcitx5
-fcitx5 --disable=wayland &
-fcitx5-diagnose # Rime不生效的时候用
-```
-
-# GUI 应用无边框
-
-对于 JetBrains 系列产品, 可增加 VM 参数解决: `-Dawt.toolkit.name=WLToolkit`
-
-通用方案:  
-执行: `sudo dnf install -y wmctrl xdotool xorg-x11-utils`  
-保存脚本: `vi ~/fullscreen.sh`, 执行`~/fullscreen.sh [应用名]`
-
-```bash
-#!/bin/bash
-# Check if any arguments were passed
-if [ $# -eq 0 ]; then
-  echo "Usage: $0 <window_name>"
-  exit 1
-fi
-# Use the passed argument as the window name
-window_name="$1"
-# Find all windows matching the window name
-window_ids=$(xdotool search --name "$window_name")
-# Check if any windows were found
-if [ -z "$window_ids" ]; then
-  echo "No windows found with the name '$window_name'"
-  exit 1
-fi
-# Loop through all found window IDs and perform the operations
-for window_id in $window_ids; do
-  echo "Processing window ID: $window_id"
-  # Remove window borders
-  xprop -id $window_id -f _MOTIF_WM_HINTS 32c -set _MOTIF_WM_HINTS "2, 0, 0, 0, 0"
-  # Set window to fullscreen
-  wmctrl -ir $window_id -b add,fullscreen
-done
-echo "All windows have been processed"
-```
-
-# 在 WSL 安装 Docker
-
-安装 docker 和 docker-compose
-
-```bash
-pacman -S --noconfirm docker docker-compose
-```
-
-配置 Docker 代理
-
-```bash
-# 1. 创建配置目录
-mkdir -p /etc/systemd/system/docker.service.d
-
-# 2. 写入代理配置文件
-cat > /etc/systemd/system/docker.service.d/http-proxy.conf << 'EOF'
-[Service]
-Environment="HTTP_PROXY=http://127.0.0.1:10808"
-Environment="HTTPS_PROXY=http://127.0.0.1:10808"
-Environment="NO_PROXY=localhost,127.0.0.1,【自己的docker仓库】"
-EOF
-
-# 3. 重新加载 systemd 配置
-systemctl daemon-reload
-
-# 4. 重启 Docker 服务
-systemctl restart docker
-
-# 5. 验证配置
-systemctl show --property=Environment docker
-```
-
-# VSCode 编辑调试 WSL 项目
-
-> Windows 的硬盘挂载在了 wsl 系统的`/mnt`目录下
-
-> 由于 Windows 和 Linux 的文件行尾不一致, Git 会报一堆文件修改,
-> 可通过`.gitattributes`或命令去禁用 Git 行尾转换解决, 具体操作参考 WSL 官方文档
-
-1. Windows 下的 VSCode 添加环境变量即可(别在 linux 里面装 VSCode)
-2. 在 VSCode 内通过 WSL 插件访问目录, 或在 linux 目录执行`code .`启动
-
-# 自制 WSL 发行版
-
-以 ArchLinux 为例
-
-- 去 github 下载 `LxRunOffline.exe` 放到 C 盘 system32 目录中
-- 去国内的源下载 `archlinux-bootstrap-yyyy.MM.dd-x86_64.tar.gz`
-- 安装发行版 `LxRunOffline i -n ArchLinux -f E:\archlinux-bootstrap-yyyy.MM.dd-x86_64.tar.gz -d E:\ArchLinux  -r root.x86_64`
-- 设置 wsl 版本 `wsl --set-version ArchLinux 2`
-- 删除网络配置 `wsl -d ArchLinux`, `rm /etc/resolv.conf`, `exit`
-- 重启 `wsl --shutdown ArchLinux`, `wsl -d ArchLinux`
-- 修改下载源
-
-> 现在已经有官方Arch镜像: https://github.com/yuk7/ArchWSL/  
-> 下载ArchWSL，然后安装 Arch.exe 即可
-
--
-
-```
-cd /etc/
-explorer.exe .
-
-修改pacman.conf,在文件最后加入
-[archlinuxcn]
-Server = https://mirrors.tuna.tsinghua.edu.cn/archlinuxcn/$arch
-
-进入下一级pacman.d目录,编辑mirrolist文件,把China的部分的注释去掉
-
-更新pacman
-pacman -Syy
-pacman-key --init
-pacman-key --populate
-pacman -S archlinuxcn-keyring
-
-安装基础包
-pacman -S base base-devel vi vim git wget glibc
-```
-
-- 修改密码`passwd`
-- 新建一个账户,作为常用的账户
-
-```
-useradd -m -G wheel -s /bin/bash l
-passwd l
-
-vim /etc/sudoers
-将'wheel ALL=(ALL) ALL'这行的注释去掉
-```
-
-- 获取用户 id`id -u <用户名>`, `exit`退出 Linux, 执行`lxrunoffline su -n ArchLinux -v <用户id>`
-
-# 备份WSL
-
-```bash
-# 备份
-# wsl --export 会自动停止 WSL, 然后把整个 WSL 容器打包成一个 tar 文件,
-# 包含所有配置文件/已安装的软件/用户的设置等.
-# 虽然有一些 socket 文件的警告(比如 gnupg 的 socket), 但这些都是运行时文件, 不影响备份完整性.
-wsl --export [wsl名称] "D:/arch-wsl-backup.tar"
-
-# 恢复
-# 参数含义: 指定名称 ; 解压目录 ; 备份文件 ; 设置 WSL version 为 2
-wsl --import [wsl名称] "D:/WSL_Test" "D:/arch-wsl-backup.tar" --version 2
-```
-
-# 卸载 WSL
-
-`wsl --unregister [wsl名称]`
