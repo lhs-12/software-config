@@ -2,6 +2,7 @@
 aube      = "latest" # aube自动代替npm作为包管理器, 用 mise use -g 代替 npm install -g
 usage     = "latest"
 pitchfork = "latest"
+gh        = "latest"
 
 # Windows 的 PI 需要在 ~/.pi/agent/settings.json 配置 Shell 路径
 # 选择建议: pwsh 执行命令兼容性更好 ; bash 命令更实用, 但执行某些 Windows 程序(比如 winget)命令可能有 bug

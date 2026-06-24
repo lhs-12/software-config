@@ -2,6 +2,9 @@
 
 # 常用命令
 
+日常使用 WSL 的时候可以使用 Bash/Fish,  
+但涉及修改 WSL 安装/配置修改/数据迁移...等高级行为, 请使用 `Pwsh` 运行.
+
 安装
 
 ```sh
@@ -21,9 +24,12 @@ wsl -s [DistributionName]
 wsl --unregister [DistributionName]
 ```
 
-备份/恢复/迁移
+备份/恢复/迁移 (Pwsh 运行)
 
 ```sh
+# 创建备份目录
+mkdir -p "D:\ProgramData\wsl-data"
+
 # vhdx: 虚拟硬盘镜像, 体积大, 适合本地快速备份恢复
 # wsl --export <DistributionName> <FileName.vhdx> --vhd
 # wsl --import-in-place <DistributionName> <FileName.vhdx>
@@ -79,13 +85,11 @@ sparseVhd=true
 
 ## 安装发行版
 
-以 Arch Linux 为例
-
 - 建议先更新到最新版 WSL: `wsl --update`
 - 查看可安装的 Linux 发行版: `wsl -l -o`
-- 执行安装: `wsl --install -d archlinux`
-- 指定默认使用: `wsl -s archlinux`
-- 启动: `wsl -d archlinux`
+- 执行安装: `wsl --install -d [发行版]`
+- 指定默认使用: `wsl -s [发行版]`
+- 启动: `wsl -d [发行版]`
 
 # 使用技巧
 
@@ -123,52 +127,70 @@ TLS ClientHello 包较大(1200-1800 bytes), TUN 的 MTU 过大会导致丢包.
 
 [参考](https://github.com/microsoft/wslg/issues/530#issuecomment-2628240995)
 
-# Arch Linux 配置
+# Arch Linux 安装配置
 
-```bash
-# 进入 Arch WSL
-wsl
+流程: 先手动执行一部分安装设置, 重启后再调用脚本完成剩余自动安装
+
+手动安装阶段:
+
+```sh
+# 安装 Arch WSL (安装完成会自动进入)
+wsl --install -d archlinux
+
+# 生成 locale
+sed -i '/^#en_US.UTF-8/s/^#//' /etc/locale.gen
+sed -i '/^#zh_CN.UTF-8/s/^#//' /etc/locale.gen
+locale-gen
+echo "LANG=en_US.UTF-8" > /etc/locale.conf
 # Pacman 显示下载进度
-sudo sed -i 's/^NoProgressBar/# NoProgressBar/' /etc/pacman.conf
-sudo sed -i 's/^#Color/Color/' /etc/pacman.conf
-# 换镜像源
-cat > /etc/pacman.d/mirrorlist << 'EOF'
-Server = https://mirrors.tuna.tsinghua.edu.cn/archlinux/$repo/os/$arch
-Server = https://mirrors.cloud.tencent.com/archlinux/$repo/os/$arch
-EOF
+sed -i 's/^NoProgressBar/# NoProgressBar/' /etc/pacman.conf
+sed -i 's/^#Color/Color/' /etc/pacman.conf
+# Pacman 换源
+sed -i '1i Server = https://mirrors.tuna.tsinghua.edu.cn/archlinux/$repo/os/$arch' /etc/pacman.d/mirrorlist
+sed -i '1i Server = https://mirrors.cloud.tencent.com/archlinux/$repo/os/$arch' /etc/pacman.d/mirrorlist
+sed -i '1i Server = http://mirrors.aliyun.com/archlinux/$repo/os/$arch' /etc/pacman.d/mirrorlist
 # 更新密钥环并初始化
-pacman -Sy archlinux-keyring
-pacman -Syyu
+pacman -Sy archlinux-keyring && pacman -Syyu
+# 添加 CN 源
+tee -a /etc/pacman.conf > /dev/null << 'EOF'
+[archlinuxcn]
+Server = https://mirrors.aliyun.com/archlinuxcn/$arch
+Server = https://mirrors.cloud.tencent.com/archlinuxcn/$arch
+Server = https://mirrors.tuna.tsinghua.edu.cn/archlinuxcn/$arch
+EOF
+pacman -Sy archlinuxcn-keyring
+# 安装基础包
+pacman -S --needed base-devel git neovim paru
+# 启用 sudoers
+sed -i 's/# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/' /etc/sudoers
+# 禁用 Windows PATH 注入
+tee -a /etc/wsl.conf > /dev/null << 'EOF'
+[interop]
+appendWindowsPath=false
+EOF
+
 # 创建普通用户
 useradd -m -g wheel 用户名
 passwd 用户名
-# 启用 sudo 权限
-sed -i 's/# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/' /etc/sudoers
-# 生成 locale
-sudo locale-gen en_US.UTF-8
-# 禁用 Windows PATH 注入, 手动添加需要的路径
-sudo bash -c 'cat >> /etc/wsl.conf << EOF
-[interop]
-appendWindowsPath=false
-EOF'
-# PATH 去重注入函数
-echo 'append_path(){ case ":$PATH:" in *:"$1":*) ;; *) PATH="${PATH:+$PATH:}$1" ;; esac; }' >> ~/.bashrc
-# 注入 Path: VSCode
-echo 'append_path "/mnt/c/Users/L/AppData/Local/Programs/Microsoft VS Code/bin"' >> ~/.bashrc
+# 修改 root 用户密码
+passwd
+
 # 退出 WSL
 exit
 wsl --shutdown
-# 设置 WSL 默认登录用户
+# 设置默认账号
 wsl --manage archlinux --set-default-user 用户名
-# 重新启动 WSL
+```
+
+自动安装阶段:
+
+```sh
+# 普通用户进入 WSL
 wsl
-# 安装基本包
-sudo pacman -S base-devel wget git neovim
-# 安装 Docker
-sudo pacman -S docker docker-compose
-sudo systemctl enable --now docker
-sudo usermod -aG docker $USER
-# 安装 Mise
-curl https://mise.run | sh
-echo 'eval "$(~/.local/bin/mise activate bash)"' >> ~/.bashrc
+# 下载仓库
+cd ~ && git clone --depth=1 https://github.com/lhs-12/software-config.git
+# 编辑脚本参数
+nvim ~/software-config/dotfiles/setup-wsl-arch.sh
+# 运行脚本
+bash ~/software-config/dotfiles/setup-wsl-arch.sh
 ```
