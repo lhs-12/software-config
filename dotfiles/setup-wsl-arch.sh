@@ -133,7 +133,7 @@ git restore .
 # echo "=== 安装输入法 ==="
 # sudo pacman -S --needed --noconfirm fcitx5-im fcitx5-rime rime-ice-git
 # WSLg 走 XWayland
-# 启动: fcitx5 --disable=wayland &
+# 启动: fcitx5 --disable=wayland > /dev/null 2>&1 &
 # 配置GUI: fcitx5-configtool
 # 重载: fcitx5-remote -r
 # 关闭: pkill fcitx5
