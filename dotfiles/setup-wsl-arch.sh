@@ -74,7 +74,7 @@ trap 'kill -- -$SUDO_PID 2>/dev/null || true' EXIT INT TERM
 echo "=== 安装常用包 ==="
 sudo pacman -S --needed --noconfirm \
   fastfetch lolcat cmatrix \
-  bash-completion oh-my-posh perl-image-exiftool \
+  bash-completion fish oh-my-posh perl-image-exiftool \
   openssh wget man-pages man-db less ouch zip unzip 7zip pacman-contrib bind traceroute \
   stow tmux lsd bat bat-extras zoxide dust yazi tldr btop \
   neovim fzf fd ripgrep lazygit jq imagemagick resvg poppler mdbook mediainfo \
