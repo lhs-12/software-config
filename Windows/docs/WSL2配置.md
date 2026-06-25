@@ -193,5 +193,6 @@ cd ~/software-config
 # 编辑脚本参数
 nvim dotfiles/setup-wsl-arch.sh
 # 运行脚本
-bash dotfiles/setup-wsl-arch.sh
+mkdir -p .temp
+bash dotfiles/setup-wsl-arch.sh 2>&1 | tee .temp/setup-wsl-arch.log
 ```
