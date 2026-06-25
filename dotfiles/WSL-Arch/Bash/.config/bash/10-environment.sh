@@ -11,6 +11,9 @@ export XMODIFIERS=@im=fcitx
 # PATH
 append_path(){ case ":$PATH:" in *:"$1":*) ;; *) PATH="${PATH:+$PATH:}$1" ;; esac; }
 
+# User local binaries
+append_path "$HOME/.local/bin"
+
 # VSCode from Windows
 append_path "/mnt/c/Users/L/AppData/Local/Programs/Microsoft VS Code/bin"
 

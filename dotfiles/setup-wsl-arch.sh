@@ -38,6 +38,14 @@ for font in "${WINDOWS_FONTS[@]}"; do
   fi
 done
 
+# 检查 MSYS2 目录 Git Credential Manager 是否存在
+GCM_PATH="/mnt/c/msys64/ucrt64/libexec/git-core/git-credential-manager.exe"
+if [[ ! -f "$GCM_PATH" ]]; then
+  echo "Error: Git Credential Manager 不存在: $GCM_PATH" >&2
+  echo "请确保 MSYS2 已安装 git-credential-manager" >&2
+  exit 1
+fi
+
 # 检查参数已填写
 for param in "${!SCRIPT_VARS[@]}"; do
   if [[ -z "${SCRIPT_VARS[$param]}" ]]; then
@@ -113,10 +121,14 @@ git config --global credential.helper "/mnt/c/msys64/ucrt64/libexec/git-core/git
 # 安装 Mise
 echo "=== 安装 Mise ==="
 curl https://mise.run | sh
+# 根据 Mise 配置文件安装工具
+$HOME/.local/bin/mise upgrade
 
 # stow dotfiles
 echo "=== stow dotfiles ==="
 bash setup-dotfiles.sh dotfiles-wsl-arch.conf --auto
+# stow --adopt 会把系统文件拉取回 dotfiles, 需要回滚
+git restore .
 
 # echo "=== 安装输入法 ==="
 # sudo pacman -S --needed --noconfirm fcitx5-im fcitx5-rime rime-ice-git
