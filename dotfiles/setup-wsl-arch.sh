@@ -90,6 +90,15 @@ sudo chown -R root: /usr/share/fonts/my-fonts
 sudo chmod 644 /usr/share/fonts/my-fonts/*
 sudo fc-cache -fv
 
+# echo "=== 安装输入法 ==="
+# sudo pacman -S --needed --noconfirm fcitx5-im fcitx5-rime rime-ice-git
+# WSLg 走 XWayland
+# 启动: fcitx5 --disable=wayland > /dev/null 2>&1 &
+# 配置GUI: fcitx5-configtool
+# 重载: fcitx5-remote -r
+# 关闭: pkill fcitx5
+# 诊断: fcitx5-diagnose
+
 echo "=== 安装 Docker ==="
 sudo pacman -S --needed --noconfirm docker docker-compose
 sudo systemctl enable --now docker
@@ -129,15 +138,6 @@ echo "=== stow dotfiles ==="
 bash setup-dotfiles.sh dotfiles-wsl-arch.conf --auto
 # stow --adopt 会把系统文件拉取回 dotfiles, 需要回滚
 git restore .
-
-# echo "=== 安装输入法 ==="
-# sudo pacman -S --needed --noconfirm fcitx5-im fcitx5-rime rime-ice-git
-# WSLg 走 XWayland
-# 启动: fcitx5 --disable=wayland > /dev/null 2>&1 &
-# 配置GUI: fcitx5-configtool
-# 重载: fcitx5-remote -r
-# 关闭: pkill fcitx5
-# 诊断: fcitx5-diagnose
 
 echo ""
 echo "=== 安装完成 ==="
