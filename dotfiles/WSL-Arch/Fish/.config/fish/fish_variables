@@ -1,3 +1,4 @@
 # This file contains fish universal variable definitions.
 # VERSION: 3.0
 SETUVAR __fish_initialized:4300
+SETUVAR fish_user_paths:/mnt/c/Users/L/AppData/Local/Programs/Microsoft\x20VS\x20Code/bin\x1e/home/l/\x2elocal/bin
