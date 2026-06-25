@@ -189,8 +189,9 @@ wsl --manage archlinux --set-default-user 用户名
 wsl
 # 下载仓库
 cd ~ && git clone --depth=1 https://github.com/lhs-12/software-config.git
+cd ~/software-config
 # 编辑脚本参数
-nvim ~/software-config/dotfiles/setup-wsl-arch.sh
+nvim dotfiles/setup-wsl-arch.sh
 # 运行脚本
-bash ~/software-config/dotfiles/setup-wsl-arch.sh
+bash dotfiles/setup-wsl-arch.sh
 ```
