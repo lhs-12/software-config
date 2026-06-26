@@ -116,7 +116,7 @@ Z-Library + Koodo-Reader
 
 | 软件名            | 作用               |
 | ----------------- | ------------------ |
-| PowerShell(pwsh)  | 微软 Shell         |
+| Pwsh              | 微软 Shell         |
 | WezTerm(Nightly)  | 模拟终端           |
 | MobaXterm         | 远程管理           |
 | VSCode            | 编辑器             |
@@ -124,7 +124,6 @@ Z-Library + Koodo-Reader
 | DBX               | 数据库管理         |
 | ApiFox            | 网络访问           |
 | Fiddler           | 抓包工具           |
-| WSL2              | Linux 环境         |
 
 > JDK 的安装和环境变量建议用 Mise 管理, 也可使用 `jdk_path.ps1` 脚本
 
@@ -147,3 +146,7 @@ MSYS2 的包管理工具是 `pacman`
 | `pacman -Qi`  | 查询已安装包信息 |
 | `pacman -Rns` | 卸载包及依赖     |
 | `pacman -Sc`  | 清理缓存         |
+
+## WSL 环境
+
+详看 `WSL2配置.md`, WSL2 安装与 MSYS2 安装的内容有少数耦合, 建议先装 MSYS2
