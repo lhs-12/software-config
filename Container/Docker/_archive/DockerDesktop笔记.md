@@ -106,7 +106,7 @@ redis-cli --cluster create 127.0.0.1:6379 127.0.0.1:6380 127.0.0.1:6381 --cluste
 ```
 
 > Docker Compose 支持用 `.env` 文件定义变量,  
-> 可在 `docker-compose.yml` 中用 `${VAR_NAME}` 引用. 简化重复字段. 举例:  
+> 可在 `compose.yml` 中用 `${VAR_NAME}` 引用. 简化重复字段. 举例:  
 > .env 文件: `HOST=host.docker.internal`  
 > 引用处: `command: redis-cli --cluster create ${HOST}:7001 ${HOST}:7002 ...`
 

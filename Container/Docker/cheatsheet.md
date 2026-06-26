@@ -23,7 +23,7 @@ docker compose exec <svc> sh  # 进入容器
 更新
 
 ```bash
-# 进入 docker-compose.yml 的目录执行
+# 进入 compose.yml 的目录执行
 docker compose pull && docker compose down && docker compose up -d  # 拉取+重启
 ```
 
