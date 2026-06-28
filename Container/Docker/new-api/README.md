@@ -47,9 +47,12 @@ docker compose logs -f redis-new-api
 ```bash
 # 更稳妥的方式: 用 pg_dump 备份 (可在运行时使用)
 docker exec postgres-new-api pg_dump -U root new-api > ~/data-container/docker/new-api/backup_$(date +%Y%m%d_%H%M%S).sql
-# 恢复 (先清空数据库再导入)
-docker exec postgres-new-api psql -U root -d new-api -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public; GRANT ALL ON SCHEMA public TO root; GRANT ALL ON SCHEMA public TO public;"
-docker exec -i postgres-new-api psql -U root new-api < backup.sql
+# 恢复: 创建临时库 -> 导入 -> 终止连接 -> 删旧库 -> 临时库改名
+docker exec postgres-new-api psql -U root -d postgres -c 'CREATE DATABASE new_api_restore;'
+docker exec -i postgres-new-api psql -U root new_api_restore < backup.sql
+docker exec postgres-new-api psql -U root -d postgres -c "SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname = 'new-api' AND pid <> pg_backend_pid();"
+docker exec postgres-new-api psql -U root -d postgres -c 'DROP DATABASE IF EXISTS "new-api";'
+docker exec postgres-new-api psql -U root -d postgres -c 'ALTER DATABASE new_api_restore RENAME TO "new-api";'
 ```
 
 # 常用渠道
