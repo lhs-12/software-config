@@ -57,7 +57,7 @@ wsl --manage archlinux --set-default-user 用户名
 2. BIOS 启用虚拟化(Intel VT-x / AMD-V), 大部分电脑已默认开启
 
 > 查看 Windows 系统版本: `Win + R` 输入 `winver`  
-> 查看虚拟化是否开启: 任务管理器 → 性能 → CPU → 虚拟化：已启用
+> 查看虚拟化是否开启: 任务管理器 → 性能 → CPU → 虚拟化: 已启用
 
 参考:
 

@@ -38,13 +38,13 @@ sudo pacman -Rns <package_name> # 删除软件包、依赖及其配置文件
 ### 1.4 清理
 
 ```bash
-sudo pacman -Sc  # 清理缓存，仅保留当前安装的版本
+sudo pacman -Sc  # 清理缓存, 仅保留当前安装的版本
 sudo pacman -Scc # 彻底清空缓存（无法再降级软件包）
 ```
 
 ## 2. AUR
 
-下面使用 `paru` 作为 AUR 助手，它是 `yay` 的替代品
+下面使用 `paru` 作为 AUR 助手, 它是 `yay` 的替代品
 
 ### 2.1 安装与更新
 
@@ -159,10 +159,10 @@ groups <username>              # 查看用户所属的组
 1. **定期更新**  
    使用 `paru -Syu` 或 `sudo pacman -Syu` 保持系统最新
 2. **查看官方新闻**  
-   更新前访问：[https://archlinux.org/news/](https://archlinux.org/news/)，检查是否需要手动干预
+   更新前访问: [https://archlinux.org/news/](https://archlinux.org/news/), 检查是否需要手动干预
 3. **依赖 Arch Wiki**  
-   遇到问题，首先查阅 Arch Wiki，它是终极宝典
+   遇到问题, 首先查阅 Arch Wiki, 它是终极宝典
 4. **谨慎使用 AUR**  
-   安装 AUR 包前，请检查 `PKGBUILD` 脚本以确保安全
+   安装 AUR 包前, 请检查 `PKGBUILD` 脚本以确保安全
 5. **理解命令含义**  
-   在执行任何命令（尤其是 `rm -rf`）前，请确认你完全理解其作用
+   在执行任何命令(尤其是 `rm -rf`)前, 请确认你完全理解其作用

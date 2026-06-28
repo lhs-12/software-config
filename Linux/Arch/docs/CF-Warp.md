@@ -1,6 +1,8 @@
-# Warp
+<h1><center>Warp</center></h1>
 
-Arch Linux 配置步骤
+# 安装配置
+
+基于 Arch Linux
 
 ```bash
 # 1. 安装启动 cloudflare-warp
@@ -221,7 +223,7 @@ sing-box 配置文件 `config.json`
 }
 ```
 
-## DNS 常用命令速查
+# DNS 常用命令速查
 
 ```bash
 # 查看DNS管理者
