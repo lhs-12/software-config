@@ -45,9 +45,10 @@ docker compose logs -f redis-new-api
 但注意仅在数据库停止时使用(运行时直接复制可能导致数据有问题)
 
 ```bash
-# 更稳妥的方式:  用 pg_dump 备份
+# 更稳妥的方式: 用 pg_dump 备份 (可在运行时使用)
 docker exec postgres-new-api pg_dump -U root new-api > ~/data-container/docker/new-api/backup_$(date +%Y%m%d_%H%M%S).sql
-# 恢复
+# 恢复 (先清空数据库再导入)
+docker exec postgres-new-api psql -U root -d new-api -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public; GRANT ALL ON SCHEMA public TO root; GRANT ALL ON SCHEMA public TO public;"
 docker exec -i postgres-new-api psql -U root new-api < backup.sql
 ```
 
