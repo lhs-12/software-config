@@ -307,6 +307,8 @@ _launch=Search
 _launch=Meta+.
 
 [services][org.kde.spectacle.desktop]
+CurrentMonitorScreenShot=none
+OpenWithoutScreenshot=none
 RecordRegion=none
 RecordScreen=none
 RecordWindow=none

@@ -40,8 +40,16 @@ docker compose logs -f redis-new-api
 
 # 数据备份
 
-数据已使用 bind mount, 直接备份 `~/data-container/docker/new-api` 目录即可.  
-其中最关键的是 postgres 数据: `pg_data`
+数据已使用 bind mount, 直接备份 `~/data-container/docker/new-api` 目录即可,  
+其中最关键的是 postgres 数据: `pg_data`,  
+但注意仅在数据库停止时使用(运行时直接复制可能导致数据有问题)
+
+```bash
+# 更稳妥的方式:  用 pg_dump 备份
+docker exec postgres-new-api pg_dump -U root new-api > ~/data-container/docker/new-api/backup_$(date +%Y%m%d_%H%M%S).sql
+# 恢复
+docker exec -i postgres-new-api psql -U root new-api < backup.sql
+```
 
 # 常用渠道
 

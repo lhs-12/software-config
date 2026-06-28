@@ -15,7 +15,9 @@ pi     = "latest"
 claude = "latest"
 "npm:skills" = "latest"
 
-rust   = "stable"
+rust = "stable"
+cargo-binstall = "latest"
+
 node   = "lts"
 uv     = "latest"
 ruff   = "latest"
