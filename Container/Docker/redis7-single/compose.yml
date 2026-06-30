@@ -1,5 +1,6 @@
 services:
   redis:
+    container_name: redis7-single
     image: redis:7
     ports:
       - "6379:6379"
