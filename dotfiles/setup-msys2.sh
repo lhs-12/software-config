@@ -35,7 +35,7 @@ REQUIRED_VARS["git_email"]=""     # 设置 Git 邮箱
 # 选填参数(可为空)
 declare -A OPTIONAL_VARS
 OPTIONAL_VARS["git_proxy"]=""     # 设置 Git 代理地址, 比如 http://127.0.0.1:10808
-OPTIONAL_VARS["github_token"]=""  # 设置 GITHUB_TOKEN, 用于解决 Github 访问限流(更建议放 Windows 用户环境变量)
+OPTIONAL_VARS["github_token"]=""  # 临时设置 GITHUB_TOKEN 解决访问限流
 # ===== 配置区域: 结束 =====
 
 # 安全创建符号链接函数
@@ -140,14 +140,6 @@ else
   git config --global --unset http.proxy 2>/dev/null || true
   git config --global --unset https.proxy 2>/dev/null || true
 fi
-
-# 可选择给GitHub添加SSH认证
-# ssh-keygen -t ed25519 -C "you@example.com" # 生成ED25519类型的SSH密钥对, 用邮箱标识
-# eval "$(ssh-agent -s)"                     # 启动SSH代理, 用于管理SSH密钥
-# ssh-add ~/.ssh/id_ed25519                  # 将生成私钥添加到SSH代理
-# cat ~/.ssh/id_ed25519.pub | clip.exe       # 将公钥复制到Windows剪切板
-# 访问 https://github.com/settings/keys , 点击"New SSH key", 粘贴公钥并保存
-# ssh -T git@github.com                      # 测试SSH连接是否正常
 
 # 安装 Mise: 下载 mise.exe 和 mise-shim.exe 到 C:\Users\xxx\.local\bin
 # 安装后可通过命令升级: mise self-update

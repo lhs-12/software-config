@@ -41,8 +41,10 @@ Z-Library + Koodo-Reader
 5. `工具` -> `资源` -> `同步` 更新数据
 6. `工具` -> `应用程序` -> 开启 `退出时最小化`, `自启动`, `静默启动`, `自动运行`
 7. `仪表盘` -> 开启 `虚拟网卡`, 点击右下角启动按钮打开
-8. 出现网络问题时可尝试修改虚拟网卡栈模式为 gvisor; 遇到网络冲突问题时去进阶配置的附加规则里设置冲突规则
-9. 使用 FlClash 的 TUN 模式, 注意检查并删掉环境变量中残留的 http_proxy 和 https_proxy 变量
+
+> 出现问题可尝试修改虚拟网卡栈模式为 gvisor
+
+> 使用 WSL 需要加覆写配置 `config.tun.mtu = 1500;`
 
 ---
 
@@ -125,7 +127,7 @@ Z-Library + Koodo-Reader
 | ApiFox            | 网络访问           |
 | Fiddler           | 抓包工具           |
 
-> JDK 的安装和环境变量建议用 Mise 管理, 也可使用 `jdk_path.ps1` 脚本
+> JDK 的安装和环境变量建议用 Mise 管理, 或使用 `jdk_path.ps1` 脚本
 
 ## MSYS2 环境
 
@@ -134,6 +136,7 @@ Z-Library + Koodo-Reader
 3. 添加用户变量 Path: `C:\Users\用户名\.local\bin`, `C:\Users\用户名\AppData\Local\mise\shims`
 4. 统一 `HOME` 目录: 用 `pwsh` 执行 `edit C:\msys64\etc\nsswitch.conf`, 将 `db_home` 的值从 `cygwin desc` 改为 `windows`
 5. 使用 `MSYS2` 的 `UCRT64` 环境启动, 检查修改并执行脚本: `bash setup-msys2.sh`
+6. 执行 `gh auth login` 登录 Github (Git 和 Mise 相关配置会使 Mise 获得 Github 访问认证)
 
 MSYS2 的包管理工具是 `pacman`
 

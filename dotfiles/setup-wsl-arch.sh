@@ -7,8 +7,6 @@ BASE_DIR="$PWD"
 declare -A SCRIPT_VARS
 SCRIPT_VARS["git_username"]=""  # 设置 Git 用户名
 SCRIPT_VARS["git_email"]=""     # 设置 Git 邮箱
-SCRIPT_VARS["github_token"]=""  # 设置 GITHUB_TOKEN, 用于解决 Github 访问限流
-# GITHUB_TOKEN: 隐私文件不放仓库管理, 有需要时在 ~/.config/environment.d/ 或 ~/.config/bash 建文件
 # ===== 配置区域: 结束 =====
 
 # 关于环境变量
@@ -53,11 +51,6 @@ for param in "${!SCRIPT_VARS[@]}"; do
     exit 1
   fi
 done
-
-# GITHUB_TOKEN 参数处理
-if [[ -n "${SCRIPT_VARS[github_token]:-}" ]]; then
-  export GITHUB_TOKEN=${SCRIPT_VARS[github_token]}
-fi
 
 # 请求 sudo 权限并保持后台存活
 echo "正在请求管理员权限..."
@@ -126,18 +119,21 @@ git config --global mergetool.prompt false
 git config --global merge.conflictStyle zdiff3
 # Git Credential Manager: 依赖 Windows 侧 MSYS2 安装的 GCM, 用于权限认证
 git config --global credential.helper "/mnt/c/msys64/ucrt64/libexec/git-core/git-credential-manager.exe"
-
-# 安装 Mise
-echo "=== 安装 Mise ==="
-curl https://mise.run | sh
-# 根据 Mise 配置文件安装工具
-$HOME/.local/bin/mise upgrade
+# 由于 MSYS2 那边已用 gh 登录, WSL 能间接获取 Github 认证信息, 因此 mise upgrade 无需设置 GITHUB_TOKEN 环境变量
+# 查看信息: printf 'protocol=https\nhost=github.com\n\n' | git credential fill
 
 # stow dotfiles
 echo "=== stow dotfiles ==="
 bash setup-dotfiles.sh dotfiles-wsl-arch.conf --auto
 # stow --adopt 会把系统文件拉取回 dotfiles, 需要回滚
 git restore .
+
+# 安装 Mise 并按照其配置文件安装工具
+echo "=== 安装 Mise ==="
+curl https://mise.run | sh
+$HOME/.local/bin/mise upgrade
+# 二次执行, 使 npm 之类的包也被安装
+$HOME/.local/bin/mise upgrade
 
 echo ""
 echo "=== 安装完成 ==="

@@ -102,16 +102,13 @@ sparseVhd=true
 ---
 
 使用 v2rayN 的 TUN 网络时,  
-建议 core 类型选 singbox, MTU 调至 1408,  
-原因:  
-TLS ClientHello 包较大(1200-1800 bytes), TUN 的 MTU 过大会导致丢包.  
-表现为 WSL 的 HTTPS 连接可能超时, 而 HTTP 正常
+core 类型选 singbox, 栈模式改 mixed, MTU 调至 1408
 
 ---
 
-使用 FlClash 之类的 Mihomo 的 TUN 代理时,  
-把 "DNS 模式" 从 `Fake-IP` 改为 `Redir-Host`,  
-原因: FlClash 的排除规则会排除 WSL 的流量, Fake-IP 被排除后不处理导致超时
+使用 FlClash 的 TUN 代理时,  
+去 "工具" -> "进阶配置" -> 添加脚本 "mtu", 内容加入 `config.tun.mtu = 1500;`  
+然后将这个脚本在 "配置" 中进行 "覆写"
 
 ## VSCode 编辑调试 WSL 项目
 
@@ -136,6 +133,11 @@ TLS ClientHello 包较大(1200-1800 bytes), TUN 的 MTU 过大会导致丢包.
 ```sh
 # 安装 Arch WSL (安装完成会自动进入)
 wsl --install -d archlinux
+# 验证网络正常
+ping -c 2 -W 3 baidu.com
+curl -s -m 5 http://www.google.com > /dev/null && echo 'HTTP OK' || echo 'HTTP FAIL!!!'
+curl -s -m 5 https://www.google.com > /dev/null && echo 'HTTPS OK' || echo 'HTTPS FAIL!!!'
+# 以上有任一不通则排查网络问题直至正常
 
 # 生成 locale
 sed -i '/^#en_US.UTF-8/s/^#//' /etc/locale.gen
@@ -193,6 +195,5 @@ cd ~/software-config
 # 编辑脚本参数
 nvim dotfiles/setup-wsl-arch.sh
 # 运行脚本
-mkdir -p .temp
-bash dotfiles/setup-wsl-arch.sh 2>&1 | tee .temp/setup-wsl-arch.log
+bash dotfiles/setup-wsl-arch.sh
 ```

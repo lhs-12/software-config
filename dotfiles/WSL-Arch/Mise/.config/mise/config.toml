@@ -15,6 +15,7 @@ oxfmt  = "latest"
 oxlint = "latest"
 
 [settings]
+github.use_git_credentials = true
 minimum_release_age = "24h"
-minimum_release_age_excludes = ["pi", "claude"]
+minimum_release_age_excludes = ["pi"]
 idiomatic_version_file_enable_tools = ["java", "node", "pnpm", "rust"]
