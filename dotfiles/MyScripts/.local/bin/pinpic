@@ -20,8 +20,8 @@
 #   - spectacle (KDE 截图)
 #   - mpv (需配置 lua 脚本 pin_image.lua)
 #   - wl-clipboard
-#   - qt6-webengine python-pyqt6-webengine
-#   - pinpic-stitch (多次截图拼接脚本，依赖 spectacle python-pyqt6 python-pillow)
+#   - qt6-webengine pyside6
+#   - pinpic-stitch (多次截图拼接脚本，依赖 spectacle pyside6 python-pillow)
 # ------------------------------------------------------------
 
 set -euo pipefail

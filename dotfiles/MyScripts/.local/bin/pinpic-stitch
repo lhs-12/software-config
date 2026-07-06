@@ -16,7 +16,7 @@
 #   - Arch KDE Plasma Wayland
 # 系统依赖:
 #   - spectacle (KDE 截图)
-#   - python-pyqt6
+#   - pyside6
 #   - python-pillow
 # ------------------------------------------------------------
 
@@ -30,9 +30,9 @@ import threading
 from collections import Counter
 
 from PIL import Image
-from PyQt6.QtCore import QRectF, Qt, pyqtSignal
-from PyQt6.QtGui import QColor, QFont, QPainter, QPen
-from PyQt6.QtWidgets import QApplication, QWidget
+from PySide6.QtCore import QRectF, Qt, Signal
+from PySide6.QtGui import QColor, QFont, QPainter, QPen
+from PySide6.QtWidgets import QApplication, QWidget
 
 # 配色方案
 PALETTE = {
@@ -100,7 +100,7 @@ class ImageStitcher:
 
 
 class StitchPanel(QWidget):
-    shot_completed = pyqtSignal()
+    shot_completed = Signal()
 
     def __init__(self, on_shot, on_done):
         super().__init__()

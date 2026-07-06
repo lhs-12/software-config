@@ -4,29 +4,30 @@
 #
 # 使用方式:
 #   读取文本文件:
-#     text_to_img.py --text input.txt --out output.png
+#     text_to_img --text input.txt --out output.png
 #   从标准输入读取文本:
-#     echo "hello world" | text_to_img.py --text - --out output.png
+#     echo "hello world" | text_to_img --text - --out output.png
 #   读取 HTML 文件:
-#     text_to_img.py --html input.html --out output.png
+#     text_to_img --html input.html --out output.png
 #   从标准输入读取 HTML:
-#     cat input.html | text_to_img.py --html - --out output.png
+#     cat input.html | text_to_img --html - --out output.png
 #
 # 运行环境:
 #   - 已测试: Arch Linux + KDE Plasma Wayland
 # 系统依赖:
-#   - python, qt6-webengine, python-pyqt6-webengine
+#   - python, qt6-webengine, pyside6
 # ------------------------------------------------------------
 
 import argparse
 import html
+import json
 import re
 import sys
 from pathlib import Path
 
-from PyQt6.QtCore import QSize, Qt, QTimer, QUrl
-from PyQt6.QtWebEngineWidgets import QWebEngineView
-from PyQt6.QtWidgets import QApplication
+from PySide6.QtCore import QSize, Qt, QTimer, QUrl
+from PySide6.QtWebEngineWidgets import QWebEngineView
+from PySide6.QtWidgets import QApplication
 
 RE_UNICODE_ESCAPE = re.compile(r"\\u([0-9a-fA-F]{4})")
 
@@ -158,7 +159,7 @@ def render_to_image(html: str, output_path: Path) -> None:
         page = view.page()
 
         def after_js(size):
-            width, height = size
+            width, height = json.loads(size)
             zf = view.zoomFactor()
             view.resize(QSize(int(width * zf), int(height * zf)))
             QTimer.singleShot(50, save_image)
@@ -167,7 +168,7 @@ def render_to_image(html: str, output_path: Path) -> None:
             """
             (function () {
                 const el = document.body;
-                return [el.scrollWidth, el.scrollHeight];
+                return JSON.stringify([el.scrollWidth, el.scrollHeight]);
             })();
             """,
             after_js,
