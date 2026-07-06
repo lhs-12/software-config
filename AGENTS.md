@@ -11,22 +11,37 @@
 ├── Linux/                 # Linux 配置资料
 ├── Windows/               # Windows 配置资料
 ├── dotfiles/              # 所有 dotfiles 配置
-│   ├── setup-*.sh         # 各平台/发行版配置脚本
-│   ├── dotfiles-*.conf    # 不同环境的 Stow 清单
-│   └── [软件名]/          # 各软件的配置目录
+│   ├── setup-dotfiles.sh  # 通用 Stow 部署脚本
+│   ├── setup-msys2.sh     # MSYS2 部署脚本
+│   ├── setup-wsl-*.sh     # 各 WSL 发行版部署脚本 (如 setup-wsl-arch.sh)
+│   ├── dotfiles-*.conf    # Stow 清单 (用于 setup-dotfiles.sh)
+│   ├── [软件名]/          # 通用配置 (Linux 桌面等标准环境)
+│   ├── MSYS2/             # MSYS2 环境专用配置
+│   │   └── [软件名]/      #   MSYS2 版, 由 setup-msys2.sh 部署
+│   └── WSL-<发行版>/      # WSL 各发行版专用配置
+│       └── [软件名]/      #   由对应的 setup-wsl-*.sh 部署
 ├── Container/             # 容器配置
 │   ├── README.md          # 容器环境规范
 ```
 
 # Dotfiles 管理
 
-使用 GNU Stow 进行 dotfiles 管理
+使用 GNU Stow 进行 dotfiles 管理 (通用 Linux 环境).  
+MSYS2/WSL 等特殊环境使用专用脚本部署, 见对应的 `setup-*.sh`.
+
+目录分布说明:
+
+- `dotfiles/软件名/` — 通用配置 (Linux 桌面等标准环境)
+- `dotfiles/MSYS2/软件名/` — MSYS2 环境专用配置
+- `dotfiles/WSL-<发行版>/软件名/` — 各 WSL 发行版专用配置 (如 WSL-Arch)
+
+查找配置: 先找平台专用目录, 没有再找通用目录.
 
 setup 脚本规范:
 
-- `setup-dotfiles.sh`: 通用 Stow 脚本, 搭配 `dotfiles-*.conf` 配置文件
-- `setup-wsl-*.sh`: WSL 发行版专用配置脚本
-- `setup-*.sh`: 各发行版配置脚本
+- `setup-dotfiles.sh`: 通用 Stow 脚本, 搭配 `dotfiles-<环境>.conf`
+- `setup-msys2.sh`: MSYS2 专用配置脚本
+- `setup-wsl-<发行版>.sh`: 各 WSL 发行版专用配置脚本
 
 # 环境管理
 

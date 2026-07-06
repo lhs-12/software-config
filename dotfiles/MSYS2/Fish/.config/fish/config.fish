@@ -35,12 +35,12 @@ end
 # Mise (修复 hook-env 输出的 Win 风格 PATH 为 Unix 风格)
 function mise_activate
     function __mise_hook_env_fix
-        perl -MIPC::Open2 -e '
+        /usr/bin/perl -MIPC::Open2 -e '
             while (<STDIN>) {
                 if (/^set -gx PATH (.*)/) {
                     (my $p = $1) =~ s/\x27//g;
                     $p =~ s/([A-Z]) \\\\/$1:\\\\/g;
-                    my $pid = open2(my $out, my $in, "cygpath", "-u", "-p", "-f", "-");
+                    my $pid = open2(my $out, my $in, "/usr/bin/cygpath", "-u", "-p", "-f", "-");
                     print $in $p, "\n"; close $in;
                     chomp(my $up = <$out>); close $out; waitpid $pid, 0;
                     print "set -gx PATH ", join(" ", map {"\x27$_\x27"} split /:/, $up), "\n";
