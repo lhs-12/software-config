@@ -2,3 +2,8 @@
 .obsidian
 cached_layouts
 .temp
+
+# Local bash config (gitignored, sourced by .bashrc if present)
+**/.config/bash/*.local.sh
+# .bash_local.sh only for MSYS2
+.bash_local.sh
