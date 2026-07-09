@@ -12,6 +12,9 @@ append_path() {
 }
 append_path "$HOME/.local/bin"
 
+# Mise shims for non-interactive shells (fix MSYS2)
+eval "$(mise activate bash --shims | perl -pe 's{([A-Za-z]:[\x5c/][^\x27:\s]*)}{ my $p = qx(cygpath -u "$1"); chomp $p; $p }eg')"
+
 # === local private config (gitignored) ===
 [[ -r "$HOME/.bash_local.sh" ]] && source "$HOME/.bash_local.sh"
 
@@ -40,14 +43,14 @@ export HISTIGNORE="ls:ll:la:cd:pwd:exit:clear:history"
 append_path "/d/Program Files/tools"
 append_path "/c/Program Files/WezTerm"
 append_path "$(cygpath -u "$LOCALAPPDATA/Programs/Microsoft VS Code/bin")"
-[ -n "$JAVA_HOME" ] && append_path "$(cygpath -u "$JAVA_HOME/bin")"
 
 # === Tools ===
 # Prompt (Oh My Posh)
 if [[ "$TERM_PROGRAM" != "vscode" ]]; then
   eval "$(oh-my-posh init bash --config ~/.om-posh.json)"
 fi
-# Mise (fix Win-style PATH from hook-env to Unix-style for MSYS2)
+# Mise activate for interactive shells (fix MSYS2)
+# 嵌套多次启动交互 shell 依然会导致PATH的格式错乱. 但这个场景不常用, 避开即可
 mise_activate() {
   local script="$(mise activate bash)"
   local fixed=$(

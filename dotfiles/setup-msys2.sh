@@ -38,18 +38,6 @@ if [[ "$dev_mode" != "1" ]]; then
 fi
 export MSYS=winsymlinks:nativestrict
 
-# 辅助函数: 幂等追加 PATH
-append_path(){ case ":$PATH:" in *:"$1":*) ;; *) PATH="${PATH:+$PATH:}$1" ;; esac; }
-
-# 检查 Windows 用户 PATH 中是否包含 $HOME/.local/bin (用于 PowerShell)
-mkdir -p "$HOME/.local/bin"
-win_local_bin=$(cygpath -w "$HOME/.local/bin" 2>/dev/null)
-powershell.exe -Command "exit (-not ([Environment]::GetEnvironmentVariable('Path','User') -split ';' -contains '$win_local_bin'))" 2>/dev/null || {
-  echo "Error: $win_local_bin is not in Windows User PATH, add it in Environment Variables manually." >&2
-  exit 1
-}
-append_path "$HOME/.local/bin"
-
 # 幂等复制: 文件内容相同则跳过
 safe_cp() {
     local src="$1" dst="$2"
@@ -186,6 +174,11 @@ elif [[ -n "$GIT_PROXY" ]]; then
   git config --global https.proxy "$GIT_PROXY"
 fi
 
+# 幂等追加 PATH
+append_path(){ case ":$PATH:" in *:"$1":*) ;; *) PATH="${PATH:+$PATH:}$1" ;; esac; }
+mkdir -p "$HOME/.local/bin"
+append_path "$HOME/.local/bin"
+
 if command -v mise &> /dev/null; then
   mise self-update -y # 更新 Mise
 else
@@ -201,6 +194,20 @@ safe_ln "$BASE_DIR/MSYS2/Mise/config.toml" "$HOME/.config/mise/config.toml"
 safe_ln "$BASE_DIR/MSYS2/Aube/config.toml" "$HOME/.config/aube/config.toml"
 # 根据 Mise 配置文件安装工具
 mise upgrade
+
+# 获取 mise shims 路径
+MISE_SHIMS_WIN="$(mise activate pwsh --shims 2>/dev/null | sed -n "s/.*'\([^']*\)'.*/\1/p")"
+export MISE_SHIMS_WIN
+# 幂等添加 Windows 用户环境变量: $HOME/.local/bin 和 mise shims
+powershell.exe -NoProfile -Command - <<'PS_EOF'
+$want = @("$env:USERPROFILE\.local\bin")
+if ($env:MISE_SHIMS_WIN) { $want += $env:MISE_SHIMS_WIN }
+$raw = (Get-Item HKCU:\Environment).GetValue('Path', '', 'DoNotExpandEnvironmentNames')
+$parts = @($raw -split ';' | Where-Object { $_ })
+$norm = @($parts | ForEach-Object { $_.TrimEnd('\') })
+$added = @($want | Where-Object { $_.TrimEnd('\') -notin $norm })
+if ($added) { Set-ItemProperty HKCU:\Environment Path -Type ExpandString -Value (($added + $parts) -join ';'); Write-Host "Added to User PATH:"; $added | ForEach-Object { Write-Host "  + $_" } } else { Write-Host "User PATH already contains mise paths, skip." }
+PS_EOF
 
 # ===== 复制配置文件 =====
 echo -e "\n\e[36m========== Deploying config files ==========\e[0m"

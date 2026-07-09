@@ -1,5 +1,16 @@
-if not status is-interactive; exit; end # Skip non-interactive shells
 if not test -n "$MSYSTEM"; or not test "$MSYSTEM" = "UCRT64"; exit; end # only execute in MSYS2 UCRT64
+
+# === Non-interactive shell config ===
+
+# User local binaries
+fish_add_path -g "$HOME/.local/bin"
+
+# Mise shims for non-interactive shells (fix MSYS2)
+mise activate fish --shims | perl -pe 's{([A-Za-z]:[\x5c/][^\x27:\s]*)}{ my $p = qx(cygpath -u "$1"); chomp $p; $p }eg' | source
+
+if not status is-interactive; exit; end
+
+# === Interactive shell config ===
 
 function fish_greeting
 end
@@ -10,10 +21,7 @@ set -gx LANGUAGE en_US   # zh_CN:en_US
 # add PATH
 fish_add_path -g "/d/Program Files/tools"
 fish_add_path -g "/c/Program Files/WezTerm"
-fish_add_path -g "/c/Program Files/Docker/Docker/resources/bin"
 fish_add_path -g (cygpath -u "$LOCALAPPDATA/Programs/Microsoft VS Code/bin")
-set -q JAVA_HOME; and fish_add_path -g (cygpath -u "$JAVA_HOME/bin")
-fish_add_path -g "$HOME/.local/bin"
 
 # Multilevel cd ( .. ... .... , etc)
 function multicd
@@ -32,7 +40,8 @@ if test "$TERM_PROGRAM" != "vscode" # Skip in VSCode integrated terminal
     end
 end
 
-# Mise (修复 hook-env 输出的 Win 风格 PATH 为 Unix 风格)
+# Mise activate for interactive shells (fix MSYS2)
+# 嵌套多次启动交互 shell 依然会导致PATH的格式错乱. 但这个场景不常用, 避开即可
 function mise_activate
     function __mise_hook_env_fix
         /usr/bin/perl -MIPC::Open2 -e '

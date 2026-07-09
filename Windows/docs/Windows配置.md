@@ -131,12 +131,13 @@ Z-Library + Koodo-Reader
 
 ## MSYS2 环境
 
-1. 下载 `MSYS2` 安装包, 执行安装
-2. 添加系统变量 Path: `C:\msys64\ucrt64\bin\` 和 `C:\msys64\usr\bin`
-3. 添加用户变量 Path: `C:\Users\用户名\.local\bin`, `C:\Users\用户名\AppData\Local\mise\shims`
-4. 统一 `HOME` 目录: 用 `pwsh` 执行 `edit C:\msys64\etc\nsswitch.conf`, 将 `db_home` 的值从 `cygwin desc` 改为 `windows`
-5. 使用 `MSYS2` 的 `UCRT64` 环境启动, 检查修改并执行脚本: `bash setup-msys2.sh`
-6. 执行 `gh auth login` 登录 Github (Git 和 Mise 相关配置会使 Mise 获得 Github 访问认证)
+1. 下载 `MSYS2` 安装包执行安装
+2. 添加系统变量 Path(放末尾): `C:\msys64\ucrt64\bin\` 和 `C:\msys64\usr\bin`
+3. 统一 `HOME` 目录: 用 `pwsh` 执行 `edit C:\msys64\etc\nsswitch.conf`, 将 `db_home` 的值从 `cygwin desc` 改为 `windows`
+4. 使用 `MSYS2` 的 `UCRT64` 环境启动, 检查修改并执行脚本: `bash setup-msys2.sh`
+5. 执行 `gh auth login` 登录 Github (Git 和 Mise 相关配置会使 Mise 获得 Github 访问认证)
+
+> `setup-msys2.sh` 脚本会自动添加 Mise 相关的用户变量 Path
 
 MSYS2 的包管理工具是 `pacman`
 
