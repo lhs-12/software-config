@@ -12,12 +12,14 @@ gh        = "latest"
 #       "shellPath": "C:/Program Files/PowerShell/7/pwsh.exe"
 #       "shellCommandPrefix": "[Console]::OutputEncoding = [Text.Encoding]::UTF8; "
 pi     = "latest"
-claude = "latest"
 "npm:skills" = "latest"
+"github:can1357/oh-my-pi" = "latest"
 
 rust = "stable"
 cargo-binstall = "latest"
 
+java   = "25"
+maven  = "3.9.16" # 用具体版本: Windows 下 mise 版本别名(3/latest)是文本文件非真链接, IDEA 等外部工具无法识别
 node   = "lts"
 uv     = "latest"
 ruff   = "latest"
@@ -28,6 +30,6 @@ oxlint = "latest"
 [settings]
 github.use_git_credentials = true # 使用 Git 作为 Github 凭证助手, 配合 gh 登录使用
 minimum_release_age = "24h" # s=秒 m=分 h=时 d=天 w=周 mo=月 y=年, "0s"禁用
-minimum_release_age_excludes = ["pi", "claude"]
+minimum_release_age_excludes = ["pi", "github:can1357/oh-my-pi"]
 idiomatic_version_file_enable_tools = ["java", "node", "pnpm", "rust"]
 rust.default_host = "x86_64-pc-windows-gnu" # 默认编译目标设为 GNU, 省去安装 Visual Studio Build Tools

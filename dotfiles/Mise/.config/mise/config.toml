@@ -5,7 +5,6 @@ pitchfork = "latest"
 gh        = "latest"
 
 pi       = "latest"
-claude   = "latest"
 "npm:skills" = "latest"
 "github:can1357/oh-my-pi" = "latest"
 
@@ -24,5 +23,5 @@ oxlint = "latest"
 [settings]
 github.use_git_credentials = true # 使用 Git 作为 Github 凭证助手, 配合 gh 登录使用
 minimum_release_age = "24h" # s=秒 m=分 h=时 d=天 w=周 mo=月 y=年, "0s"禁用
-minimum_release_age_excludes = ["pi", "claude", "github:can1357/oh-my-pi"]
+minimum_release_age_excludes = ["pi", "github:can1357/oh-my-pi"]
 idiomatic_version_file_enable_tools = ["java", "node", "pnpm", "rust"]
