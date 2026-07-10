@@ -1,1 +1,1 @@
-allowedUnpopularPackages = []
+allowedUnpopularPackages = ["snow-ai"]
