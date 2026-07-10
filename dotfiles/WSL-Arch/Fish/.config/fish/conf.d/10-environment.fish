@@ -3,7 +3,7 @@
 # === Non-interactive shell config ===
 
 # User local binaries
-fish_add_path $HOME/.local/bin
+fish_add_path -g $HOME/.local/bin
 
 # Mise shims for non-interactive shells
 mise activate fish --shims | source
@@ -20,4 +20,4 @@ set -gx LANGUAGE en_US   # zh_CN:en_US
 mise activate fish | source
 
 # VSCode from Windows
-fish_add_path "/mnt/c/Users/L/AppData/Local/Programs/Microsoft VS Code/bin"
+fish_add_path -g "/mnt/c/Users/L/AppData/Local/Programs/Microsoft VS Code/bin"

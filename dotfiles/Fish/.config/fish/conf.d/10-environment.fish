@@ -3,7 +3,7 @@
 # === Non-interactive shell config ===
 
 # User local binaries
-fish_add_path $HOME/.local/bin
+fish_add_path -g $HOME/.local/bin
 
 # Mise shims for non-interactive shells
 mise activate fish --shims | source

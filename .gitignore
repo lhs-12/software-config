@@ -7,3 +7,6 @@ cached_layouts
 **/.config/bash/*.local.sh
 # .bash_local.sh only for MSYS2
 .bash_local.sh
+
+# Fish universal variables (machine-local runtime state)
+**/.config/fish/fish_variables
