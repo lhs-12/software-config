@@ -26,42 +26,26 @@ return {
   {
     "mfussenegger/nvim-jdtls",
     opts = function(_, opts)
-      local jdk_runtimes
-      local jdtls_execute
-      local sys = vim.uv.os_uname().sysname:lower()
-      if sys:find("windows") or sys:find("mingw") or sys:find("msys") then
-        -- Windows (mise)
-        -- mise 版本别名 (如 "25"/"temurin-8") 在 Windows 上是纯文本文件而非真符号链接,
-        -- 内容为相对路径 (如 ".\25.0.2"), 需读取并解析为真实安装目录.
-        local function resolve_mise_alias(path)
-          path = vim.fn.expand(path)
-          local st = vim.uv.fs_stat(path)
-          if not st or st.type == "directory" then return path end
-          local target = vim.fn.readfile(path)[1]
-          if target then
-            target = (vim.trim(target):gsub("^%.[/\\]", ""))
-            if target ~= "" then return vim.fn.fnamemodify(path, ":h") .. "/" .. target end
-          end
-          return path
+      -- 通过 mise 获取已装 java 清单与全局激活版本.
+      -- 在 mise 全局配置目录 (~/.config/mise) 执行, 使 active 反映全局 config.toml 的 java,
+      -- 不受当前项目目录影响 (mise 会按目录切换环境).
+      local out = vim.system(
+        { "mise", "ls", "java", "--json" },
+        { cwd = vim.fn.expand("~/.config/mise"), text = true }
+      ):wait()
+      local entries = vim.json.decode(out.stdout or "[]")
+      -- runtimes: 已安装的 java 全部列出, name 用 mise 显示的版本号, 由 jdtls 匹配项目 java 版本
+      local jdk_runtimes = {}
+      local jdtls_home
+      for _, t in ipairs(entries) do
+        if t.installed then
+          jdk_runtimes[#jdk_runtimes + 1] = { name = t.version, path = t.install_path }
+          if t.active then jdtls_home = t.install_path end
         end
-        local mise_java = "$USERPROFILE/AppData/Local/mise/installs/java"
-        local jdk_8 = resolve_mise_alias(mise_java .. "/temurin-8")
-        local jdk_25 = resolve_mise_alias(mise_java .. "/25")
-        jdtls_execute = jdk_25 .. "/bin/java"
-        jdk_runtimes = {
-          { name = "JDK-8", path = jdk_8 },
-          { name = "JDK-25", path = jdk_25 },
-        }
-      else
-        -- Unix
-        local jdk_8 = "$HOME/.local/share/mise/installs/java/temurin-8"
-        local jdk_25 = "$HOME/.local/share/mise/installs/java/25"        
-        jdtls_execute = vim.fn.expand(jdk_25 .. "/bin/java")
-        jdk_runtimes = {
-          { name = "JDK-8", path = vim.fn.expand(jdk_8) },
-          { name = "JDK-25", path = vim.fn.expand(jdk_25) },
-        }
       end
+      -- jdtls 启动 JVM = 全局激活的 java; 全局未配置则取首个已安装; 都没有则用 PATH 的 java
+      jdtls_home = jdtls_home or (jdk_runtimes[1] and jdk_runtimes[1].path)
+      local jdtls_execute = jdtls_home and (jdtls_home .. "/bin/java") or "java"
       table.insert(opts.cmd, "--java-executable=" .. jdtls_execute)
       table.insert(opts.cmd, "--jvm-arg=-Djava.import.generatesMetadataFilesAtProjectRoot=false")
       table.insert(opts.cmd, "-Dlog.perf.level=OFF")
