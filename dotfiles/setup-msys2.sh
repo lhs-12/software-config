@@ -189,9 +189,9 @@ else
   && unzip -q mise.zip -d /tmp/mise && cp /tmp/mise/mise/bin/mise*.exe "$HOME/.local/bin/" && rm -rf mise.zip /tmp/mise
 fi
 # Mise 配置
-safe_ln "$BASE_DIR/MSYS2/Mise/config.toml" "$HOME/.config/mise/config.toml"
+safe_ln "$BASE_DIR/MSYS2/Mise/.config/mise" "$HOME/.config/mise"
 # Aube 配置
-safe_ln "$BASE_DIR/MSYS2/Aube/config.toml" "$HOME/.config/aube/config.toml"
+safe_ln "$BASE_DIR/MSYS2/Mise/.config/aube" "$HOME/.config/aube"
 # 根据 Mise 配置文件安装工具
 mise upgrade
 

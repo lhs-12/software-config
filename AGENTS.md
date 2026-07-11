@@ -64,6 +64,11 @@ Python 原则: 保留系统 Python, 不引入全局依赖, 需要依赖时用 UV
 - 临时依赖: `uv run --with <pkg> script.py`
 - CLI 工具: `uvx <tool>` (临时) / `mise use -g pipx:<tool>` (持久, 替代 `uv tool install`)
 
+---
+
+私密环境变量管理(API_KEY 等)建议使用 Mise 配置目录里的 `config.local.toml` 文件的 `[env]` 表,  
+等效命令: `mise set --file ~/.config/mise/config.local.toml KEY=VALUE`
+
 # 文档编写规范
 
 ## 统一使用英文标点符号

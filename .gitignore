@@ -12,3 +12,6 @@ cached_layouts
 
 # Fish universal variables (machine-local runtime state)
 **/.config/fish/fish_variables
+
+# Mise local secrets (machine-local, never committed)
+**/.config/mise/*.local.toml
