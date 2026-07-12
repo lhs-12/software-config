@@ -6,7 +6,6 @@ gh        = "latest"
 
 pi = "latest"
 "npm:skills" = "latest"
-"npm:snow-ai" = "latest"
 "github:can1357/oh-my-pi" = "latest"
 
 rust = "stable"
@@ -20,6 +19,11 @@ ruff   = "latest"
 stylua = "latest"
 oxfmt  = "latest"
 oxlint = "latest"
+
+[tools."npm:snow-ai"]
+version = "latest"
+allow_builds = ["snow-ai", "sharp", "ssh2", "cpu-features"] # 放行依赖 build script (aube 默认拒绝执行)
+install_env = { SHARP_IGNORE_GLOBAL_LIBVIPS = "true" } # sharp 用自带 prebuilt, 忽略系统全局 libvips(源码编译缺 node-addon-api 失败)
 
 [settings]
 github.use_git_credentials = true # 使用 Git 作为 Github 凭证助手, 配合 gh 登录使用
