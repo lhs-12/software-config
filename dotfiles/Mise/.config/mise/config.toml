@@ -11,7 +11,7 @@ pi = "latest"
 rust = "stable"
 cargo-binstall = "latest"
 
-java   = "25"
+java   = ["25", "temurin-8"]
 maven  = "3"
 node   = "lts"
 uv     = "latest"
@@ -20,6 +20,8 @@ stylua = "latest"
 oxfmt  = "latest"
 oxlint = "latest"
 
+"npm:@dbx-app/cli" = { version = "latest", allow_builds = ["better-sqlite3", "keytar"] }
+
 [tools."npm:snow-ai"]
 version = "latest"
 allow_builds = ["snow-ai", "sharp", "ssh2", "cpu-features"] # 放行依赖 build script (aube 默认拒绝执行)
@@ -27,6 +29,5 @@ install_env = { SHARP_IGNORE_GLOBAL_LIBVIPS = "true" } # sharp 用自带 prebuil
 
 [settings]
 github.use_git_credentials = true # 使用 Git 作为 Github 凭证助手, 配合 gh 登录使用
-minimum_release_age = "24h" # s=秒 m=分 h=时 d=天 w=周 mo=月 y=年, "0s"禁用
-minimum_release_age_excludes = ["pi", "github:can1357/oh-my-pi", "npm:snow-ai"]
+minimum_release_age = "0s" # s=秒 m=分 h=时 d=天 w=周 mo=月 y=年, "0s"禁用
 idiomatic_version_file_enable_tools = ["java", "node", "pnpm", "rust"]

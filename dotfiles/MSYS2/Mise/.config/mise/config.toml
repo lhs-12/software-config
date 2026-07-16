@@ -18,7 +18,7 @@ pi = "latest"
 rust = "stable"
 cargo-binstall = "latest"
 
-java   = "25"
+java   = ["25", "temurin-8"]
 maven  = "3.9.16" # 固定具体版本: Windows 下 mise 版本别名(3/latest)是文本文件非软链接
 node   = "lts"
 uv     = "latest"
@@ -29,12 +29,14 @@ oxlint = "latest"
 
 [tools."npm:snow-ai"]
 version = "latest"
-allow_builds = ["snow-ai", "sharp", "ssh2", "cpu-features"] # 放行依赖 build script (aube 默认拒绝执行)
+# 不放行 cpu-features build script: ssh2 的可选依赖, 用于检测 AES 硬件加速以优化加密算法顺序
+#   该脚本需要 MSVC C++ 编译工具, 否则报错 "Unable to detect compiler type"
+#   不执行这个脚本, ssh2 也会用默认算法顺序, 不影响功能
+allow_builds = ["snow-ai", "sharp", "ssh2"]
 install_env = { SHARP_IGNORE_GLOBAL_LIBVIPS = "true" } # sharp 用自带 prebuilt, 忽略系统全局 libvips(源码编译缺 node-addon-api 失败)
 
 [settings]
 github.use_git_credentials = true # 使用 Git 作为 Github 凭证助手, 配合 gh 登录使用
-minimum_release_age = "24h" # s=秒 m=分 h=时 d=天 w=周 mo=月 y=年, "0s"禁用
-minimum_release_age_excludes = ["pi", "github:can1357/oh-my-pi", "npm:snow-ai"]
+minimum_release_age = "0s" # s=秒 m=分 h=时 d=天 w=周 mo=月 y=年, "0s"禁用
 idiomatic_version_file_enable_tools = ["java", "node", "pnpm", "rust"]
 rust.default_host = "x86_64-pc-windows-gnu" # 默认编译目标设为 GNU, 省去安装 Visual Studio Build Tools
