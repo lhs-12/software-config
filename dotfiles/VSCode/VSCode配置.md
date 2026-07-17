@@ -14,7 +14,6 @@ code \
 --install-extension alefragnani.bookmarks \                           # Bookmarks                           书签
 --install-extension donjayamanne.githistory \                         # Git History                         Git历史
 --install-extension lirentech.git-line-author \                       # Git Line Author                     Git查看行作者
---install-extension james-yu.latex-workshop \                         # LaTeX Workshop                      LaTeX与PDF支持
 --install-extension fabiospampinato.vscode-open-in-application \      # Open in Application                 默认程序打开文件
 --install-extension ms-vscode-remote.vscode-remote-extensionpack \    # Remote Development                  远程开发套件(WSL/容器/SSH...)
 --install-extension ms-vsliveshare.vsliveshare \                      # Live Share                          实时共享
@@ -23,6 +22,9 @@ code \
 --install-extension redhat.vscode-xml \                               # XML                                 XML支持
 --install-extension tamasfe.even-better-toml \                        # Even Better TOML                    TOML支持
 --install-extension redis.redis-for-vscode \                          # Redis for VS Code                   Redis
+--install-extension myriad-dreamin.tinymist \                         # Tinymist Typst                      Typst支持
+--install-extension tomoki1207.pdf \                                  # vscode-pdf                          PDF支持
+# --install-extension james-yu.latex-workshop \                       # LaTeX Workshop                      LaTeX(包含PDF支持)
 
 # 笔记, 图表
 --install-extension shd101wyy.markdown-preview-enhanced \             # Markdown Preview Enhanced           Markdown功能集成
