@@ -18,9 +18,9 @@ add_skills() {
 
 # === Base ===
 agents pi zed
+add_skills vercel-labs/skills -s find-skills
+add_skills iOfficeAI/OfficeCLI
 add_skills browser-act/skills -s browser-act -s browser-act-skill-forge
-add_skills anthropics/skills -s docx -s xlsx -s pptx -s pdf
-add_skills anthropics/skills -s doc-coauthoring
 
 # === Development ===
 agents zed

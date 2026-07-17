@@ -4,6 +4,7 @@ usage     = "latest"
 pitchfork = "latest"
 gh        = "latest"
 typst     = "latest"
+"github:iOfficeAI/OfficeCLI" = "latest"
 
 pi = "latest"
 "npm:skills" = "latest"
