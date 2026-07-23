@@ -20,6 +20,7 @@ add_skills() {
 agents pi zed
 add_skills vercel-labs/skills -s find-skills
 add_skills iOfficeAI/OfficeCLI
+add_skills ogulcancelik/herdr --s herdr
 add_skills browser-act/skills -s browser-act -s browser-act-skill-forge
 
 # === Development ===

@@ -155,7 +155,9 @@ perform_update() {
 
     # Step 2: Upgrade system
     _info "$MSG_STEP_2"
-    $UPDATE_CMD -Syu || _error "$MSG_WARN_PARTIAL"
+    local AUR_OPTS=()
+    [[ $UPDATE_CMD == paru ]] && AUR_OPTS+=(--skipreview)
+    $UPDATE_CMD -Syu "${AUR_OPTS[@]}" || _error "$MSG_WARN_PARTIAL"
 
     # Step 3: Flatpak
     if command -v flatpak >/dev/null 2>&1; then

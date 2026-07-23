@@ -6,6 +6,7 @@ gh        = "latest"
 typst     = "latest"
 "github:iOfficeAI/OfficeCLI" = "latest"
 
+herdr = "latest"
 pi = "latest"
 "npm:skills" = "latest"
 "github:can1357/oh-my-pi" = "latest"
