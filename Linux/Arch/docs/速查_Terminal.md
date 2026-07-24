@@ -49,8 +49,8 @@
 | 快捷键             | 功能                  |
 | ------------------ | --------------------- |
 | `ctrl+shift+t`     | 新建标签页            |
-| `ctrl+tab`         | 下一个标签页          |
-| `ctrl+shift+tab`   | 上一个标签页          |
+| `ctrl+shift+]`     | 下一个标签页          |
+| `ctrl+shift+[`     | 上一个标签页          |
 | `ctrl+alt+t`       | 修改当前标签页标题    |
 | `ctrl+alt+w`       | 关闭当前标签页        |
 | `ctrl+alt+1` ~ `9` | 切换到第 1~9 个标签页 |
@@ -65,8 +65,6 @@
 | `ctrl+shift+j`         | 聚焦下方分屏       |
 | `ctrl+shift+k`         | 聚焦上方分屏       |
 | `ctrl+shift+l`         | 聚焦右侧分屏       |
-| `ctrl+shift+{`         | 聚焦上一个分屏     |
-| `ctrl+shift+}`         | 聚焦下一个分屏     |
 | `ctrl+shift+left`      | 向左调整分屏大小   |
 | `ctrl+shift+right`     | 向右调整分屏大小   |
 | `ctrl+shift+up`        | 向上调整分屏大小   |
@@ -288,8 +286,8 @@
 | 快捷键             | 功能                  |
 | ------------------ | --------------------- |
 | `ctrl+shift+t`     | 新建标签页            |
-| `ctrl+tab`         | 下一个标签页          |
-| `ctrl+shift+tab`   | 上一个标签页          |
+| `ctrl+shift+]`     | 下一个标签页          |
+| `ctrl+shift+[`     | 上一个标签页          |
 | `ctrl+alt+shift+t` | 修改当前标签页标题    |
 | `ctrl+alt+shift+w` | 关闭当前标签页        |
 | `ctrl+alt+1` ~ `9` | 切换到第 1~9 个标签页 |
@@ -304,8 +302,6 @@
 | `ctrl+shift+j`         | 聚焦下方分屏     |
 | `ctrl+shift+k`         | 聚焦上方分屏     |
 | `ctrl+shift+l`         | 聚焦右侧分屏     |
-| `ctrl+shift+[`         | 聚焦上一个分屏   |
-| `ctrl+shift+]`         | 聚焦下一个分屏   |
 | `ctrl+shift+left`      | 向左调整分屏大小 |
 | `ctrl+shift+right`     | 向右调整分屏大小 |
 | `ctrl+shift+up`        | 向上调整分屏大小 |
@@ -374,8 +370,8 @@
 | 快捷键             | 功能                  |
 | ------------------ | --------------------- |
 | `ctrl+shift+t`     | 新建标签页            |
-| `ctrl+tab`         | 下一个标签页          |
-| `ctrl+shift+tab`   | 上一个标签页          |
+| `ctrl+shift+]`     | 下一个标签页          |
+| `ctrl+shift+[`     | 上一个标签页          |
 | `ctrl+shift+alt+w` | 关闭当前标签页        |
 | `ctrl+shift+alt+t` | 修改当前标签页标题    |
 | `ctrl+alt+1` ~ `9` | 切换到第 1~9 个标签页 |

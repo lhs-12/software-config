@@ -7,7 +7,7 @@ name = "terminal"
 default_shell = "fish"
 [ui]
 prompt_new_tab_name = false
-accent = "#2db6ba"
+accent = "#7fbbb3"
 toast.delivery = "herdr"
 toast.delay_seconds = 1
 [advanced]
@@ -19,10 +19,8 @@ prefix = "ctrl+a"
 split_vertical = "prefix+|"
 split_horizontal = "prefix+-"
 new_tab = "prefix+t"
-previous_tab = "prefix+shift+tab"
-next_tab = "prefix+tab"
-cycle_pane_next = "prefix+]"
-cycle_pane_previous = "prefix+["
+previous_tab = "prefix+["
+next_tab = "prefix+]"
 copy_mode = "prefix+e"
 edit_scrollback = "prefix+shift+e"
 [[keys.command]]

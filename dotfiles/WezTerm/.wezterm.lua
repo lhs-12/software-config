@@ -122,9 +122,9 @@ config.keys = {
 	-- ===== 窗口管理 =====
 	{ mods = 'CTRL|SHIFT', key = 'F11', action = act.ToggleFullScreen }, -- 最大化
 	-- ===== Tabs(标签页) =====
-	{ mods = "CTRL|SHIFT", key = "t"  , action = act.SpawnTab("CurrentPaneDomain") }, -- 新建 tab
-	{ mods = "CTRL"      , key = "Tab", action = act.ActivateTabRelative(1) }, -- 切换到下一个 tab
-	{ mods = "CTRL|SHIFT", key = "Tab", action = act.ActivateTabRelative(-1)}, -- 切换到上一个 tab
+	{ mods = "CTRL|SHIFT", key = "t", action = act.SpawnTab("CurrentPaneDomain") }, -- 新建 tab
+	{ mods = "CTRL|SHIFT", key = "]", action = act.ActivateTabRelative(1) }, -- 切换到下一个 tab
+	{ mods = "CTRL|SHIFT", key = "[", action = act.ActivateTabRelative(-1)}, -- 切换到上一个 tab
 	{ mods = "CTRL|SHIFT|ALT", key = "t", action = -- 修改当前 tab 标题
 		act.PromptInputLine({
 			description = "Enter a new title for the current tab",
@@ -151,8 +151,6 @@ config.keys = {
 	{ mods = "CTRL|SHIFT", key = "j", action = act.ActivatePaneDirection("Down") }, -- 导航到下方 pane
 	{ mods = "CTRL|SHIFT", key = "k", action = act.ActivatePaneDirection("Up")   }, -- 导航到上方 pane
 	{ mods = "CTRL|SHIFT", key = "l", action = act.ActivatePaneDirection("Right")}, -- 导航到右侧 pane
-	{ mods = "CTRL|SHIFT", key = "{", action = act.ActivatePaneDirection("Prev") }, -- 导航到上一个 pane
-	{ mods = "CTRL|SHIFT", key = "}", action = act.ActivatePaneDirection("Next") }, -- 导航到下一个 pane
 	{ mods = "CTRL|SHIFT", key = "<", action = act.RotatePanes("CounterClockwise") }, -- 切换 pane
 	{ mods = "CTRL|SHIFT", key = ">", action = act.RotatePanes("Clockwise")        }, -- 切换 pane
 	{ mods = "CTRL|SHIFT", key = "r", action = act.PaneSelect({ mode = "SwapWithActiveKeepFocus" }) }, -- 切换到选中 pane
