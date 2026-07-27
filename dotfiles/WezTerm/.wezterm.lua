@@ -123,8 +123,8 @@ config.keys = {
 	{ mods = 'CTRL|SHIFT', key = 'F11', action = act.ToggleFullScreen }, -- 最大化
 	-- ===== Tabs(标签页) =====
 	{ mods = "CTRL|SHIFT", key = "t", action = act.SpawnTab("CurrentPaneDomain") }, -- 新建 tab
-	{ mods = "CTRL|SHIFT", key = "]", action = act.ActivateTabRelative(1) }, -- 切换到下一个 tab
-	{ mods = "CTRL|SHIFT", key = "[", action = act.ActivateTabRelative(-1)}, -- 切换到上一个 tab
+	{ mods = "CTRL|SHIFT", key = "}", action = act.ActivateTabRelative(1) }, -- 切换到下一个 tab
+	{ mods = "CTRL|SHIFT", key = "{", action = act.ActivateTabRelative(-1)}, -- 切换到上一个 tab
 	{ mods = "CTRL|SHIFT|ALT", key = "t", action = -- 修改当前 tab 标题
 		act.PromptInputLine({
 			description = "Enter a new title for the current tab",
