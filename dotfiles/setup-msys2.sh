@@ -182,11 +182,11 @@ append_path "$HOME/.local/bin"
 if command -v mise &> /dev/null; then
   mise self-update -y # 更新 Mise
 else
-  # 安装 Mise: 下载 mise.exe 和 mise-shim.exe 到 C:\Users\xxx\.local\bin
+  # 安装 Mise: 下载 mise.exe 和 mise-shim.exe 到 ~/.local/bin/
   echo "Installing Mise..."
-  curl -L -o mise.zip $(curl -s "${CURL_GH_AUTH[@]}" https://api.github.com/repos/jdx/mise/releases/latest | \
-  jq -r '.assets[] | select(.name | test("windows-x64.zip$")) | .browser_download_url' | tr -d '\r') \
-  && unzip -q mise.zip -d /tmp/mise && cp /tmp/mise/mise/bin/mise*.exe "$HOME/.local/bin/" && rm -rf mise.zip /tmp/mise
+  MISE_VERSION=$(curl -s https://mise.run | grep 'current_version=' | head -1 | cut -d'"' -f2)
+  MISE_URL="https://mise.jdx.dev/${MISE_VERSION}/mise-${MISE_VERSION}-windows-x64.zip"
+  curl -L -o mise.zip "$MISE_URL" && unzip -q mise.zip -d /tmp/mise && cp /tmp/mise/mise/bin/mise*.exe "$HOME/.local/bin/" && rm -rf mise.zip /tmp/mise
 fi
 # Mise 配置
 safe_ln "$BASE_DIR/MSYS2/Mise/.config/mise" "$HOME/.config/mise"
