@@ -5,7 +5,6 @@
 alias vi='nvim --clean'
 alias vim='nvim'
 alias svi='sudo nvim'
-alias code='code --ozone-platform=wayland'
 
 # lsd (ls replacement)
 alias ls='lsd'

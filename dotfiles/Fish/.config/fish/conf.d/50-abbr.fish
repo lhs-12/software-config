@@ -6,7 +6,6 @@ if not status is-interactive; exit; end # Skip non-interactive shells
 abbr vi 'nvim --clean'
 abbr vim nvim
 abbr svi 'sudo nvim'
-abbr code 'code --ozone-platform=wayland'
 
 # Directory listing (lsd)
 abbr ls lsd
