@@ -3,7 +3,11 @@
 if not status is-interactive; exit; end # Skip non-interactive shells
 
 function start --description "Open files with the default application"
-	env LANGUAGE=zh_CN.UTF-8 nohup xdg-open $argv </dev/null >/dev/null 2>&1 &
+	if test -n "$WSL_DISTRO_NAME$WSL_INTEROP"
+		/mnt/c/Windows/System32/cmd.exe /c start "" $argv 2>/dev/null
+	else
+		env LANGUAGE=zh_CN.UTF-8 nohup xdg-open $argv </dev/null >/dev/null 2>&1 &
+	end
 end
 
 function cdg --description "Change directory with fzf"

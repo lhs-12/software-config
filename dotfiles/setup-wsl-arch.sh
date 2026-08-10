@@ -83,14 +83,8 @@ sudo chown -R root: /usr/share/fonts/my-fonts
 sudo chmod 644 /usr/share/fonts/my-fonts/*
 sudo fc-cache -fv
 
-# echo "=== 安装输入法 ==="
-# sudo pacman -S --needed --noconfirm fcitx5-im fcitx5-rime rime-ice-git
-# WSLg 走 XWayland
-# 启动: fcitx5 --disable=wayland > /dev/null 2>&1 &
-# 配置GUI: fcitx5-configtool
-# 重载: fcitx5-remote -r
-# 关闭: pkill fcitx5
-# 诊断: fcitx5-diagnose
+echo "=== 安装输入法 ==="
+sudo pacman -S --needed --noconfirm fcitx5-im fcitx5-rime rime-ice-git
 
 echo "=== 安装 Docker ==="
 sudo pacman -S --needed --noconfirm docker docker-compose
@@ -128,12 +122,25 @@ bash setup-dotfiles.sh dotfiles-wsl-arch.conf --auto
 # stow --adopt 会把系统文件拉取回 dotfiles, 需要回滚
 git restore .
 
+# 启用 fcitx5 systemd user service
+echo "=== 启用 fcitx5 ==="
+systemctl --user daemon-reload
+systemctl --user enable --now fcitx5.service
+
 # 安装 Mise 并按照其配置文件安装工具
 echo "=== 安装 Mise ==="
 curl https://mise.run | sh
 $HOME/.local/bin/mise upgrade
-# 二次执行, 使 npm 之类的包也被安装
-$HOME/.local/bin/mise upgrade
+
+# 从 Windows gh 转移登录信息到 WSL gh
+echo "=== 配置 GitHub CLI ==="
+WIN_USER=$(/mnt/c/Windows/System32/cmd.exe /c "echo %USERNAME%" 2>/dev/null | tr -d '\r')
+WIN_GH="/mnt/c/Users/$WIN_USER/AppData/Local/mise/shims/gh.exe"
+if "$WIN_GH" auth status &>/dev/null; then
+  "$WIN_GH" auth token | ~/.local/share/mise/shims/gh auth login --with-token --hostname github.com
+else
+  echo "Windows gh 未登录, 跳过"
+fi
 
 echo ""
 echo "=== 安装完成 ==="

@@ -7,3 +7,13 @@ export LANGUAGE=en_US   # zh_CN:en_US
 
 # Mise activate for interactive shells
 eval "$(mise activate bash)"
+
+# WSL
+if [[ -n ${WSL_DISTRO_NAME:-}${WSL_INTEROP:-} ]]; then
+  # Input method (WSLg / XWayland)
+  export XMODIFIERS=@im=fcitx
+  export GTK_IM_MODULE=fcitx
+  export QT_IM_MODULE=fcitx
+  # VSCode from Windows
+  append_path "/mnt/c/Users/L/AppData/Local/Programs/Microsoft VS Code/bin"
+fi

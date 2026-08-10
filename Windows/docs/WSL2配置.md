@@ -151,8 +151,6 @@ sed -i 's/^#Color/Color/' /etc/pacman.conf
 sed -i '1i Server = https://mirrors.tuna.tsinghua.edu.cn/archlinux/$repo/os/$arch' /etc/pacman.d/mirrorlist
 sed -i '1i Server = https://mirrors.cloud.tencent.com/archlinux/$repo/os/$arch' /etc/pacman.d/mirrorlist
 sed -i '1i Server = http://mirrors.aliyun.com/archlinux/$repo/os/$arch' /etc/pacman.d/mirrorlist
-# 更新密钥环并初始化
-pacman -Sy archlinux-keyring && pacman -Syyu
 # 添加 CN 源
 tee -a /etc/pacman.conf > /dev/null << 'EOF'
 [archlinuxcn]
@@ -160,9 +158,10 @@ Server = https://mirrors.aliyun.com/archlinuxcn/$arch
 Server = https://mirrors.cloud.tencent.com/archlinuxcn/$arch
 Server = https://mirrors.tuna.tsinghua.edu.cn/archlinuxcn/$arch
 EOF
-pacman -Sy archlinuxcn-keyring
+# 更新密钥环并初始化
+pacman -Sy --noconfirm archlinux-keyring archlinuxcn-keyring && pacman -Syyu --noconfirm
 # 安装基础包
-pacman -S --needed base-devel git neovim paru
+pacman -S --needed --noconfirm base-devel git neovim paru
 # 启用 sudoers
 sed -i 's/# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/' /etc/sudoers
 # 禁用 Windows PATH 注入
@@ -180,6 +179,7 @@ passwd
 # 退出 WSL
 exit
 wsl --shutdown
+# 此处适合迁移 WSL 发行版数据目录
 # 设置默认账号
 wsl --manage archlinux --set-default-user 用户名
 ```

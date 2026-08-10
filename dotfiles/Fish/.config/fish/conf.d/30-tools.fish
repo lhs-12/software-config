@@ -12,7 +12,7 @@ batman --export-env | source
 zoxide init fish | source
 
 # Trash
-abbr rm 'trash -v'
+command -q trash; and abbr rm 'trash -v'
 
 # Yazi
 abbr yz yazi

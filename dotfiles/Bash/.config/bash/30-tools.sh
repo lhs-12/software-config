@@ -16,7 +16,7 @@ eval "$(batman --export-env)"
 eval "$(zoxide init bash)"
 
 # Trash
-alias rm='trash -v'
+command -v trash >/dev/null 2>&1 && alias rm='trash -v'
 
 # Yazi
 alias yz='yazi'

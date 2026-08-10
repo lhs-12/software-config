@@ -49,7 +49,10 @@ proxycfg() {
   esac
 }
 
+# WSL 中不自动配置代理
+[[ -n ${WSL_DISTRO_NAME:-}${WSL_INTEROP:-} ]] && return 0
+
 # v2rayN 开启系统代理时, gsettings 命令输出 "manual", 此时开启 proxycfg, 否则关闭
-command -v gsettings >/dev/null 2>&1 || exit 0
+command -v gsettings >/dev/null 2>&1 || return 0
 mode=$(gsettings get org.gnome.system.proxy mode 2>/dev/null)
 [ "$mode" = "'manual'" ] && proxycfg on >/dev/null 2>&1 || proxycfg off >/dev/null 2>&1

@@ -1,10 +1,14 @@
 #!/usr/bin/env bash
 # User-defined functions
 
-# Open with default app (Windows Style)
+# Open with default app
 start() {
-  LANGUAGE=zh_CN.UTF-8 nohup xdg-open "$@" </dev/null >/dev/null 2>&1 &
-  disown $! 2>/dev/null
+  if [[ -n ${WSL_DISTRO_NAME:-}${WSL_INTEROP:-} ]]; then
+    /mnt/c/Windows/System32/cmd.exe /c start "" "$@" 2>/dev/null
+  else
+    LANGUAGE=zh_CN.UTF-8 nohup xdg-open "$@" </dev/null >/dev/null 2>&1 &
+    disown $! 2>/dev/null
+  fi
 }
 
 # cd into fzf directory
