@@ -4,7 +4,7 @@
 # Arch Linux 系统清理助手
 # ===============================================================
 # 【功能说明】
-# 1. 移除孤儿软件包 (Orphans)
+# 1. 移除孤儿软件包与无主 debug 符号包 (Orphans)
 # 2. 清理 Pacman 软件包缓存 (默认保留安装包，--all 彻底清空)
 # 3. 清理残留的下载目录 (download-*)
 # 4. 清理 Systemd 日志 (只保留最近 2 周)
@@ -56,7 +56,7 @@ TAG_WARN    | [WARN]  | [注意]
 TAG_ERROR   | [ERROR] | [错误]
 
 MSG_DESC_TITLE    | The script will perform the following cleanup tasks:  | 本脚本将执行以下清理操作：
-MSG_DESC_1        | 1. Remove orphaned packages                           | 1. 删除孤儿软件包
+MSG_DESC_1        | 1. Remove orphaned packages & debug packages          | 1. 删除孤儿软件包及无主 debug 符号包
 MSG_DESC_2        | 2. Clean package cache                                | 2. 清理软件包缓存
 MSG_DESC_3        | 3. Vacuum systemd journal logs                        | 3. 清理 systemd 日志
 MSG_DESC_4        | 4. Empty user Trash and thumbnail cache               | 4. 清空回收站和缩略图缓存
@@ -66,25 +66,26 @@ MSG_ASK_CONFIRM   | Continue with cleanup? [Y/n]                          | 是�
 MSG_ABORT         | Cleanup cancelled by user.                            | 用户已取消清理。
 MSG_DONE          | System cleanup completed!                             | 系统清理完成！
 
-MSG_NO_PM         | No supported package manager (paru/yay/pacman).       | 未找到受支持的包管理器 (paru/yay/pacman)
-MSG_HELPER_USE    | Using package manager: %s                             | 使用包管理器：%s
-MSG_STEP_ORPHAN   | Checking for orphaned packages...                     | 正在检查孤儿软件包...
-MSG_ORPHAN_FOUND  | Orphaned packages detected, cleaning...               | 发现孤儿软件包，准备清理...
-MSG_ORPHAN_CLEAN  | Orphaned packages removed.                            | 已删除孤儿软件包。
-MSG_ORPHAN_NONE   | No orphaned packages found.                           | 未发现孤儿软件包。
-MSG_STEP_CACHE    | Cleaning package cache...                             | 正在清理软件包缓存...
-MSG_STEP_CACHE_ALL| Cleaning ALL package & AUR cache...                   | 正在清空所有软件包及 AUR 缓存...
-MSG_CACHE_DONE    | Package cache cleaned.                                | 软件包缓存已清理。
-MSG_CACHE_ALL_DONE| All package & AUR cache cleared.                      | 所有软件包及 AUR 缓存已清空。
-MSG_STEP_BROKEN   | Cleaning residual download directories...             | 正在清理残留下载目录...
-MSG_BROKEN_DONE   | Residual directories removed.                         | 残留目录已清理。
-MSG_STEP_LOG      | Vacuuming systemd journal logs...                     | 正在清理 systemd 日志...
-MSG_LOG_DONE      | Systemd journal logs cleaned.                         | 系统日志已清理。
-MSG_STEP_TRASH    | Cleaning user Trash and thumbnails...                 | 正在清理回收站和缩略图...
-MSG_TRASH_DONE    | Trash emptied.                                        | 回收站已清空。
-MSG_THUMB_DONE    | Thumbnails cleaned.                                   | 缩略图已清理。
-MSG_STEP_FLATPAK  | Checking for unused Flatpak runtimes...               | 正在检查未使用的 Flatpak 运行时...
-MSG_FLATPAK_DONE  | Unused Flatpak runtimes removed.                      | 未使用的 Flatpak 运行时已删除。
+MSG_NO_PM              | No supported package manager (paru/yay/pacman).  | 未找到受支持的包管理器 (paru/yay/pacman)
+MSG_HELPER_USE         | Using package manager: %s                        | 使用包管理器：%s
+MSG_STEP_ORPHAN        | Checking for orphaned packages...                | 正在检查孤儿软件包...
+MSG_ORPHAN_FOUND       | Orphaned packages detected, cleaning...          | 发现孤儿软件包，准备清理...
+MSG_ORPHAN_DEBUG_FOUND | Orphaned debug packages detected, cleaning...    | 发现无主包的 debug 符号包，准备清理...
+MSG_ORPHAN_CLEAN       | Orphaned packages removed.                       | 已删除孤儿软件包。
+MSG_ORPHAN_NONE        | No orphaned packages found.                      | 未发现孤儿软件包。
+MSG_STEP_CACHE         | Cleaning package cache...                        | 正在清理软件包缓存...
+MSG_STEP_CACHE_ALL     | Cleaning ALL package & AUR cache...              | 正在清空所有软件包及 AUR 缓存...
+MSG_CACHE_DONE         | Package cache cleaned.                           | 软件包缓存已清理。
+MSG_CACHE_ALL_DONE     | All package & AUR cache cleared.                 | 所有软件包及 AUR 缓存已清空。
+MSG_STEP_BROKEN        | Cleaning residual download directories...        | 正在清理残留下载目录...
+MSG_BROKEN_DONE        | Residual directories removed.                    | 残留目录已清理。
+MSG_STEP_LOG           | Vacuuming systemd journal logs...                | 正在清理 systemd 日志...
+MSG_LOG_DONE           | Systemd journal logs cleaned.                    | 系统日志已清理。
+MSG_STEP_TRASH         | Cleaning user Trash and thumbnails...            | 正在清理回收站和缩略图...
+MSG_TRASH_DONE         | Trash emptied.                                   | 回收站已清空。
+MSG_THUMB_DONE         | Thumbnails cleaned.                              | 缩略图已清理。
+MSG_STEP_FLATPAK       | Checking for unused Flatpak runtimes...          | 正在检查未使用的 Flatpak 运行时...
+MSG_FLATPAK_DONE       | Unused Flatpak runtimes removed.                 | 未使用的 Flatpak 运行时已删除。
 '
 while IFS='|' read -r v e c; do
   v="${v#"${v%%[![:space:]]*}"}"; v="${v%"${v##*[![:space:]]}"}"
@@ -121,7 +122,7 @@ if [ "$SKIP_CONFIRM" = false ]; then
     [ "$CLEAN_ALL" = true ] && printf "\n%s%s%s" "$RED" "$MSG_DESC_ALL" "$NC"
     printf "\n%s=======================================================%s" "$BLUE" "$NC"
     printf "\n%s%s %s" "$YELLOW" "$MSG_ASK_CONFIRM" "$NC"
-    read -r confirm
+    read -r confirm || true
     case "$confirm" in
         [yY][eE][sS]|[yY]|"") ;;
         *) printf "%s\n" "$MSG_ABORT"; exit 0 ;;
@@ -141,20 +142,37 @@ _error "$MSG_NO_PM"
 # ------------------------------
 _info "$(printf "$MSG_HELPER_USE" "$AUR_HELPER")"
 
-# Keep Sudo Alive
+# Sudo
 sudo -v
-( while true; do sudo -n true 2>/dev/null || exit; sleep 60 || exit; done ) &
-SUDO_PID=$!
-trap 'kill -- -$SUDO_PID 2>/dev/null || true' EXIT INT TERM
 
 # [Step 1] Orphans
 _info "$MSG_STEP_ORPHAN"
+
+# 传统孤儿包 (作为依赖安装但不再被任何包需要)
 ORPHANS=$(pacman -Qtdq || true)
-if [[ -n "$ORPHANS" ]]; then
-    printf "%s%s%s\n" "$YELLOW" "$MSG_ORPHAN_FOUND" "$NC"
-    printf "%s\n" "$ORPHANS"
-    mapfile -t ORPHAN_ARR <<< "$ORPHANS"
-    $AUR_HELPER -Rns "${ORPHAN_ARR[@]}" --noconfirm
+# 无主包的 -debug 符号包 (主包已卸载, debug 包残留)
+ORPHAN_DEBUGS=$(
+    while IFS= read -r pkg; do
+        base="${pkg%-debug}"
+        [[ -n "$base" ]] || continue
+        pacman -Qi "$base" >/dev/null 2>&1 || echo "$pkg"
+    done < <(pacman -Qq 2>/dev/null | grep -- '-debug$' || true)
+)
+if [[ -n "$ORPHANS" || -n "$ORPHAN_DEBUGS" ]]; then
+    if [[ -n "$ORPHANS" ]]; then
+        printf "%s%s%s\n" "$YELLOW" "$MSG_ORPHAN_FOUND" "$NC"
+        printf "%s\n" "$ORPHANS"
+    fi
+    if [[ -n "$ORPHAN_DEBUGS" ]]; then
+        printf "%s%s%s\n" "$YELLOW" "$MSG_ORPHAN_DEBUG_FOUND" "$NC"
+        printf "%s\n" "$ORPHAN_DEBUGS"
+    fi
+    # 合并两类孤儿包 (过滤空行) 后一次性清理
+    ORPHAN_ARR=()
+    while IFS= read -r pkg; do
+        [[ -n "$pkg" ]] && ORPHAN_ARR+=("$pkg")
+    done < <(printf '%s\n' "$ORPHANS" "$ORPHAN_DEBUGS")
+    $AUR_HELPER -Rns --noconfirm "${ORPHAN_ARR[@]}"
     _success "$MSG_ORPHAN_CLEAN"
 else
     _success "$MSG_ORPHAN_NONE"
@@ -170,13 +188,10 @@ else
     PACMAN_FLAG="-Sc"
     AUR_FLAG="-Sc --aur"
 fi
-
-sudo pacman $PACMAN_FLAG --noconfirm >/dev/null 2>&1 || true
-
-if [[ "$AUR_HELPER" != "pacman" ]] && command -v "$AUR_HELPER" >/dev/null 2>&1; then
-    $AUR_HELPER $AUR_FLAG --noconfirm >/dev/null 2>&1 || true
-fi
-
+yes | sudo pacman $PACMAN_FLAG >/dev/null 2>&1 || true
+# 清理已安装 AUR 助手的缓存
+command -v yay  >/dev/null 2>&1 && yes | yay  $AUR_FLAG >/dev/null 2>&1 || true
+command -v paru >/dev/null 2>&1 && yes | paru $AUR_FLAG >/dev/null 2>&1 || true
 if [ "$CLEAN_ALL" = true ]; then
     [ -d "$HOME/.cache/yay" ] && rm -rf "$HOME/.cache/yay"/* 2>/dev/null || true
     [ -d "$HOME/.cache/paru/clone" ] && rm -rf "$HOME/.cache/paru/clone"/* 2>/dev/null || true
@@ -189,7 +204,7 @@ fi
 TARGET_DIR="/var/cache/pacman/pkg"
 if [ -d "$TARGET_DIR" ]; then
     _info "$MSG_STEP_BROKEN"
-    sudo find "$TARGET_DIR" -maxdepth 1 -type d -name "download-*" -exec rm -rf {} + 2>/dev/null || true
+    sudo find "$TARGET_DIR" -maxdepth 1 \( -type d -name "download-*" -o -type f -name "*.part" \) -exec rm -rf {} + 2>/dev/null || true
     _success "$MSG_BROKEN_DONE"
 fi
 
@@ -209,7 +224,7 @@ THUMB_DIR="$HOME/.cache/thumbnails"
 # [Step 6] Flatpak
 if command -v flatpak >/dev/null 2>&1; then
     _info "$MSG_STEP_FLATPAK"
-    flatpak uninstall --unused -y >/dev/null 2>&1
+    flatpak uninstall --unused -y >/dev/null 2>&1 || true
     _success "$MSG_FLATPAK_DONE"
 fi
 

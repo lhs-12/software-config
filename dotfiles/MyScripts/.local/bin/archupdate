@@ -7,12 +7,13 @@
 # 01. 支持从 Arch Linux 官方/中文社区获取最新新闻资讯
 # 02. 智能解析新闻并高亮显示需要"手动干预"的警告信息
 # 03. 等待用户确认后执行系统更新
-# 04. 自动检测并使用 AUR 助手 (paru 或 yay)
-# 05. 智能更新 GPG 密钥环 (keyring)
-# 06. 自动更新 Flatpak 应用
-# 07. 更新后自动执行 GRUB 配置更新
-# 08. 自动请求并后台保持 sudo 权限
-# 09. 自动检测系统语言实现多语言支持 (中/英)
+# 04. 更新前自动创建快照, 出问题可回滚
+# 05. 自动检测并使用 AUR 助手 (paru 或 yay)
+# 06. 智能更新 GPG 密钥环 (keyring)
+# 07. 自动更新 Flatpak 应用
+# 08. 更新后自动执行 GRUB 配置更新
+# 09. 自动请求并后台保持 sudo 权限
+# 10. 自动检测系统语言实现多语言支持 (中/英)
 # ===============================================================
 # 【命令行参数】
 # --ui-lang      zh|en        指定脚本交互语言(中/英)
@@ -86,16 +87,20 @@ MSG_FORCE_ASK    | Force update anyway? [y/N]               | 是否忽略新闻
 MSG_FORCING      | Forcing update...                        | 正在强制更新...
 MSG_EXIT         | Safe exit.                               | 安全退出。
 
-MSG_STEP_1       | [1/5] Sync DB & Keyrings                 | [1/5] 同步数据库并更新密钥环...
+MSG_STEP_1       | [1/6] Creating snapshot                  | [1/6] 正在创建快照...
+MSG_NO_SNAPPER   | No snapper, skip                         | 未找到 snapper, 跳过快照
+MSG_NO_SNAPCFG   | No snapper configs, skip                 | 未找到 snapper 配置, 跳过快照
+MSG_SNAP_CREATED | pre-archupdate-%s created                | pre-archupdate-%s 已创建
+MSG_STEP_2       | [2/6] Sync DB & Keyrings                 | [2/6] 同步数据库并更新密钥环...
 MSG_KEYRING_OK   | DB & Keyrings synced.                    | 数据库与密钥环已同步。
 MSG_KEYRING_WARN | Keyring issues detected...               | 密钥环更新遇到问题，继续尝试系统更新...
-MSG_STEP_2       | [2/5] Upgrading system                   | [2/5] 正在升级系统...
-MSG_STEP_3       | [3/5] Checking Flatpak updates           | [3/5] 检查 Flatpak 更新...
-MSG_STEP_4       | [4/5] Updating GRUB                      | [4/5] 更新 GRUB 配置...
+MSG_STEP_3       | [3/6] Upgrading system                   | [3/6] 正在升级系统...
+MSG_STEP_4       | [4/6] Checking Flatpak updates           | [4/6] 检查 Flatpak 更新...
+MSG_STEP_5       | [5/6] Updating GRUB                      | [5/6] 更新 GRUB 配置...
 MSG_GRUB_OK      | GRUB updated.                            | GRUB 更新成功。
 MSG_GRUB_FAIL    | GRUB update failed.                      | GRUB 更新失败。
 MSG_GRUB_MISSING | Skip GRUB update (grub-mkconfig missing) | 跳过 GRUB 更新(grub-mkconfig 缺失)
-MSG_STEP_5       | [5/5] Updating Mise                      | [5/5] 更新 Mise...
+MSG_STEP_6       | [6/6] Updating Mise                      | [6/6] 更新 Mise...
 MSG_WARN_PARTIAL | Update failed. Retry before installing any packages. | 更新失败. 请重试, 成功前勿装新包!
 '
 while IFS='|' read -r v e c; do
@@ -129,7 +134,7 @@ fi
 # Keep sudo alive in background
 ( while true; do sudo -n true 2>/dev/null || exit; sleep 60 || exit; done ) &
 SUDO_PID=$!
-trap 'kill -- -$SUDO_PID 2>/dev/null || true' EXIT INT TERM
+trap 'kill "$SUDO_PID" 2>/dev/null || true' EXIT INT TERM
 
 # ------------------------------
 # 6. Check AUR Helper
@@ -142,8 +147,25 @@ _error "$MSG_NO_HELPER"
 # 7. Update Function
 # ------------------------------
 perform_update() {
-    # Step 1: Sync DB & Update keyrings
+    # Step 1: Pre-update snapshot for rollback
     _info "$MSG_STEP_1"
+    if ! command -v snapper >/dev/null 2>&1; then
+        _warn "$MSG_NO_SNAPPER"
+    else
+        CONFIGS=($(sudo snapper list-configs | awk 'NR>2 {print $1}'))
+        if [[ ${#CONFIGS[@]} -eq 0 ]]; then
+            _warn "$MSG_NO_SNAPCFG"
+        else
+            for conf in "${CONFIGS[@]}"; do
+                sudo snapper -c "$conf" cleanup number
+                sudo snapper -c "$conf" create --description "pre-archupdate-${conf}" --cleanup-algorithm number
+                _success "$(printf "$MSG_SNAP_CREATED" "$conf")"
+            done
+        fi
+    fi
+
+    # Step 2: Sync DB & Update keyrings
+    _info "$MSG_STEP_2"
     KEYRING_TARGETS="archlinux-keyring"
     grep -q "^\[archlinuxcn\]" /etc/pacman.conf && KEYRING_TARGETS+=" archlinuxcn-keyring"
 
@@ -153,20 +175,20 @@ perform_update() {
         _warn "$MSG_KEYRING_WARN"
     fi
 
-    # Step 2: Upgrade system
-    _info "$MSG_STEP_2"
+    # Step 3: Upgrade system
+    _info "$MSG_STEP_3"
     local AUR_OPTS=()
     [[ $UPDATE_CMD == paru ]] && AUR_OPTS+=(--skipreview)
     $UPDATE_CMD -Syu "${AUR_OPTS[@]}" || _error "$MSG_WARN_PARTIAL"
 
-    # Step 3: Flatpak
+    # Step 4: Flatpak
     if command -v flatpak >/dev/null 2>&1; then
-        _info "$MSG_STEP_3"
+        _info "$MSG_STEP_4"
         flatpak update -y # -y for silent update
     fi
 
-    # Step 4: Update GRUB
-    _info "$MSG_STEP_4"
+    # Step 5: Update GRUB
+    _info "$MSG_STEP_5"
     if ! command -v grub-mkconfig >/dev/null 2>&1; then
         _warn "$MSG_GRUB_MISSING"
     elif sudo env LANG=en_US.UTF-8 grub-mkconfig -o /boot/grub/grub.cfg; then
@@ -175,9 +197,9 @@ perform_update() {
         _warn "$MSG_GRUB_FAIL"
     fi
 
-    # Step 5: Update Mise
+    # Step 6: Update Mise
     if command -v mise >/dev/null 2>&1; then
-        _info "$MSG_STEP_5"
+        _info "$MSG_STEP_6"
         mise self-update
         mise upgrade
     fi
@@ -234,7 +256,7 @@ if curl -sS -L --tls-max 1.2 --connect-timeout 15 -A "Mozilla/5.0" "$NEWS_URL" \
     # News fetched successfully
     printf "\n"
     printf "$MSG_CONFIRM" "$UPDATE_CMD"
-    read -r confirm
+    read -r confirm || true
     case "$confirm" in
         [Yy]*|"" ) perform_update ;;
         * ) _warn "$MSG_CANCEL"; exit 0 ;;
@@ -244,7 +266,7 @@ else
     printf "\n"
     _warn "$MSG_ERR_FETCH"
     printf "$MSG_FORCE_ASK"
-    read -r force_confirm
+    read -r force_confirm || true
     case "$force_confirm" in
         [Yy]* ) _warn "$MSG_FORCING"; perform_update ;;
         * ) _info "$MSG_EXIT"; exit 1 ;;
