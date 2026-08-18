@@ -10,12 +10,8 @@ if ($Host.Name -eq 'ConsoleHost' -and [Environment]::UserInteractive) {
 
 # Mise activate for interactive shells
 # Mise PowerShell 5 可能有问题, 更建议用 Pwsh
-$env:MISE_PWSH_CHPWD_WARNING=0 # 屏蔽 Mise PowerShell 版本告警
-$miseScript = & mise activate pwsh
-if ($miseScript -notmatch '&\s+"[A-Za-z]:\\[^"]+mise\.exe"') {
-    $miseScript = $miseScript -replace '& ([A-Za-z]:\\[^\r\n]+mise\.exe)', '& "$1"'
-}
-$miseScript | Out-String | Invoke-Expression
+$env:MISE_PWSH_CHPWD_WARNING=0 # 屏蔽 Mise PS5 版本告警 (没有 chpwd 能力)
+(& mise activate pwsh) | Out-String | Invoke-Expression
 
 # Zoxide
 Invoke-Expression (& { (zoxide init powershell | Out-String) })
