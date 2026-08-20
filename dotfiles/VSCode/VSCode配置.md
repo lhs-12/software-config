@@ -51,7 +51,6 @@ code \
 --install-extension vue.volar \                                       # Vue (Official)                      Vue支持
 --install-extension sdras.vue-vscode-snippets \                       # Vue VSCode Snippets                 Vue提示
 --install-extension oxc.oxc-vscode \                                  # Oxc                                 代码格式/Lint
---install-extension ms-vscode.live-server \                           # Live Preview                        实时网页
 --install-extension ecmel.vscode-html-css \                           # Html CSS Support                    CSS支持
 --install-extension zignd.html-css-class-completion \                 # IntelliSense for CSS class names    CSS提示
 --install-extension pranaygp.vscode-css-peek \                        # CSS Peek                            CSS预览
