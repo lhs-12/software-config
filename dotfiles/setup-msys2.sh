@@ -113,7 +113,7 @@ pacman -S --needed --noconfirm --disable-download-timeout \
   mingw-w64-ucrt-x86_64-{fzf,fd,ripgrep,delta} \
   2>&1 | sed '/warning:.*is up to date -- skipping/d'
 
-# 安装 win32yank
+echo "Installing win32yank..."
 curl -fL -o win32yank-x64.zip https://github.com/equalsraf/win32yank/releases/latest/download/win32yank-x64.zip
 unzip -qo -d /usr/bin/ win32yank-x64.zip && rm win32yank-x64.zip
 
@@ -126,8 +126,11 @@ git lfs install
 
 echo "Installing Git Credential Manager..."
 GCM_VER=$(basename "$(curl -sIL -o /dev/null -w '%{url_effective}' https://github.com/git-ecosystem/git-credential-manager/releases/latest)")
-curl -fL -o gcm-latest.zip "https://github.com/git-ecosystem/git-credential-manager/releases/download/${GCM_VER}/gcm-win-x64-${GCM_VER#v}.zip"
-unzip -qo -d "$(git --exec-path)" gcm-latest.zip && rm gcm-latest.zip
+LOCAL_GCM_VER=$(git credential-manager --version 2>/dev/null || true)
+[[ "${LOCAL_GCM_VER%%+*}" == "${GCM_VER#v}" ]] || {
+  curl -fL -o gcm-latest.zip "https://github.com/git-ecosystem/git-credential-manager/releases/download/${GCM_VER}/gcm-win-x64-${GCM_VER#v}.zip"
+  unzip -qo -d "$(git --exec-path)" gcm-latest.zip && rm gcm-latest.zip
+}
 git credential-manager configure
 
 echo "Configuring git..."
