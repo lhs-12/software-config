@@ -56,7 +56,7 @@
     "a", "b", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "o", "p", "q", "r", "t", "u", "v", "w", "y",
     "up", "right", "left", "down", "backspace", "delete", "]",
   ],
-  // Github Copilot
+  // GitHub Copilot
   "github.copilot.enable": /*oxfmt-ignore*/ {
     "*": false, "plaintext": false, "markdown": false, "scminput": false
   },

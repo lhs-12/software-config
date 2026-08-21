@@ -113,7 +113,7 @@ git config --global mergetool.prompt false
 git config --global merge.conflictStyle zdiff3
 # Git Credential Manager: 依赖 Windows 侧 MSYS2 安装的 GCM, 用于权限认证
 git config --global credential.helper "/mnt/c/msys64/ucrt64/libexec/git-core/git-credential-manager.exe"
-# 由于 MSYS2 那边已用 gh 登录, WSL 能间接获取 Github 认证信息, 因此 mise upgrade 无需设置 GITHUB_TOKEN 环境变量
+# 由于 MSYS2 那边已用 gh 登录, WSL 能间接获取 GitHub 认证信息, 因此 mise upgrade 无需设置 GITHUB_TOKEN 环境变量
 # 查看信息: printf 'protocol=https\nhost=github.com\n\n' | git credential fill
 
 # stow dotfiles

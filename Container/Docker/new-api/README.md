@@ -1,6 +1,6 @@
 <h1><center>New-API</center></h1>
 
-[Github](https://github.com/QuantumNous/new-api)
+[GitHub](https://github.com/QuantumNous/new-api)
 
 # 使用
 

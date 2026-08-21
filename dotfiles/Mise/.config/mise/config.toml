@@ -25,6 +25,6 @@ oxfmt  = "latest"
 oxlint = "latest"
 
 [settings]
-github.use_git_credentials = true # 使用 Git 作为 Github 凭证助手, 配合 gh 登录使用
+github.use_git_credentials = true # 使用 Git 作为 GitHub 凭证助手, 配合 gh 登录使用
 minimum_release_age = "0s" # s=秒 m=分 h=时 d=天 w=周 mo=月 y=年, "0s"禁用
 idiomatic_version_file_enable_tools = ["java", "node", "pnpm", "rust"]

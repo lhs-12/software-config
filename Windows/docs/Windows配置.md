@@ -125,7 +125,7 @@ Z-Library + Koodo-Reader
 2. 添加系统变量 Path(放末尾): `C:\msys64\ucrt64\bin\` 和 `C:\msys64\usr\bin`
 3. 统一 `HOME` 目录: 用 `pwsh` 执行 `edit C:\msys64\etc\nsswitch.conf`, 将 `db_home` 的值从 `cygwin desc` 改为 `windows`
 4. 使用 `MSYS2` 的 `UCRT64` 环境启动, 检查修改并执行脚本: `bash setup-msys2.sh`
-5. 执行 `gh auth login` 登录 Github (Git 和 Mise 相关配置会使 Mise 获得 Github 访问认证)
+5. 脚本执行中会引导用 gh 登录 GitHub 获取凭证, 手工操作
 
 > `setup-msys2.sh` 脚本会自动添加 Mise 相关的用户变量 Path
 

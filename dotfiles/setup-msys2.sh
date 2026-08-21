@@ -10,7 +10,6 @@ R='\e[31m'; G='\e[32m'; Y='\e[33m'; N='\e[0m'
 # 初次部署需要填写, 后续再执行全部可留空(会去找已设置过的值)
 GIT_USERNAME=""   # Git 用户名
 GIT_EMAIL=""      # Git 邮箱
-GITHUB_TOKEN=""   # GitHub Token (留空则尝试从 git credential 获取)
 GIT_PROXY=""      # Git 代理 (空=不动, 有值=设置, clear=删除)
 # ===== 配置区域: 结束 =====
 
@@ -22,7 +21,7 @@ fi
 
 # 确保 HOME 目录与 Windows 统一
 if ! grep -qE '^[[:space:]]*db_home:[[:space:]]+windows' /etc/nsswitch.conf 2>/dev/null; then
-  echo "Error: HOME directory is not unified with Windows." >&2
+  echo -e "${R}Error:${N} HOME directory is not unified with Windows." >&2
   echo "Please edit /etc/nsswitch.conf to set 'db_home: windows' and migrate home directory files," >&2
   echo "then close all MSYS2 terminal processes and reopen to continue." >&2
   exit 1
@@ -33,7 +32,7 @@ dev_mode=$(powershell.exe -Command \
   '(Get-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\AppModelUnlock).AllowDevelopmentWithoutDevLicense' \
   2>/dev/null | tr -d '\r')
 if [[ "$dev_mode" != "1" ]]; then
-  echo "Error: Windows Developer Mode is not enabled. Please enable it in Windows Settings > System > Advanced > Developer Mode" >&2
+  echo -e "${R}Error:${N} Windows Developer Mode is not enabled. Please enable it in Windows Settings > System > Advanced > Developer Mode" >&2
   exit 1
 fi
 export MSYS=winsymlinks:nativestrict
@@ -86,20 +85,8 @@ if command -v git &>/dev/null; then
   [[ -z "$GIT_EMAIL" ]]    && GIT_EMAIL=$(git config --global user.email 2>/dev/null || true)
 fi
 if [[ -z "$GIT_USERNAME" || -z "$GIT_EMAIL" ]]; then
-  echo "Error: GIT_USERNAME and GIT_EMAIL are not set." >&2
+  echo -e "${R}Error:${N} GIT_USERNAME and GIT_EMAIL are not set." >&2
   echo "Fill them in the config section before running." >&2
-  exit 1
-fi
-
-# GITHUB_TOKEN: 优先配置值, 其次从 git credential 获取
-if [[ -z "$GITHUB_TOKEN" ]]; then
-  GITHUB_TOKEN=$(printf 'protocol=https\nhost=github.com\n\n' | git credential fill 2>/dev/null | sed -n 's/^password=//p') || true
-fi
-if [[ -n "$GITHUB_TOKEN" ]]; then
-  export GITHUB_TOKEN
-  CURL_GH_AUTH=(-H "Authorization: Bearer $GITHUB_TOKEN")
-else
-  echo "Error: GITHUB_TOKEN is not set. Provide one or configure git credential." >&2
   exit 1
 fi
 
@@ -127,9 +114,8 @@ pacman -S --needed --noconfirm --disable-download-timeout \
   2>&1 | sed '/warning:.*is up to date -- skipping/d'
 
 # 安装 win32yank
-curl -L -o win32yank-x64.zip $(curl -s "${CURL_GH_AUTH[@]}" https://api.github.com/repos/equalsraf/win32yank/releases/latest | \
-jq -r '.assets[] | select(.name | test("win32yank-x64.*\\.zip$")) | .browser_download_url') \
-&& unzip -qo -d /usr/bin/ win32yank-x64.zip && rm win32yank-x64.zip
+curl -fL -o win32yank-x64.zip https://github.com/equalsraf/win32yank/releases/latest/download/win32yank-x64.zip
+unzip -qo -d /usr/bin/ win32yank-x64.zip && rm win32yank-x64.zip
 
 # 安装 Git
 echo "Installing Git..."
@@ -139,9 +125,9 @@ echo "Installing Git LFS..."
 git lfs install
 
 echo "Installing Git Credential Manager..."
-curl -L -o gcm-latest.zip $(curl -s "${CURL_GH_AUTH[@]}" https://api.github.com/repos/git-ecosystem/git-credential-manager/releases/latest | \
-jq -r '.assets[] | select(.name | test("gcm-win-x64-(?!.*symbols).*\\.zip$")) | .browser_download_url') \
-&& unzip -qo -d "$(git --exec-path)" gcm-latest.zip && rm gcm-latest.zip
+GCM_VER=$(basename "$(curl -sIL -o /dev/null -w '%{url_effective}' https://github.com/git-ecosystem/git-credential-manager/releases/latest)")
+curl -fL -o gcm-latest.zip "https://github.com/git-ecosystem/git-credential-manager/releases/download/${GCM_VER}/gcm-win-x64-${GCM_VER#v}.zip"
+unzip -qo -d "$(git --exec-path)" gcm-latest.zip && rm gcm-latest.zip
 git credential-manager configure
 
 echo "Configuring git..."
@@ -180,7 +166,7 @@ mkdir -p "$HOME/.local/bin"
 append_path "$HOME/.local/bin"
 
 if command -v mise &> /dev/null; then
-  mise self-update -y # 更新 Mise
+  mise self-update -y || true # 更新 Mise (|| true 避免 GitHub 限流等失败中止主流程)
 else
   # 安装 Mise: 下载 mise.exe 和 mise-shim.exe 到 ~/.local/bin/
   echo "Installing Mise..."
@@ -188,6 +174,21 @@ else
   MISE_URL="https://mise.jdx.dev/${MISE_VERSION}/mise-${MISE_VERSION}-windows-x64.zip"
   curl -L -o mise.zip "$MISE_URL" && unzip -q mise.zip -d /tmp/mise && cp /tmp/mise/mise/bin/mise*.exe "$HOME/.local/bin/" && rm -rf mise.zip /tmp/mise
 fi
+
+# ===== GitHub 认证: gh =====
+if ! command -v gh &>/dev/null; then
+  mise install gh@latest    # gh 不存在, 用 mise install (仅安装, 不写配置文件)
+  GH_CALL="mise x gh -- gh" # 新装未激活不在 PATH, 用 mise exec 调用
+else
+  GH_CALL="gh"
+fi
+# 未登录则交互登录, token 会存入 gh 和 GCM
+$GH_CALL auth status &>/dev/null || $GH_CALL auth login
+# 导出 token 供后续 mise 安装/升级使用
+GITHUB_TOKEN=$($GH_CALL auth token)
+[[ -n "$GITHUB_TOKEN" ]] || { echo -e "${R}Error:${N} failed to get GitHub token from gh." >&2; exit 1; }
+export GITHUB_TOKEN
+
 # Mise 配置
 safe_ln "$BASE_DIR/MSYS2/Mise/.config/mise" "$HOME/.config/mise"
 # Aube 配置
@@ -211,15 +212,6 @@ PS_EOF
 
 # ===== 复制配置文件 =====
 echo -e "\n\e[36m========== Deploying config files ==========\e[0m"
-
-# --- cp 配置(适用于需要额外修改或不常改动的配置文件) ---
-
-# Pictures
-for f in ./Pictures/Pictures/Wallpapers/*; do safe_cp "$f" "$HOME/Pictures/Camera Roll/$(basename "$f")"; done
-# VSCode
-mkdir -p $APPDATA/Code/User
-safe_cp ./VSCode/.config/Code/User/keybindings.json $APPDATA/Code/User/keybindings.json
-safe_cp ./VSCode/.config/Code/User/settings.json $APPDATA/Code/User/settings.json
 
 # --- ln -s 配置 ---
 
@@ -250,6 +242,15 @@ safe_ln "$BASE_DIR/LazyVim/.config/nvim" "$LOCALAPPDATA/nvim"
 safe_ln "$BASE_DIR/Jetbrains/.ideavimrc" "$HOME/.ideavimrc"
 # Ruff
 safe_ln "$BASE_DIR/Ruff/.config/ruff" "$APPDATA/ruff"
+
+# --- cp 配置(适用于需要额外修改或不常改动的配置文件) ---
+
+# Pictures
+for f in ./Pictures/Pictures/Wallpapers/*; do safe_cp "$f" "$HOME/Pictures/Camera Roll/$(basename "$f")"; done
+# VSCode
+mkdir -p $APPDATA/Code/User
+safe_cp ./VSCode/.config/Code/User/keybindings.json $APPDATA/Code/User/keybindings.json
+safe_cp ./VSCode/.config/Code/User/settings.json $APPDATA/Code/User/settings.json
 
 echo -e "\nMSYS2 Setup Done."
 exit 0
