@@ -25,7 +25,7 @@ play = [
   { desc = "Show media info" , for = "linux", block  = true, run = "mediainfo %s1; echo 'Press enter to exit'; read _" },
 ]
 audio = [
-  { desc = "Play"           , for = "linux", block  = true, run = 'kew_playlist $@' },
+  { desc = "Play"           , for = "linux", block  = true, run = 'kew play $@' },
   { desc = "Show media info", for = "linux", block  = true, run = "mediainfo %s1; echo 'Press enter to exit'; read _" },
 ]
 
