@@ -14,6 +14,7 @@ mp.set_property("auto-window-resize", "no")      -- --no-auto-window-resize: 禁
 mp.set_property("title-bar", "no")               -- --title-bar=no: 隐藏标题栏
 mp.set_property("osc", "no")                     -- --osc=no: 关闭底部进度条控制浮层
 -- 看图行为
+mp.set_property("target-trc", "srgb")            -- --target-trc=srgb: 固定 SDR/sRGB 输出，避免自动切换导致亮度变化
 mp.set_property("image-display-duration", "inf") -- --image-display-duration=inf: 图片永不退出
 mp.set_property("loop-playlist", "inf")          -- --loop-playlist=inf: 无限循环播放(用于gif循环)
 mp.set_property("autoload-files", "no")          -- --autoload-files=no: 禁止加载同目录其他文件

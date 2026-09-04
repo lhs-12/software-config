@@ -14,20 +14,21 @@
   // Markdown
   "markdown.preview.fontSize": 16,
   "markdown.preview.lineHeight": 1.2,
-  "markdown-preview-enhanced.enablePreviewZenMode": true, // 去除多余预览功能
-  "markdown-preview-enhanced.hideDefaultVSCodeMarkdownPreviewButtons": false, // 取消劫持默认markdown预览
-  "markdown-preview-enhanced.breakOnSingleNewLine": false, // 要求Markdown行末两空格表示换行
-  "markdown-preview-enhanced.printBackground": true, // 导出时使用preview的css
+  "markdown.preview.breaks": false,
+  "markdown-preview-enhanced.breakOnSingleNewLine": false,
+  "markdown-preview-enhanced.enablePreviewZenMode": true,
+  "markdown-preview-enhanced.hideDefaultVSCodeMarkdownPreviewButtons": false,
+  "markdown-preview-enhanced.printBackground": true,
   "markdown-preview-enhanced.previewTheme": "github-dark.css",
   "markdown-preview-enhanced.mermaidTheme": "dark",
   "markdown-preview-enhanced.revealjsTheme": "blood.css",
   "pasteImage.path": "${currentFileDir}/pictures/${currentFileNameWithoutExt}/",
   "pasteImage.defaultName": "x",
-  // 画图
+  // Draw
   "hediet.vscode-drawio.appearance": "dark",
   "excalidraw.theme": "dark",
   "excalidraw.language": "zh-CN",
-  // 格式化相关配置
+  // Lint & Format
   "editor.codeActionsOnSave": {
     "source.fixAll": "always",
     "source.organizeImports": "always",
@@ -52,7 +53,7 @@
   // NeoVim
   "extensions.experimental.affinity": { "asvetliakov.vscode-neovim": 1 },
   "vscode-neovim.ctrlKeysForInsertMode": ["d", "o", "r", "t", "u", "w"],
-  "vscode-neovim.ctrlKeysForNormalMode": /*oxfmt-ignore*/ [ // 保留 c, n, s, x, z
+  "vscode-neovim.ctrlKeysForNormalMode": /*oxfmt-ignore*/ [ // keep: c, n, s, x, z
     "a", "b", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "o", "p", "q", "r", "t", "u", "v", "w", "y",
     "up", "right", "left", "down", "backspace", "delete", "]",
   ],
