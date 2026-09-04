@@ -1,0 +1,24 @@
+[[plugin.deps]]
+use = "boydaihungst/mediainfo"
+rev = "73a3658"
+hash = "fa787a8ef785f2976ea2861f62b8c6c4"
+
+[[plugin.deps]]
+use = "saumyajyoti/omp"
+rev = "32ae96c"
+hash = "ca913db57342496f96c533725a64ccc4"
+
+[[plugin.deps]]
+use = "yazi-rs/plugins:full-border"
+rev = "044c3cc"
+hash = "f281261ff04ad7ec867c3f802a50835f"
+
+[[plugin.deps]]
+use = "ndtoan96/ouch"
+rev = "cfe4f50"
+hash = "eff5702573b6cfba61e4ac8b1969629a"
+
+[[flavor.deps]]
+use = "kmlupreti/ayu-dark"
+rev = "00804da"
+hash = "d2ce8358c59ea6e8552091075b3a191c"

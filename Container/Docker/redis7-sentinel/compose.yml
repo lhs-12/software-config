@@ -1,0 +1,97 @@
+# Redis Sentinel
+# 1 主 2 从 + 3 哨兵
+#
+# 注意: 哨兵会重写配置文件, 需要给 config/sentinel-config 目录写权限
+# chmod -R 777 config/sentinel-config
+#
+# 启动
+# docker compose up -d
+# 查看主从信息
+# docker exec -it redis7-sentinel-m1-1 redis-cli info replication
+# 查看哨兵信息
+# docker exec -it redis7-sentinel-sen1-1 redis-cli -p 5000 sentinel master myMaster
+# 查看哨兵状态
+# docker exec -it redis7-sentinel-sen1-1 redis-cli -p 5000 sentinel sentinels myMaster
+# 查看哨兵发现的从节点
+# docker exec -it redis7-sentinel-sen1-1 redis-cli -p 5000 sentinel replicas myMaster
+# 查看当前主节点地址
+# docker exec -it redis7-sentinel-sen1-1 redis-cli -p 5000 sentinel get-master-addr-by-name myMaster
+
+services:
+  m1:
+    image: redis:7
+    ports:
+      - "6379:6379"
+    volumes:
+      - "./config/redis-config:/etc/redis-config"
+    command: redis-server /etc/redis-config/redis.conf
+    networks:
+      redis-net:
+        ipv4_address: 172.25.0.10
+
+  s1:
+    image: redis:7
+    ports:
+      - "6380:6379"
+    volumes:
+      - "./config/redis-config:/etc/redis-config"
+    command: redis-server /etc/redis-config/redis.conf --slaveof 172.25.0.10 6379
+    depends_on: [m1]
+    networks:
+      redis-net:
+        ipv4_address: 172.25.0.11
+
+  s2:
+    image: redis:7
+    ports:
+      - "6381:6379"
+    volumes:
+      - "./config/redis-config:/etc/redis-config"
+    command: redis-server /etc/redis-config/redis.conf --slaveof 172.25.0.10 6379
+    depends_on: [m1]
+    networks:
+      redis-net:
+        ipv4_address: 172.25.0.12
+
+  sen1:
+    image: redis:7
+    ports:
+      - "5000:5000"
+    volumes:
+      - "./config/sentinel-config:/etc/sentinel-config"
+    command: redis-server /etc/sentinel-config/sen1.conf --sentinel
+    depends_on: [m1, s1, s2]
+    networks:
+      redis-net:
+        ipv4_address: 172.25.0.21
+
+  sen2:
+    image: redis:7
+    ports:
+      - "5001:5000"
+    volumes:
+      - "./config/sentinel-config:/etc/sentinel-config"
+    command: redis-server /etc/sentinel-config/sen2.conf --sentinel
+    depends_on: [m1, s1, s2]
+    networks:
+      redis-net:
+        ipv4_address: 172.25.0.22
+
+  sen3:
+    image: redis:7
+    ports:
+      - "5002:5000"
+    volumes:
+      - "./config/sentinel-config:/etc/sentinel-config"
+    command: redis-server /etc/sentinel-config/sen3.conf --sentinel
+    depends_on: [m1, s1, s2]
+    networks:
+      redis-net:
+        ipv4_address: 172.25.0.23
+
+networks:
+  redis-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.25.0.0/24

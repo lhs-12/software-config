@@ -1,0 +1,7 @@
+new_tab VCP-Backend
+cd ~/ai-tools/VCPToolBox
+launch --hold fish -i -c "node server.js"
+
+new_tab VCP-Frontend
+cd ~/ai-tools/VCPChat
+launch --hold fish -i -c "npm start"

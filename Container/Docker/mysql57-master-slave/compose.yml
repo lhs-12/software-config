@@ -1,0 +1,54 @@
+# 1. 启动容器
+# docker compose up -d
+#
+# 2. 主节点执行：创建复制用户，查看 binlog 位置
+# docker exec -it mysql57-master-slave-m1-1 mysql -uroot -proot -e "
+#   GRANT REPLICATION SLAVE ON *.* TO 'root'@'%';
+#   FLUSH PRIVILEGES;
+#   SHOW MASTER STATUS;
+# "
+# 记录 binlog 的 File 和 Position 的值 (命令: SHOW MASTER STATUS)
+#
+# 3. 从节点执行：配置主从关系
+# 将 master_log_file 和 master_log_pos 替换为上一步 SHOW MASTER STATUS 的结果
+# docker exec -it mysql57-master-slave-s1-1 mysql -uroot -proot -e "
+#   CHANGE MASTER TO
+#     master_host = 'm1',
+#     master_user = 'root',
+#     master_password = 'root',
+#     master_port = 3306,
+#     master_log_file = '<填入 File>',
+#     master_log_pos = <填入 Position>;
+#   START SLAVE;
+#   SHOW SLAVE STATUS;
+# "
+# 确认 Slave_IO_Running 和 Slave_SQL_Running 都是 Yes (命令: SHOW SLAVE STATUS)
+#
+# 4. 取消主从（如需）
+# docker exec -it mysql57-master-slave-s1-1 mysql -uroot -proot -e "
+#   STOP SLAVE;
+#   RESET SLAVE;
+# "
+
+services:
+  m1:
+    image: mysql:5.7
+    ports:
+      - "13306:3306"
+    volumes:
+      - "~/data-container/docker/mysql57-master-slave/m1-data:/var/lib/mysql"
+      - "./my-m1.cnf:/etc/mysql/my.cnf"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+
+  s1:
+    image: mysql:5.7
+    ports:
+      - "13307:3306"
+    volumes:
+      - "~/data-container/docker/mysql57-master-slave/s1-data:/var/lib/mysql"
+      - "./my-s1.cnf:/etc/mysql/my.cnf"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    depends_on:
+      - m1

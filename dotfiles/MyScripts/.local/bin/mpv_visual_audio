@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+# 终端音频频谱可视化播放(MPV+Kitty)
+# Kitty中使用GPU占用较高, 仅供娱乐
+
+COLORS="0x1F3A33|0x28524A|0x3E7A6E" # Deep Forest
+# COLORS="0x512DA8|0x673AB7|0x9575CD" # Deep Purple
+# COLORS="0x2E4057|0x3E5871|0x5D7B9D" # Steel Blue
+# COLORS="0x00695C|0x00897B|0x4DB6AC" # Teal
+
+if [ -z "$1" ]; then
+    echo "Usage: $0 <audio-file>"
+    exit 1
+fi
+
+FILE="$1"
+
+# 参数解释:
+# --vo=kitty
+#   使用 kitty 图形协议输出到终端
+#
+# --lavfi-complex
+#   使用 FFmpeg filter graph:
+#   1. asplit 将音频分为两路
+#   2. showfreqs 生成频谱条形图
+#   3. fscale=log 使用对数频率刻度（更符合人耳感知）
+#   4. ascale=sqrt 压缩动态范围（避免高频过亮）
+#   5. win_size=4096 + blackman 提高频谱平滑度
+#   6. colors 使用三段渐变色
+#
+mpv \
+  --no-config \
+  --profile=sw-fast \
+  --vo-kitty-use-shm=yes \
+  --really-quiet \
+  --vo=kitty \
+  --lavfi-complex="[aid1]asplit[a][b];[a]showfreqs=s=1280x720:mode=bar:fscale=log:ascale=sqrt:win_size=4096:win_func=blackman:colors=${COLORS}[vo];[b]anull[ao]" \
+  "$FILE"
