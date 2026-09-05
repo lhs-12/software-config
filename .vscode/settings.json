@@ -9,6 +9,7 @@
     "**/dotfiles/Ghostty/.config/ghostty/config": "ini",
     "**/dotfiles/KDE/.config/klassy/*": "ini",
     "**/dotfiles/KDE/.config/{plasma-localerc,kwinrulesrc,kglobalshortcutsrc}": "ini",
+    "**/dotfiles/Zed/.config/zed/settings.json": "jsonc",
   },
   "json.schemas": [
     {
@@ -20,8 +21,12 @@
       "url": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json"
     },
     {
+      "fileMatch": ["**/zed/settings.json"],
+      "schema": { "allowTrailingCommas": true }
+    },
+    {
       "fileMatch": ["**/zed/themes/**/*.json"],
       "url": "https://zed.dev/schema/themes/v0.2.0.json"
-    }
+    },
   ]
 }
