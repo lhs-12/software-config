@@ -5,8 +5,8 @@ if not test -n "$MSYSTEM"; or not test "$MSYSTEM" = "UCRT64"; exit; end # only e
 # User local binaries
 fish_add_path -g "$HOME/.local/bin"
 
-# Mise shims for non-interactive shells (fix MSYS2)
-mise activate fish --shims | perl -pe 's{([A-Za-z]:[\x5c/][^\x27:\s]*)}{ my $p = qx(cygpath -u "$1"); chomp $p; $p }eg' | source
+# Mise shims for non-interactive shells
+mise activate fish --shims | source
 
 if not status is-interactive; exit; end
 
@@ -19,6 +19,7 @@ set -gx LANG en_US.UTF-8 # zh_CN.UTF-8
 set -gx LANGUAGE en_US   # zh_CN:en_US
 
 # add PATH
+# printf "%s\n" $PATH
 fish_add_path -g "/c/Program Files/PowerShell/7"
 fish_add_path -g "/c/Program Files/WezTerm"
 fish_add_path -g (cygpath -u "$LOCALAPPDATA/Programs/Microsoft VS Code/bin")
@@ -40,29 +41,8 @@ if test "$TERM_PROGRAM" != "vscode" # Skip in VSCode integrated terminal
     end
 end
 
-# Mise activate for interactive shells (fix MSYS2)
-function mise_activate
-    function __mise_hook_env_fix
-        /usr/bin/perl -MIPC::Open2 -e '
-            while (<STDIN>) {
-                if (/^set -gx PATH (.*)/) {
-                    my @p = $1 =~ /\x27([^\x27]*)\x27/g;
-                    my $pid = open2(my $out, my $in, "/usr/bin/cygpath", "-u", "-f", "-");
-                    print $in join("\n", @p), "\n"; close $in;
-                    my @u = <$out>; close $out; waitpid $pid, 0;
-                    chomp @u;
-                    print "set -gx PATH ", join(" ", map {"\x27$_\x27"} @u), "\n";
-                } else { print }
-            }
-        '
-    end
-    set -l _mise_path (command -v mise)
-    mise activate fish |
-    string replace -a -- (cygpath -w "$_mise_path") "$_mise_path" |
-    string replace -a -- 'hook-env -s fish | source' 'hook-env -s fish | __mise_hook_env_fix | source' |
-    string replace -- '|psub)' '| __mise_hook_env_fix | psub)' | __mise_hook_env_fix | source
-end
-mise_activate
+# Mise activate for interactive shells
+mise activate fish | source
 
 # Bat (cat/less replacement)
 abbr less bat

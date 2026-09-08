@@ -12,10 +12,8 @@ append_path() {
 }
 append_path "$HOME/.local/bin"
 
-# Mise shims for non-interactive shells (fix MSYS2)
-if ! [[ ":$PATH:" == *":$HOME/AppData/Local/mise/shims:"* ]]; then
-  eval "$(mise activate bash --shims | perl -pe 's{([A-Za-z]:[\x5c/][^\x27:\s]*)}{ my $p = qx(cygpath -u "$1"); chomp $p; $p }eg')"
-fi
+# Mise shims for non-interactive shells
+eval "$(mise activate bash --shims)"
 
 # === local private config (gitignored) ===
 [[ -r "$HOME/.bash_local.sh" ]] && source "$HOME/.bash_local.sh"
@@ -51,19 +49,8 @@ append_path "$(cygpath -u "$LOCALAPPDATA/Programs/Microsoft VS Code/bin")"
 if [[ "$TERM_PROGRAM" != "vscode" ]]; then
   eval "$(oh-my-posh init bash --config ~/.om-posh.json)"
 fi
-# Mise activate for interactive shells (fix MSYS2)
-# 嵌套多次启动交互 shell 依然会导致PATH的格式错乱. 但这个场景不常用, 避开即可
-mise_activate() {
-  local script="$(mise activate bash)"
-  local fixed=$(
-    printf '%s\n' "$script" |
-    sed -e 's|^export PATH='"'"'\(.*\)'"'"'$|export PATH="$(/usr/bin/cygpath -u -p '"'"'\1'"'"')"|' \
-        -e 's|eval "\$(mise hook-env .*)"|&; export PATH="$(/usr/bin/cygpath -u -p \"$PATH\")";|' \
-        -e 's|eval "\$(command "\$__MISE_EXE" "\$command" "\$@")"|&; export PATH="$(/usr/bin/cygpath -u -p \"$PATH\")";|'
-  )
-  eval "$fixed"
-}
-mise_activate
+# Mise activate for interactive shells
+eval "$(mise activate bash)"
 # Bat (cat/less replacement)
 alias less='bat'
 alias cat='bat -pp'
