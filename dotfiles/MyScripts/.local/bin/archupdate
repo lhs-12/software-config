@@ -202,6 +202,7 @@ perform_update() {
         _info "$MSG_STEP_6"
         mise self-update -y
         mise upgrade
+        rustup update
     fi
 }
 
