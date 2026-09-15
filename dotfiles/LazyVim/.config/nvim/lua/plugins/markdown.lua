@@ -34,7 +34,7 @@ return {
         lsp = { enabled = true },
       },
     },
-    ft = { "markdown", "norg", "rmd", "org", "codecompanion" },
+    ft = { "markdown", "markdown.mdx", "norg", "rmd", "org", "codecompanion" },
   },
   {
     "bullets-vim/bullets.vim",

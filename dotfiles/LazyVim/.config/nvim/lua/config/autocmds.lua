@@ -11,12 +11,14 @@ local function augroup(name) return vim.api.nvim_create_augroup("lazyvim_" .. na
 vim.api.nvim_set_hl(0, "YankHighlight", { bg = "#32593d", bold = true })
 vim.api.nvim_create_autocmd("TextYankPost", {
   group = augroup("highlight_yank"),
-  callback = function() (vim.hl or vim.highlight).on_yank({ higroup = "YankHighlight", timeout = 350 }) end,
+  callback = function() vim.hl.on_yank({ higroup = "YankHighlight", timeout = 350 }) end,
 })
 
 vim.api.nvim_create_autocmd({ "FileType" }, {
-  pattern = { "markdown", "text" },
-  callback = function() vim.opt_local.spell = false end,
+  pattern = { "markdown", "markdown.mdx", "text" },
+  callback = function()
+    vim.opt_local.spell = false
+  end,
 })
 
 if vim.uv.os_uname().sysname == "Linux" then

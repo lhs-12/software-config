@@ -15,10 +15,9 @@ vim.opt.ignorecase = true
 vim.opt.smartcase = true
 vim.api.nvim_set_hl(0, "VSCodeYankHighlight", { bg = "#32593d", bold = true })
 vim.api.nvim_create_autocmd("TextYankPost", {
-  callback = function() vim.highlight.on_yank({ higroup = "VSCodeYankHighlight", timeout = 350 }) end,
+  callback = function() vim.hl.on_yank({ higroup = "VSCodeYankHighlight", timeout = 350 }) end,
 })
 
-require("vscode-nvim.plugins")
 require("vscode-nvim.keymaps")
 
 if vim.uv.os_uname().sysname == "Linux" then

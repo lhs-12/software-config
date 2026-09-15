@@ -26,19 +26,19 @@ fish_add_path -g (cygpath -u "$LOCALAPPDATA/Programs/Microsoft VS Code/bin")
 
 # Multilevel cd ( .. ... .... , etc)
 function multicd
-    echo cd (string repeat -n (math (string length -- $argv[1]) - 1) ../)
+  echo cd (string repeat -n (math (string length -- $argv[1]) - 1) ../)
 end
 abbr --add dotdot --regex '^\.+$' --function multicd
 
 # Prompt (Oh My Posh)
 if test "$TERM_PROGRAM" != "vscode" # Skip in VSCode integrated terminal
-    # Initialize
-    oh-my-posh init fish --config ~/.om-posh.json | source
+  # Initialize
+  oh-my-posh init fish --config ~/.om-posh.json | source
 
-    # refresh prompt on directory change
-    function rerender_on_dir_change --on-variable PWD
-        omp_repaint_prompt
-    end
+  # refresh prompt on directory change
+  function rerender_on_dir_change --on-variable PWD
+    omp_repaint_prompt
+  end
 end
 
 # Mise activate for interactive shells
@@ -54,29 +54,29 @@ zoxide init fish | source
 # Yazi
 abbr yz yazi
 function yy --description "Yazi with cd"
-    set tmp (mktemp -t "yazi-cwd.XXXXXX")
-    command yazi $argv --cwd-file="$tmp"
-    if read -z raw_cwd < "$tmp"
-        set cwd (cygpath -u "$raw_cwd")
-        if [ "$cwd" != "$PWD" ]; and test -d "$cwd"
-            builtin cd -- "$cwd"
-        end
+  set tmp (mktemp -t "yazi-cwd.XXXXXX")
+  command yazi $argv --cwd-file="$tmp"
+  if read -z raw_cwd < "$tmp"
+    set cwd (cygpath -u "$raw_cwd")
+    if [ "$cwd" != "$PWD" ]; and test -d "$cwd"
+      builtin cd -- "$cwd"
     end
-    rm -f -- "$tmp"
+  end
+  rm -f -- "$tmp"
 end
 
 # === Functions ===
 function cdg --description "Change directory with fzf"
-    set dir (fd -td "$argv[1]" "." | fzf)
-    test -n "$dir" && cd "$dir"
+  set dir (fd -td "$argv[1]" "." | fzf)
+  test -n "$dir" && cd "$dir"
 end
 function mvg --description "Move and go to directory"
-	mv "$argv[1]" "$argv[2]"
-	test -d "$argv[2]" && cd "$argv[2]"
+  mv "$argv[1]" "$argv[2]"
+  test -d "$argv[2]" && cd "$argv[2]"
 end
 function mkdirg --description "Make directory and go to it"
-	mkdir -p "$argv[1]"
-	cd "$argv[1]"
+  mkdir -p "$argv[1]"
+  cd "$argv[1]"
 end
 
 # === Abbreviations ===

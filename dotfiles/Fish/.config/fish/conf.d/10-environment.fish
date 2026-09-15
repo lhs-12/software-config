@@ -21,14 +21,14 @@ mise activate fish | source
 
 # WSL
 if test -n "$WSL_DISTRO_NAME$WSL_INTEROP"
-	# Input method (WSLg / XWayland)
-	set -gx XMODIFIERS @im=fcitx
-	set -gx GTK_IM_MODULE fcitx
-	set -gx QT_IM_MODULE fcitx
-	# VSCode from Windows
-	fish_add_path -g "/mnt/c/Users/L/AppData/Local/Programs/Microsoft VS Code/bin"
-	# 提前结束, WSL 不配置代理
-	return 0
+  # Input method (WSLg / XWayland)
+  set -gx XMODIFIERS @im=fcitx
+  set -gx GTK_IM_MODULE fcitx
+  set -gx QT_IM_MODULE fcitx
+  # VSCode from Windows
+  fish_add_path -g "/mnt/c/Users/L/AppData/Local/Programs/Microsoft VS Code/bin"
+  # 提前结束, WSL 不配置代理
+  return 0
 end
 
 # v2rayN 开启系统代理时, gsettings 命令输出 "manual", 此时开启 proxycfg, 否则关闭

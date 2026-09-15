@@ -39,7 +39,7 @@ Mise 安装全局工具适用范围:
 
 - 需要版本管理的开发环境 (java/nodejs 等)
 - 需要最新版本的开发工具 (lint/format 等)
-- 编程语言生态全局包管理 (支持 npm/pipx/cargo/go 等后端)
+- 编程语言生态全局包管理 (支持 npm/pypi/cargo/go 等后端)
 - AI Agent
 - Mise 生态配套工具
 
@@ -47,7 +47,7 @@ Mise 安装全局工具适用范围:
 
 - 全局安装: `mise use -g <tool>`
 - NPM 包: `mise use -g npm:<pkg>` (Aube 后端)
-- Python CLI: `mise use -g pipx:<tool>` (UV 后端)
+- Python CLI: `mise use -g pypi:<tool>` (UV 后端)
 - Rust 工具: `mise use -g cargo:<tool>` (Cargo 后端)
 - Go 工具: `mise use -g go:<tool>` (Go 后端)
 
@@ -62,7 +62,7 @@ Python 原则: 保留系统 Python, 不引入全局依赖, 需要依赖时用 UV
 
 - 临时脚本: `uv run script.py` (隔离环境, 用完即弃)
 - 临时依赖: `uv run --with <pkg> script.py`
-- CLI 工具: `uvx <tool>` (临时) / `mise use -g pipx:<tool>` (持久, 替代 `uv tool install`)
+- CLI 工具: `uvx <tool>` (临时) / `mise use -g pypi:<tool>` (持久, 替代 `uv tool install`)
 
 ---
 

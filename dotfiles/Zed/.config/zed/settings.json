@@ -3,6 +3,7 @@
   "session": { "trust_all_worktrees": true },
   "project_panel": { "auto_fold_dirs": false },
   "theme": "ArcDarker",
+  "cursor_animation": {"enabled": true},
   "base_keymap": "JetBrains",
   "vim_mode": false,
   "ui_font_size": 16,

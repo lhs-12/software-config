@@ -1,4 +1,4 @@
-flash_chars = function()
+local function flash_chars()
   local Flash = require("flash")
   local function format(opts) return { { opts.match.label1, "FlashMatch" }, { opts.match.label2, "FlashLabel" } } end
   Flash.jump({
@@ -32,7 +32,7 @@ flash_chars = function()
     end,
   })
 end
-flash_line_opts = { search = { mode = "search", max_length = 0 }, label = { after = { 0, 0 } }, pattern = "^" }
+local flash_line_opts = { search = { mode = "search", max_length = 0 }, label = { after = { 0, 0 } }, pattern = "^" }
 
 return {
   {

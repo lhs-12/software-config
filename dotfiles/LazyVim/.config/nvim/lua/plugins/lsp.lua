@@ -26,31 +26,42 @@ return {
   {
     "mfussenegger/nvim-jdtls",
     opts = function(_, opts)
-      -- 通过 mise 获取已装 java 清单与全局激活版本.
-      -- 在 mise 全局配置目录 (~/.config/mise) 执行, 使 active 反映全局 config.toml 的 java,
-      -- 不受当前项目目录影响 (mise 会按目录切换环境).
-      local out = vim.system(
-        { "mise", "ls", "java", "--json" },
-        { cwd = vim.fn.expand("~/.config/mise"), text = true }
-      ):wait()
-      local entries = vim.json.decode(out.stdout or "[]")
-      -- runtimes: 已安装的 java 全部列出, name 用 mise 显示的版本号, 由 jdtls 匹配项目 java 版本
-      local jdk_runtimes = {}
-      local jdtls_home
-      for _, t in ipairs(entries) do
-        if t.installed then
-          jdk_runtimes[#jdk_runtimes + 1] = { name = t.version, path = t.install_path }
-          if t.active then jdtls_home = t.install_path end
+      -- 用全局 mise java 运行 jdtls, 缺失则提前结束
+      local ok_jdtls, jdtls_home = pcall(function()
+        local r = vim.system({ "mise", "-C", "/", "where", "java" }, { text = true }):wait()
+        local path = vim.trim(r.stdout)
+        return r.code == 0 and path ~= "" and path or nil
+      end)
+      if not ok_jdtls or not jdtls_home then return opts end
+
+      -- java.configuration.runtimes[].name 不是能随意定义的显示名, 而是 ExecutionEnvironment id,
+      -- 该名称需要和 Eclipse 内置的 EE 列表项匹配, 否则无法正常绑定
+      local function ee_id(path)
+        local ok, lines = pcall(vim.fn.readfile, path .. "/release")
+        for _, line in ipairs(ok and lines or {}) do
+          local version = line:match('^JAVA_VERSION="([^"]+)"')
+          -- 1.8.0_504 -> JavaSE-1.8 ; 25.0.2 -> JavaSE-25
+          local prefix = version and (version:match("^1%.%d+") or version:match("^%d+"))
+          if prefix then return "JavaSE-" .. prefix end
         end
       end
-      -- jdtls 启动 JVM = 全局激活的 java; 全局未配置则取首个已安装; 都没有则用 PATH 的 java
-      jdtls_home = jdtls_home or (jdk_runtimes[1] and jdk_runtimes[1].path)
-      local jdtls_execute = jdtls_home and (jdtls_home .. "/bin/java") or "java"
-      table.insert(opts.cmd, "--java-executable=" .. jdtls_execute)
-      table.insert(opts.cmd, "--jvm-arg=-Djava.import.generatesMetadataFilesAtProjectRoot=false")
-      table.insert(opts.cmd, "-Dlog.perf.level=OFF")
-      table.insert(opts.cmd, "--jvm-arg=-Xms256m")
-      table.insert(opts.cmd, "--jvm-arg=-Xmx2G")
+
+      -- runtimes: 只注册 mise 状态为 active 的 java
+      local jdk_runtimes = {}
+      local ok_ls, installs = pcall(function()
+        local out = vim.system({ "mise", "ls", "java", "--json" }, { text = true }):wait().stdout or ""
+        return vim.json.decode(out)
+      end)
+      for _, install in ipairs(ok_ls and installs or {}) do
+        local ee = install.active and ee_id(install.install_path)
+        if ee then table.insert(jdk_runtimes, { name = ee, path = install.install_path }) end
+      end
+      opts.cmd = vim.list_extend(opts.cmd, {
+        "--java-executable=" .. jdtls_home .. "/bin/java",
+        "--jvm-arg=-Djava.import.generatesMetadataFilesAtProjectRoot=false",
+        "--jvm-arg=-Xms512m",
+        "--jvm-arg=-Xmx2G",
+      })
       opts.settings = vim.tbl_deep_extend("force", opts.settings or {}, {
         java = { configuration = { runtimes = jdk_runtimes } },
       })

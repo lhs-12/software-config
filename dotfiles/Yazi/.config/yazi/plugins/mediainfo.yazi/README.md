@@ -1,5 +1,17 @@
 # mediainfo.yazi (fork)
 
+> [!NOTE]
+> 上游已停止维护, 因此本插件不从 `ya pkg` 安装, 暂时直接放 `plugins/` 本地维护.
+
+> [!IMPORTANT]
+> This repository is deprecated  
+> This project is no longer actively maintained,  
+> and there will be no more updates to this repository.  
+> If you've made a fork or a newer, actively maintained version of this project,  
+> feel free to share it in the Issues page.  
+> This way, newcomers can easily find an up-to-date alternative.
+> Forks, improvements, and alternative implementations are always welcome!
+
 <!--toc:start-->
 
 - [mediainfo.yazi (fork)](#mediainfoyazi-fork)
@@ -13,27 +25,15 @@ This is a Yazi plugin for previewing media files. The preview shows thumbnail
 using `ffmpeg` if available and media metadata using `mediainfo`.
 
 > [!IMPORTANT]
-> Minimum version: yazi v26.1.22.
+> yazi v26.5.6 and <= v26.9.1
 > Check it via command `yazi --debug`
 
 ## Preview
 
 - Video
-
-  ![video](assets/2025-02-15-09-15-39.png)
-
 - Audio file with cover
-
-  ![audio_with_cover_picture](assets/2025-02-15-09-14-23.png)
-
 - Images
-
-  ![image](assets/2025-02-15-16-52-39.png)
-
 - Subtitle
-
-  ![subrip](assets/2025-02-15-16-51-11.png)
-
 - SVG+XML file doesn't have useful information, so it only show the image preview.
 - There are more file extensions which are supported by mediainfo. Just add file's MIME type to `prepend_previewers`, `prepend_preloaders`.
   Use `spotter` to determine File's MIME type. [Default is `<Tab>` key](https://github.com/sxyazi/yazi/blob/1a6abae974370702c8865459344bf256de58359e/yazi-config/preset/keymap-default.toml#L59)
@@ -158,26 +158,26 @@ Modify your `~/.config/yazi/init.lua` to include:
 require("mediainfo"):setup({
   -- Auto hide the lines with these labels
   -- Labels are the text with white color in preview images above (without colon ":")
-	-- Example: To hide `Format: FLAC` => "Format"
+  -- Example: To hide `Format: FLAC` => "Format"
   -- Default value:
-	skip_labels = {
-	  "Complete name",
-	  "CompleteName_Last",
-	  "Unique ID",
-	  "File size",
-	  "Format/Info",
-	  "Codec ID/Info",
-	  "MD5 of the unencoded content"
-	  -- "Format" -- Hide all lines with "Format" label
-	},
-	-- skip_labels = false, -- Disable auto hide labels
+  skip_labels = {
+    "Complete name",
+    "CompleteName_Last",
+    "Unique ID",
+    "File size",
+    "Format/Info",
+    "Codec ID/Info",
+    "MD5 of the unencoded content"
+    -- "Format" -- Hide all lines with "Format" label
+  },
+  -- skip_labels = false, -- Disable auto hide labels
 
 
   -- Auto hide the section labels
   -- Section labels are the text with green color in preview images above
-	-- Example: To hide `Image` => "Image"
-	-- Default value: {}
-	skip_section_labels = { "General", "Image", "Text" },
+  -- Example: To hide `Image` => "Image"
+  -- Default value: {}
+  skip_section_labels = { "General", "Image", "Text" },
 })
 ```
 

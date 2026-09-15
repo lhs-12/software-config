@@ -17,7 +17,7 @@ typst     = "latest"
 # "defaultTools": ["read", "powershell", "edit", "write"]
 pi = "latest"
 "npm:skills" = "latest"
-"npm:@deepseek-ai/dsh" = "latest"
+"npm:@deepseek-ai/dsh" = { version = "latest", prerelease = true }
 "github:can1357/oh-my-pi" = "latest"
 
 "npm:@dbx-app/cli" = "latest"

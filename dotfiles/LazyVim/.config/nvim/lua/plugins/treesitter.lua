@@ -7,8 +7,6 @@ return {
         "sql",
         "css",
       })
-      vim.filetype.add({ extension = { mdx = "mdx" } })
-      vim.treesitter.language.register("markdown", "mdx")
       return opts
     end,
   },
