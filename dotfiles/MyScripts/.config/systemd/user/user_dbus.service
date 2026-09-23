@@ -1,0 +1,14 @@
+[Unit]
+Description=User DBus Service
+After=dbus.socket
+
+[Service]
+Type=simple
+ExecStart=%h/.local/bin/user_dbus
+Restart=on-failure
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=default.target

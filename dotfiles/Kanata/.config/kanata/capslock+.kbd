@@ -1,0 +1,34 @@
+(defcfg
+  process-unmapped-keys yes
+)
+
+(defsrc
+  esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12  prtsc slck pause
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc  ins  home pgup
+  tab  q    w    e    r    t    y    u    i    o    p    [    ]    \     del  end  pgdn
+  caps a    s    d    f    g    h    j    k    l    ;    '    ret
+  lsft z    x    c    v    b    n    m    ,    .    /    rsft      up
+  lctl lmet lalt           spc            ralt rmet rctl      left down rght
+)
+
+(defalias
+  cap (tap-hold-press 200 200 esc (layer-toggle nav))
+)
+
+(deflayer base
+  esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12  prtsc slck pause
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc  ins  home pgup
+  tab  q    w    e    r    t    y    u    i    o    p    [    ]    \     del  end  pgdn
+  @cap a    s    d    f    g    h    j    k    l    ;    '    ret
+  lsft z    x    c    v    b    n    m    ,    .    /    rsft      up
+  lctl lmet lalt           spc            ralt rmet rctl      left down rght
+)
+
+(deflayer nav
+  caps C-f1 C-f2 C-f3 C-f4 C-f5 C-f6 C-f7 C-f8 C-f9 C-f10 C-f11 C-f12 C-prtsc C-slck C-pause
+  C-grv C-1 C-2 C-3 C-4 C-5 C-6 C-7 C-8 C-9 C-0 C-- C-=  C-bspc C-ins C-home C-pgup
+  C-tab C-q C-w C-e C-r C-t C-y C-u C-i C-o C-p C-[ C-]  C-\    C-del C-end  C-pgdn
+  _    C-a  C-s  C-d  C-f  C-g  left down up   right C-;  C-'  C-ret
+  C-lsft C-z C-x C-c C-v C-b  home end  pgup pgdn C-/  C-rsft      C-up
+  C-lctl C-lmet C-lalt     C-spc          C-ralt C-rmet C-rctl   C-left C-down C-rght
+)

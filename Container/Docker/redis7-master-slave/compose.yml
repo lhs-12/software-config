@@ -1,0 +1,38 @@
+# Redis Master-Slave
+# 1 主 2 从
+#
+# 启动
+# docker compose up -d
+# 查看主从信息
+# docker exec -it redis7-master-slave-m1-1 redis-cli info replication
+# 连接主节点
+# docker exec -it redis7-master-slave-m1-1 redis-cli
+# 连接从节点
+# docker exec -it redis7-master-slave-s1-1 redis-cli
+
+services:
+  m1:
+    image: redis:7
+    ports:
+      - "6379:6379"
+    volumes:
+      - "./redis.conf:/etc/redis.conf"
+    command: redis-server /etc/redis.conf
+
+  s1:
+    image: redis:7
+    ports:
+      - "6380:6379"
+    volumes:
+      - "./redis.conf:/etc/redis.conf"
+    command: redis-server /etc/redis.conf --slaveof m1 6379
+    depends_on: [m1]
+
+  s2:
+    image: redis:7
+    ports:
+      - "6381:6379"
+    volumes:
+      - "./redis.conf:/etc/redis.conf"
+    command: redis-server /etc/redis.conf --slaveof m1 6379
+    depends_on: [m1]
