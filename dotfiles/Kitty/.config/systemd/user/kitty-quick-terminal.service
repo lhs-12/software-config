@@ -7,8 +7,8 @@ Type=simple
 ExecStartPre=-/usr/bin/pkill -TERM -f "kitty.*kitten.*quick-access"
 ExecStop=-/usr/bin/pkill -TERM -f "kitty.*kitten.*quick-access"
 ExecStart=/usr/bin/kitten quick_access_terminal
-Restart=on-failure
-KillMode=none
+Restart=no
+KillMode=mixed
 
 [Install]
 WantedBy=default.target
