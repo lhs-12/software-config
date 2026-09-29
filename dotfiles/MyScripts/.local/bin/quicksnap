@@ -1,0 +1,60 @@
+#!/bin/bash
+set -Eeuo pipefail
+
+# ==========================================
+# quicksnap - 为所有 snapper 配置创建 Btrfs 快照
+# 用法: quicksnap [--keep|-k] [标签]
+#
+# 默认: 快照带 number 清理策略, 自动管理 (qs- 前缀)
+# --keep/-k: 快照不加清理策略, 永久保存, 需手动删除 (qsk- 前缀)
+#
+# 本脚本 snapper 命令要求免 sudo 运行, 需要对数据卷开放权限, 示例:
+#   snapper -c [数据卷名] set-config ALLOW_GROUPS="wheel" SYNC_ACL="yes"
+# ==========================================
+
+# --keep 永久保存, 默认带清理策略
+KEEP=false
+case "${1-}" in
+    --keep|-k) KEEP=true; TAG="${2-}" ;;
+    *)         TAG="${1-}" ;;
+esac
+
+# 任一命令失败: 报行号和命令, 并弹通知
+trap 'on_error $LINENO "$BASH_COMMAND"' ERR
+on_error() {
+    trap - ERR
+    local line=$1 cmd=$2
+    echo "ERROR at line $line: $cmd" >&2
+    notify-send -u critical "quicksnap" "Failed at line $line: $cmd"
+    exit 1
+}
+
+# 自动发现所有配置
+CONFIGS=($(snapper list-configs 2>/dev/null | awk 'NR>2 {print $1}'))
+
+# 无 snapper 配置提示
+if [[ ${#CONFIGS[@]} -eq 0 ]]; then
+    echo "ERROR: nothing to snapshot. No snapper configs found." >&2
+    notify-send -u critical "quicksnap" "Nothing to snapshot. No snapper configs found."
+    exit 1
+fi
+
+# 逐个配置创建快照
+SAVED=()
+for conf in "${CONFIGS[@]}"; do
+    if [[ "$KEEP" == true ]]; then
+        # 永久保存: 不加清理策略, 永不自动删除
+        DESC="qsk-${conf}${TAG:+-$TAG}"
+        NUM=$(snapper -c "$conf" create --description "$DESC" --print-number)
+    else
+        # 默认: 按 number 策略清理旧快照, 再新建
+        DESC="qs-${conf}${TAG:+-$TAG}"
+        snapper -c "$conf" cleanup number
+        NUM=$(snapper -c "$conf" create --description "$DESC" --cleanup-algorithm number --print-number)
+    fi
+    SAVED+=("$DESC (#$NUM)")
+done
+
+TITLE="Quick Snapshot${TAG:+ $TAG}"
+[[ "$KEEP" == true ]] && TITLE="Permanent Snapshot${TAG:+ $TAG}"
+notify-send "$TITLE (${#SAVED[@]} saved)" "$(printf '%s\n' "${SAVED[@]}")"

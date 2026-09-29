@@ -1,0 +1,15 @@
+[
+  // 打开命令
+  { "key": "ctrl+shift+a", "command": "workbench.action.showCommands" },
+  // 换行
+  { "key": "shift+Enter", "command": "editor.action.insertLineAfter", "when": "editorTextFocus && !editorReadonly" },
+  // 打开类
+  { "key": "ctrl+n", "command": "workbench.action.showAllSymbols" },
+  // Quick Fix
+  { "key": "alt+enter", "command": "editor.action.quickFix", "when": "editorHasCodeActionsProvider && editorTextFocus && !editorReadonly" },
+  // 代码生成
+  { "key": "alt+insert", "command": "editor.action.sourceAction", "when": "editorHasCodeActionsProvider && editorTextFocus && !editorReadonly" },
+  // NeoVim
+  { "key": "ctrl+alt+k", "command": "vscode-neovim.stop", "when": "neovim.init" },
+  { "key": "ctrl+alt+k", "command": "vscode-neovim.restart", "when": "!neovim.init" }
+]

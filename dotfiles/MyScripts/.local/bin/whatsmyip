@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+# whatsmyip - Get internal and external IP addresses
+
+set -Eeuo pipefail
+
+# ---------- helpers ----------
+have() { command -v "$1" >/dev/null 2>&1; }
+
+# ---------- primary (default route) ----------
+PRIMARY_IP="N/A"
+PRIMARY_DEV="N/A"
+
+if have ip; then
+  ROUTE_INFO=$(ip route get 1.1.1.1 2>/dev/null || true)
+  PRIMARY_IP=$(awk '{for(i=1;i<=NF;i++) if($i=="src") print $(i+1)}' <<<"$ROUTE_INFO")
+  PRIMARY_DEV=$(awk '{for(i=1;i<=NF;i++) if($i=="dev") print $(i+1)}' <<<"$ROUTE_INFO")
+  PRIMARY_IP=${PRIMARY_IP:-N/A}
+  PRIMARY_DEV=${PRIMARY_DEV:-N/A}
+fi
+
+# ---------- LAN IPs (physical interfaces only) ----------
+LAN_INFO=""
+
+if have ip; then
+  while read -r dev ipaddr; do
+    # Exclude loopback, tunnel, docker, and virtual interfaces
+    if [[
+      "$dev" != lo*     &&
+      "$dev" != tun*    &&
+      "$dev" != tap*    &&
+      "$dev" != *tun*   &&
+      "$dev" != docker* &&
+      "$dev" != veth*
+    ]]; then
+      LAN_INFO+=$(printf "LAN IP (%s): %s\n" "$dev" "$ipaddr")
+    fi
+  done < <(
+    ip -o -4 addr show up |
+    awk '{print $2, $4}' |
+    cut -d/ -f1,2
+  )
+fi
+
+# ---------- external IP ----------
+EXTERNAL_IP="N/A"
+have curl && EXTERNAL_IP=$(curl -4 -s --max-time 3 ifconfig.me || printf "N/A")
+
+# ---------- output ----------
+printf "Primary IP (default route): %s (%s)\n" "$PRIMARY_IP" "$PRIMARY_DEV"
+
+[ -n "$LAN_INFO" ] \
+  && printf "%s" "$LAN_INFO" | sed '/^$/d' \
+  || printf "LAN IP: N/A\n"
+
+printf "\nExternal IP: %s\n" "$EXTERNAL_IP"

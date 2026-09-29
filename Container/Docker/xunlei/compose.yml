@@ -1,0 +1,30 @@
+# Docker 版迅雷 https://github.com/cnk3x/xunlei
+# 启动前要通过 id 命令查看 uid 和 gid, 修改 XL_UID 和 XL_GID
+# 初次启动: docker compose up -d
+# 后续启动: docker start/stop/restart xunlei
+# 查看日志(初启动会有下载SPK文件日志): docker logs -f xunlei
+# 浏览器访问管理面板: http://localhost:2345 , 账号密码登录
+# 停止容器: docker compose down
+# 重启容器: docker compose restart
+
+services:
+  xunlei:
+    container_name: xunlei
+    image: cnk3x/xunlei:beta
+    restart: no # 想开机启动改为 unless-stopped
+    hostname: arch-xunlei
+    cap_add:
+      - SYS_ADMIN
+    ports:
+      - "127.0.0.1:2345:2345" # 仅本机, 省掉密码
+    network_mode: bridge
+    environment:
+      - XL_UID=1000 # 改成uid数值
+      - XL_GID=998  # 改成gid数值
+      - XL_PREVENT_UPDATE=false
+      - XL_DASHBOARD_USERNAME=
+      - XL_DASHBOARD_PASSWORD=
+    volumes:
+      - ~/data-container/docker/xunlei/downloads:/xunlei/downloads
+      - ~/data-container/docker/xunlei/data:/xunlei/data
+      - ~/data-container/docker/xunlei/cache:/xunlei/var/packages/pan-xunlei-com

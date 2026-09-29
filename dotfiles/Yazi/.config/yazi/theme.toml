@@ -1,0 +1,6 @@
+[flavor]
+dark = "ayu-dark"
+
+[spot]
+title = { fg = "green" }
+tbl_col = { fg = "blue" }

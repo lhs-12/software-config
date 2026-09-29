@@ -1,0 +1,93 @@
+virtual_modifiers:
+  - CapsLock
+modmap:
+  - name: Global
+    remap:
+      CapsLock:
+        held: CapsLock
+        alone: Esc
+        free_hold: true
+keymap:
+  - name: navigation & ctrl+others
+    remap:
+      CapsLock-KEY_ESC: KEY_CAPSLOCK
+      # navigation
+      CapsLock-j: KEY_DOWN
+      CapsLock-k: KEY_UP
+      CapsLock-h: KEY_LEFT
+      CapsLock-l: KEY_RIGHT
+      CapsLock-n: KEY_HOME
+      CapsLock-m: KEY_END
+      CapsLock-KEY_COMMA: KEY_PAGEUP # ,
+      CapsLock-KEY_DOT: KEY_PAGEDOWN # .
+      # Ctrl + others
+      CapsLock-a: C-KEY_A
+      CapsLock-b: C-KEY_B
+      CapsLock-c: C-KEY_C
+      CapsLock-d: C-KEY_D
+      CapsLock-e: C-KEY_E
+      CapsLock-f: C-KEY_F
+      CapsLock-g: C-KEY_G
+      CapsLock-i: C-KEY_I
+      CapsLock-o: C-KEY_O
+      CapsLock-p: C-KEY_P
+      CapsLock-q: C-KEY_Q
+      CapsLock-r: C-KEY_R
+      CapsLock-s: C-KEY_S
+      CapsLock-t: C-KEY_T
+      CapsLock-u: C-KEY_U
+      CapsLock-v: C-KEY_V
+      CapsLock-w: C-KEY_W
+      CapsLock-x: C-KEY_X
+      CapsLock-y: C-KEY_Y
+      CapsLock-z: C-KEY_Z
+      CapsLock-0: C-KEY_0
+      CapsLock-1: C-KEY_1
+      CapsLock-2: C-KEY_2
+      CapsLock-3: C-KEY_3
+      CapsLock-4: C-KEY_4
+      CapsLock-5: C-KEY_5
+      CapsLock-6: C-KEY_6
+      CapsLock-7: C-KEY_7
+      CapsLock-8: C-KEY_8
+      CapsLock-9: C-KEY_9
+      CapsLock-KEY_F1: C-KEY_F1
+      CapsLock-KEY_F2: C-KEY_F2
+      CapsLock-KEY_F3: C-KEY_F3
+      CapsLock-KEY_F4: C-KEY_F4
+      CapsLock-KEY_F5: C-KEY_F5
+      CapsLock-KEY_F6: C-KEY_F6
+      CapsLock-KEY_F7: C-KEY_F7
+      CapsLock-KEY_F8: C-KEY_F8
+      CapsLock-KEY_F9: C-KEY_F9
+      CapsLock-KEY_F10: C-KEY_F10
+      CapsLock-KEY_F11: C-KEY_F11
+      CapsLock-KEY_F12: C-KEY_F12
+      CapsLock-KEY_MINUS: C-KEY_MINUS           # -
+      CapsLock-KEY_EQUAL: C-KEY_EQUAL           # =
+      CapsLock-KEY_GRAVE: C-KEY_GRAVE           # `
+      CapsLock-KEY_BACKSLASH: C-KEY_BACKSLASH   # \ 
+      CapsLock-KEY_LEFTBRACE: C-KEY_LEFTBRACE   # [
+      CapsLock-KEY_RIGHTBRACE: C-KEY_RIGHTBRACE # ]
+      CapsLock-KEY_SEMICOLON: C-KEY_SEMICOLON   # ;
+      CapsLock-KEY_APOSTROPHE: C-KEY_APOSTROPHE # '
+      CapsLock-KEY_SLASH: C-KEY_SLASH           # /
+      CapsLock-KEY_SPACE: C-KEY_SPACE           # Space
+      CapsLock-KEY_TAB: C-KEY_TAB               # Tab
+      CapsLock-KEY_ENTER: C-KEY_ENTER           # Enter
+      CapsLock-KEY_BACKSPACE: C-KEY_BACKSPACE   # Backspace
+      CapsLock-KEY_LEFTMETA: C-KEY_LEFTMETA     # left Win/Meta
+      CapsLock-KEY_RIGHTMETA: C-KEY_RIGHTMETA   # right Win/Meta
+      CapsLock-KEY_PRINT: C-KEY_PRINT           # Print Screen
+      CapsLock-KEY_SCROLLLOCK: C-KEY_SCROLLLOCK # Scroll Lock
+      CapsLock-KEY_PAUSE: C-KEY_PAUSE           # Pause/Break
+      CapsLock-KEY_INSERT: C-KEY_INSERT         # Insert
+      CapsLock-KEY_DELETE: C-KEY_DELETE         # Delete
+      CapsLock-KEY_HOME: C-KEY_HOME             # Home
+      CapsLock-KEY_END: C-KEY_END               # End
+      CapsLock-KEY_PAGEUP: C-KEY_PAGEUP         # Page Up
+      CapsLock-KEY_PAGEDOWN: C-KEY_PAGEDOWN     # Page Down
+      CapsLock-KEY_UP: C-KEY_UP                 # ↑
+      CapsLock-KEY_DOWN: C-KEY_DOWN             # ↓
+      CapsLock-KEY_LEFT: C-KEY_LEFT             # ←
+      CapsLock-KEY_RIGHT: C-KEY_RIGHT           # →

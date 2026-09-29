@@ -1,0 +1,1 @@
+aube completion fish | source
