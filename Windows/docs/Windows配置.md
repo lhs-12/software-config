@@ -21,6 +21,7 @@ PixPin(仅保留截图和贴图快捷键: F1,F3)
 Notion
 Z-Library + Koodo-Reader
 系统美化: TranslucentTB(透明化任务栏) + material-design-cursors(鼠标光标主题) + (个性化->颜色->深色)
+winbtrfs(Btrfs 分区驱动, 用于读 Linux 双系统文件)
 ```
 
 浏览器插件:  

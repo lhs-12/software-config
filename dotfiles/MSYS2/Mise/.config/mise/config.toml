@@ -7,14 +7,14 @@ typst     = "latest"
 
 # Windows PI 需要在 ~/.pi/agent/settings.json 配置 Shell: bash 更实用, pwsh 兼容性更好
 # shellPath 影响 !/!! 命令和 bash tool 的 shell; powershell tool 从 PATH 找 pwsh, 不读 shellPath
-# WSL 的 bash.exe PATH 优先级比 MSYS2 Bash 高, 所以需要显式指定 shellPath
-# defaultTools 配置不建议混用 Bash 和 PowerShell, 因为混用规则不够明确, 行为不可控
+# Pi 的 PATH 自动探测 Bash 不可靠, 故显式指定 shellPath
+# 不建议同时启用 Bash 和 PowerShell: 官方规则只写 "用 bash 或 PowerShell", 不够细致, 容易混乱
 #
 # 仅用 Bash 配置
 # "shellPath": "C:/msys64/usr/bin/bash.exe"
 # 仅用 Pwsh 配置
 # "shellPath": "C:/Program Files/PowerShell/7/pwsh.exe"
-# "defaultTools": ["read", "powershell", "edit", "write"]
+# "defaultTools": ["-bash", "+powershell"]
 pi = "latest"
 "npm:skills" = "latest"
 "npm:@deepseek-ai/dsh" = { version = "latest", prerelease = true }
