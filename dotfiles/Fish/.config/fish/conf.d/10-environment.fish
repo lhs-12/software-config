@@ -31,7 +31,6 @@ if test -n "$WSL_DISTRO_NAME$WSL_INTEROP"
   return 0
 end
 
-# v2rayN 开启系统代理时, gsettings 命令输出 "manual", 此时开启 proxycfg, 否则关闭
-command -q gsettings; or return 0
-set mode (gsettings get org.gnome.system.proxy mode 2>/dev/null)
-test "$mode" = "'manual'"; and proxycfg on >/dev/null 2>&1; or proxycfg off >/dev/null 2>&1
+# Follow system proxy on shell start (gsettings or kioslaverc backend)
+type -q proxycfg; or return 0
+proxycfg on >/dev/null 2>&1; or proxycfg off >/dev/null 2>&1
