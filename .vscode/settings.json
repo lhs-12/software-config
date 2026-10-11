@@ -1,6 +1,7 @@
 {
   "files.associations": {
     "*.svg": "html",
+    "**/miserc.toml": "ini",
     "**/*.{desktop,service}": "ini",
     "**/.config/fontconfig/**/*.conf": "html",
     "**/dotfiles/Btop/.config/btop/**/*.theme": "ini",
