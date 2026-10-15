@@ -14,7 +14,6 @@ wezterm.on("format-tab-title", function(tab, tabs)
 end)
 -- Window
 config.window_close_confirmation = "NeverPrompt"
-config.window_decorations = "INTEGRATED_BUTTONS|RESIZE"
 config.enable_scroll_bar = true
 config.initial_cols = 120
 config.initial_rows = 35
@@ -56,8 +55,6 @@ if wezterm.target_triple == "x86_64-unknown-linux-gnu" then
     { label = "Fish", args = { "fish" } },
   }
   config.front_end = "WebGpu"
-  -- Fix Linux window
-  config.window_decorations = "NONE"
   config.hide_tab_bar_if_only_one_tab = true
   config.tab_bar_at_bottom = true
   config.use_fancy_tab_bar = false
@@ -79,6 +76,7 @@ if wezterm.target_triple == "x86_64-pc-windows-msvc" then
     { label = "Pwsh (Admin)"      , args = { "powershell.exe", "-NoProfile", "-Command", "Start-Process wezterm-gui.exe -Verb RunAs -ArgumentList 'start --always-new-process -- pwsh.exe       -NoLogo'" } },
     { label = "PowerShell (Admin)", args = { "powershell.exe", "-NoProfile", "-Command", "Start-Process wezterm-gui.exe -Verb RunAs -ArgumentList 'start --always-new-process -- powershell.exe -NoLogo'" } },
   }
+  config.window_decorations = "INTEGRATED_BUTTONS|RESIZE"
   wezterm.on("gui-startup", function(cmd)
     local tab, pane, window = wezterm.mux.spawn_window(cmd or {})
     window:gui_window():set_position(520, 250)
