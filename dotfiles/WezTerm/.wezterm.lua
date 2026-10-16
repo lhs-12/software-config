@@ -42,7 +42,6 @@ config.default_cursor_style = "SteadyUnderline"
 config.font = wezterm.font_with_fallback({
   "Iosevka Term",
   "MiSans",
-  "Noto Sans Mono CJK SC",
   { family = "Symbols Nerd Font Mono", scale = 0.9 },
   "MiSans L3",
   "Noto Color Emoji",

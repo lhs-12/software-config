@@ -5,7 +5,7 @@
   "workbench.colorTheme": "Dark Modern",
   "workbench.iconTheme": "vscode-icons",
   "editor.wordSegmenterLocales": ["zh"],
-  "editor.fontFamily": "'Iosevka Term','MiSans','MiSans L3','Noto Sans Mono CJK SC','Symbols Nerd Font Mono','Noto Color Emoji'",
+  "editor.fontFamily": "'Iosevka Term','MiSans','MiSans L3','Symbols Nerd Font Mono','Noto Color Emoji'",
   "editor.fontSize": 16,
   "editor.mouseWheelZoom": true,
   "editor.smoothScrolling": true,
