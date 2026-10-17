@@ -1,16 +1,15 @@
-[76d475dc-3e43-4742-8b50-8b68e257e74e]
+[General]
+Order=steam,pinpic,flameshot,splayer,v2rayn
+
+[flameshot]
 Description=Flameshot
 above=true
 aboverule=2
 wmclass=flameshot
 wmclassmatch=1
 
-[General]
-count=4
-rules=76d475dc-3e43-4742-8b50-8b68e257e74e,deada39d-b124-4d34-a844-2eda8b78477a,a03cd815-9ebe-4f91-947d-9663b8ba925f,b8789af7-9c2b-40f4-bcdd-240820a42b30
-
-[a03cd815-9ebe-4f91-947d-9663b8ba925f]
-Description=pinpic
+[pinpic]
+Description=Pinpic
 above=true
 aboverule=2
 skippager=true
@@ -24,7 +23,7 @@ titlematch=2
 wmclass=^(mpv|python3)$
 wmclassmatch=3
 
-[b8789af7-9c2b-40f4-bcdd-240820a42b30]
+[splayer]
 Description=SPlayer
 above=true
 aboverule=2
@@ -40,7 +39,7 @@ types=1
 wmclass=top.imsyy.splayer_next
 wmclassmatch=1
 
-[deada39d-b124-4d34-a844-2eda8b78477a]
+[v2rayn]
 Description=v2rayN
 skippager=true
 skippagerrule=2
