@@ -235,7 +235,7 @@ perform_update() {
     if command -v mise >/dev/null 2>&1; then
         mise self-update -y
         mise upgrade
-        rustup update
+        rustup self update
     else
         _warn "$MSG_MISE_NONE"
     fi
