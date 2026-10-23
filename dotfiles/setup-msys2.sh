@@ -233,6 +233,8 @@ safe_ln_each "$BASE_DIR/MSYS2/Bash" "$HOME"
 safe_ln "$BASE_DIR/MSYS2/Fish/.config/fish" "$HOME/.config/fish"
 safe_ln "$BASE_DIR/MSYS2/PowerShell5/WindowsPowerShell" "$HOME/Documents/WindowsPowerShell"
 safe_ln "$BASE_DIR/MSYS2/Pwsh/PowerShell" "$HOME/Documents/PowerShell"
+# Herdr
+safe_ln "$BASE_DIR/Herdr/.config/herdr/config.toml" "$APPDATA/herdr/config.toml"
 # OhMyPosh
 safe_ln "$BASE_DIR/OhMyPosh/.om-posh.json" "$HOME/.om-posh.json"
 # FastFetch
