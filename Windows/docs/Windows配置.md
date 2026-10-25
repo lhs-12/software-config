@@ -88,9 +88,10 @@ PowerShell(管理员身份) 执行自动部署脚本: `powershell -ExecutionPoli
 
 `Windows 设置` -> `系统` -> `高级` -> `开发者选项` -> 打开 `开发人员模式` (让普通用户也可以创建 Symbolic Link)
 
-`Windows 设置` -> `时间和语言` -> `语言和区域` -> 点击 `Windows 显示语言`, 开启 `UTF-8 全球语言支持`
+`Windows 设置` -> `应用` -> `高级应用设置` -> `应用执行别名`: 关闭 `bash.exe`, `python.exe`, `python3.exe`
 
-> UTF-8 设置若遇到程序兼容性问题, 可尝试右键程序 -> 属性 -> 兼容性 -> 勾选 "以兼容模式运行此程序"
+`Windows 设置` -> `时间和语言` -> `语言和区域` -> 点击 `Windows 显示语言`, 开启 `UTF-8 全球语言支持`  
+若有程序因 UTF-8 设置导致兼容性问题, 可尝试右键程序 -> 属性 -> 兼容性 -> 勾选 "以兼容模式运行此程序"
 
 ## 开发相关软件
 
@@ -110,12 +111,17 @@ PowerShell(管理员身份) 执行自动部署脚本: `powershell -ExecutionPoli
 ## MSYS2 环境
 
 1. 下载 `MSYS2` 安装包执行安装
-2. 添加系统变量 Path(放末尾): `C:\msys64\ucrt64\bin\` 和 `C:\msys64\usr\bin`
+2. 添加系统变量 Path(放末尾, 避免顶替 Windows 自带命令): `C:\msys64\ucrt64\bin\` 和 `C:\msys64\usr\bin`
 3. 统一 `HOME` 目录: 用 `pwsh` 执行 `edit C:\msys64\etc\nsswitch.conf`, 将 `db_home` 的值从 `cygwin desc` 改为 `windows`
 4. 使用 `MSYS2` 的 `UCRT64` 环境启动, 检查修改并执行脚本: `bash setup-msys2.sh`
 5. 脚本执行中会引导用 gh 登录 GitHub 获取凭证, 手工操作
 
 > `setup-msys2.sh` 脚本会自动添加 Mise 相关的用户变量 Path
+
+> 默认 Windows 环境下, 在 PowerShell 执行 `bash` 会启动 WSL bash,  
+> 为了避免此情况, PowerShell profile 里做了 MSYS2 bash alias 设置,  
+> 该配置日常够用, 但子进程依然可能调用到 System32 入口的 WSL bash. Agent 调用时建议写 bash 全路径, 避免用错.  
+> 另外 PowerShell 跑裸 `bash -lc` 是 MSYS 环境, 想要 UCRT64 要先执行 `$env:MSYSTEM='UCRT64'`
 
 MSYS2 的包管理工具是 `pacman`
 

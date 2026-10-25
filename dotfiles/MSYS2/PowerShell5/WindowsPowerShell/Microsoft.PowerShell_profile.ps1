@@ -1,5 +1,10 @@
 # $HOME\.local\bin 和 mise shims 从用户环境变量 PATH 继承, 无需在此重复添加
 
+# MSYS2 bash 覆盖 PATH 中优先的 WSL bash
+# 注意: PS5 的 $OutputEncoding 默认 us-ascii, 管道中文进 bash 会变 ??, 需要时设 [Text.Encoding]::UTF8
+$msysBash = "C:\msys64\usr\bin\bash.exe"
+if (Test-Path $msysBash) { Set-Alias bash $msysBash; Set-Alias "bash.exe" $msysBash }
+
 # 非交互 (headless / stdin 或 stdout 被重定向的脚本/agent) 跳过全部交互配置
 if (-not [Environment]::UserInteractive -or [Console]::IsInputRedirected -or [Console]::IsOutputRedirected) { return }
 
@@ -41,13 +46,17 @@ function reload { . $PROFILE }
 function fdns { ipconfig /flushdns }
 function print_path { $env:Path -split ';' | Where-Object { $_ } }
 function which {
-    param([Parameter(Mandatory)][string]$Command)
-    $result = Get-Command $Command -ErrorAction SilentlyContinue
-    if ($null -eq $result) {
-        Write-Output "$Command not found"
-        return
+    param([Parameter(Mandatory, Position=0)][string]$Command, [switch]$All)
+    $cmds = @(Get-Command $Command -All -ErrorAction SilentlyContinue)
+    if ($cmds.Count -eq 0) { "$Command not found"; return }
+    if (-not $All) { $cmds = $cmds[0..0] }
+    foreach ($c in $cmds) {
+        switch ($c.CommandType) {
+            'Function' { "function $($c.Name): $($c.Definition -replace '\s+',' ')" }
+            'Alias'    { "alias $($c.Name) -> $($c.Definition)" }
+            default    { $c.Source }
+        }
     }
-    $result.Source
 }
 function get_port {
   param( [Parameter(Mandatory)] [int]$Port)
