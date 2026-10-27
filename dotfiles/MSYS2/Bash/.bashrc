@@ -12,6 +12,10 @@ append_path() {
 }
 append_path "$HOME/.local/bin"
 
+# Align mise dirs with Windows defaults (MSYS2 login shells export TEMP=/tmp; children inherit it)
+export MISE_CACHE_DIR="${ORIGINAL_TEMP:-$LOCALAPPDATA/Temp}/mise"
+export MISE_TMP_DIR="${ORIGINAL_TEMP:-$LOCALAPPDATA/Temp}/mise-tmp"
+
 # Mise shims for non-interactive shells
 eval "$(mise activate bash --shims)"
 

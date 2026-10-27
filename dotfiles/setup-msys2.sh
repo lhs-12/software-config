@@ -168,15 +168,14 @@ append_path(){ case ":$PATH:" in *:"$1":*) ;; *) PATH="${PATH:+$PATH:}$1" ;; esa
 mkdir -p "$HOME/.local/bin"
 append_path "$HOME/.local/bin"
 
-if command -v mise &> /dev/null; then
-  mise self-update -y || true # 更新 Mise (|| true 避免 GitHub 限流等失败中止主流程)
-else
-  # 安装 Mise: 下载 mise.exe 和 mise-shim.exe 到 ~/.local/bin/
-  echo "Installing Mise..."
-  MISE_VERSION=$(curl -s https://mise.run | grep 'current_version=' | head -1 | cut -d'"' -f2)
-  MISE_URL="https://mise.jdx.dev/${MISE_VERSION}/mise-${MISE_VERSION}-windows-x64.zip"
-  curl -L -o mise.zip "$MISE_URL" && unzip -q mise.zip -d /tmp/mise && cp /tmp/mise/mise/bin/mise*.exe "$HOME/.local/bin/" && rm -rf mise.zip /tmp/mise
-fi
+# Mise 目录对齐 Windows 默认 %TEMP%\mise(-tmp)
+export MISE_CACHE_DIR="${ORIGINAL_TEMP:-$LOCALAPPDATA/Temp}/mise"
+export MISE_TMP_DIR="${ORIGINAL_TEMP:-$LOCALAPPDATA/Temp}/mise-tmp"
+
+# 幂等安装/更新 Mise: (mise.exe + mise-shim.exe) -> ~\.local\bin
+# 安装脚本会幂等地写 ~\.local\bin 到用户环境变量, 增加 MISE_INSTALL_SHIMS_PATH=1 参数会把 shims 目录也写入
+MISE_INSTALL_SHIMS_PATH=1 MISE_SELF_UPDATE_MINIMUM_RELEASE_AGE=0s \
+  powershell.exe -NoProfile -Command "irm https://mise.run/powershell | iex"
 
 # ===== GitHub 认证: gh =====
 if ! command -v gh &>/dev/null; then
@@ -198,20 +197,6 @@ safe_ln "$BASE_DIR/MSYS2/Mise/.config/mise" "$HOME/.config/mise"
 safe_ln "$BASE_DIR/MSYS2/Mise/.config/aube" "$HOME/.config/aube"
 # 根据 Mise 配置文件安装工具
 mise upgrade
-
-# 获取 mise shims 路径
-MISE_SHIMS_WIN="$(mise activate pwsh --shims 2>/dev/null | sed -n "s/.*'\([^']*\)'.*/\1/p")"
-export MISE_SHIMS_WIN
-# 幂等添加 Windows 用户环境变量: $HOME/.local/bin 和 mise shims
-powershell.exe -NoProfile -Command - <<'PS_EOF'
-$want = @("$env:USERPROFILE\.local\bin")
-if ($env:MISE_SHIMS_WIN) { $want += $env:MISE_SHIMS_WIN }
-$raw = (Get-Item HKCU:\Environment).GetValue('Path', '', 'DoNotExpandEnvironmentNames')
-$parts = @($raw -split ';' | Where-Object { $_ })
-$norm = @($parts | ForEach-Object { $_.TrimEnd('\') })
-$added = @($want | Where-Object { $_.TrimEnd('\') -notin $norm })
-if ($added) { Set-ItemProperty HKCU:\Environment Path -Type ExpandString -Value (($added + $parts) -join ';'); Write-Host "Added to User PATH:"; $added | ForEach-Object { Write-Host "  + $_" } } else { Write-Host "User PATH already contains mise paths, skip." }
-PS_EOF
 
 # ===== 复制配置文件 =====
 echo -e "\n\e[36m========== Deploying config files ==========\e[0m"

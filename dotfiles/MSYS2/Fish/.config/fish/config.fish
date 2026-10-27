@@ -5,6 +5,12 @@ if not test -n "$MSYSTEM"; or not test "$MSYSTEM" = "UCRT64"; exit; end # only e
 # User local binaries
 fish_add_path -g "$HOME/.local/bin"
 
+# Align mise dirs with Windows defaults (MSYS2 login shells export TEMP=/tmp; children inherit it)
+set -l _win_temp "$LOCALAPPDATA/Temp"
+test -n "$ORIGINAL_TEMP"; and set _win_temp "$ORIGINAL_TEMP"
+set -gx MISE_CACHE_DIR "$_win_temp/mise"
+set -gx MISE_TMP_DIR "$_win_temp/mise-tmp"
+
 # Mise shims for non-interactive shells
 mise activate fish --shims | source
 
