@@ -10,6 +10,7 @@
     "**/dotfiles/Ghostty/.config/ghostty/config": "ini",
     "**/dotfiles/KDE/.config/klassy/*": "ini",
     "**/dotfiles/KDE/.config/{plasma-localerc,kwinrulesrc,kglobalshortcutsrc}": "ini",
+    "**/dotfiles/OhMyPosh/.om-posh.json": "jsonc",
     "**/dotfiles/Zed/.config/zed/settings.json": "jsonc",
   },
   "json.schemas": [
