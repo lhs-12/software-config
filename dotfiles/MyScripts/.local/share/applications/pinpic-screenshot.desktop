@@ -1,0 +1,7 @@
+[Desktop Entry]
+Exec=pinpic --screenshot
+Name=截图贴图
+NoDisplay=true
+StartupNotify=false
+Type=Application
+X-KDE-GlobalAccel-CommandShortcut=true

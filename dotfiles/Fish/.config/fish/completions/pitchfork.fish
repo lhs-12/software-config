@@ -1,0 +1,1 @@
+pitchfork completion fish | source

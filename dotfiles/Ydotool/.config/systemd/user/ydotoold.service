@@ -1,0 +1,12 @@
+[Unit]
+Description=Ydotool Daemon
+After=default.target
+
+[Service]
+ExecStart=/usr/bin/ydotoold
+Restart=always
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=default.target
