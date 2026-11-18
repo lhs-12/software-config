@@ -1,0 +1,8 @@
+{
+  "tui.altScreen.search": "ctrl+f",
+  "tui.editor.cursorLineStart": "home",
+  "tui.editor.cursorLineEnd": "end",
+  "tui.altScreen.top": "ctrl+home",
+  "tui.altScreen.bottom": "ctrl+end",
+  "app.model.cycleBackward": "alt+p"
+}
