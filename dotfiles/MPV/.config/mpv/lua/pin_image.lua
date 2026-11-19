@@ -14,7 +14,6 @@ mp.set_property("auto-window-resize", "no")      -- --no-auto-window-resize: 禁
 mp.set_property("title-bar", "no")               -- --title-bar=no: 隐藏标题栏
 mp.set_property("osc", "no")                     -- --osc=no: 关闭底部进度条控制浮层
 -- 看图行为
-mp.set_property("target-trc", "srgb")            -- --target-trc=srgb: 固定 SDR/sRGB 输出，避免自动切换导致亮度变化
 mp.set_property("image-display-duration", "inf") -- --image-display-duration=inf: 图片永不退出
 mp.set_property("loop-playlist", "inf")          -- --loop-playlist=inf: 无限循环播放(用于gif循环)
 mp.set_property("autoload-files", "no")          -- --autoload-files=no: 禁止加载同目录其他文件
@@ -22,6 +21,22 @@ mp.set_property("autoload-files", "no")          -- --autoload-files=no: 禁止�
 mp.set_property("audio", "no")                   -- --no-audio: 禁用音频
 mp.set_property("vd", "null")                    -- --vd=no (在API中通常设为null): 禁用视频解码器
 mp.set_property("hwdec", "no")                   -- --hwdec=no: 关闭硬件解码器
+
+-------------------------------------------------------------
+-- Workaround
+-------------------------------------------------------------
+-- mpv 0.42 起默认通过 wp_color_manager_v1 向 KWin 声明 surface 色彩空间 (--target-colorspace-hint 默认 auto/target)
+-- KWin 开启 Allow EDR 时会给出 473 nits 的目标余量, mpv 跟随这个目标把普通 SDR 图片声明成 PQ / 峰值 10000 nits, 这个声明本身不合理
+-- KWin 又对声明为 PQ 的表面做 HDR tone mapping, 两边叠加导致贴图窗口内暗部抬亮/高光压缩(发灰偏亮)
+-- 关闭 hint 后按默认 sRGB 处理, 与其他程序显示一致 (关掉 KWin 的 EDR 也一致, 两种情况屏幕取值都与源图逐值相同)
+-- 责任在两边 (mpv 的声明策略 + KWin 的 tone mapping), 以后任一方的版本可能改变该行为, 待观察
+-- 届时用灰阶测试图 (0/64/128/192/255) 与 gwenview 同屏对比, 取值一致即可删除下面这行配置
+mp.set_property("target-colorspace-hint", "no") -- --target-colorspace-hint=no: 关闭 Wayland 色彩管理协商
+
+-- spectacle 保存的截图带内嵌 ICC profile, gpu-next 会拿它做一次 ICC 转换, 在 KWin + EDR 下暗部抬高约 7 级(31→38, 52→57)
+-- 实测 mpv 0.42 没有关闭这个行为的选项 (--use-embedded-icc-profile / --icc-profile-auto 均无效, ICC 由 compositor 提供时被无条件应用)
+-- 改用老渲染器 vo=gpu 可完全避开该路径, 代价是没有 gpu-next 的缩放/抖动特性, 对静态贴图无影响
+mp.set_property("vo", "gpu")                    -- --vo=gpu: 避免 gpu-next 的内嵌 ICC 转换
 
 -------------------------------------------------------------
 -- 功能快捷键
