@@ -68,8 +68,6 @@ code \
 
 使用`settings.json`和`keybindings.json`
 
-可使用自制 vscode-emoji-patch 项目优化 emoji 显示
-
 Windows 环境要在 `settings.json` 修改下面的配置, 另外执行 Markdown Preview Enhanced: Customize CSS(Global) 复制粘贴样式
 
 ```json
